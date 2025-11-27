@@ -1,7 +1,10 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { useContext } from "react";
+
 import { useNavigate,useContext } from "react-router-dom";
 import { BASE_URL } from "../config";
+import { AdminContext } from "../context/AdminContext";
 
 export default function AdminLogin() {
     const { loginAdmin } = useContext(AdminContext);
