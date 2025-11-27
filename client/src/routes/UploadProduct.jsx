@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 
-const API_BASE_URL = "http://localhost:3000/api"; // change to your backend
+const VITE_AP = "http://localhost:3000/api"; // change to your backend
 
 export default function ProductUpload() {
     const [mainCategories, setMainCategories] = useState([]);

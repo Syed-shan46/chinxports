@@ -9,7 +9,6 @@ const connectDB = require('./db');
 const productRoutes = require('./routes/productRoutes');
 const categoryRoutes = require('./routes/categoryRoutes');
 const storeRoutes = require('./routes/storeRoutes');
-const bulkUploadRoutes = require('./routes/bulkUploadRoutes');
 const adminRoutes = require('./routes/adminRoutes');
 
 // ✅ Define CORS options FIRST
@@ -42,7 +41,6 @@ connectDB();
 app.use('/api', productRoutes);
 app.use('/api/categories', categoryRoutes);
 app.use('/api/store', storeRoutes);
-app.use('/api', bulkUploadRoutes);
 app.use('/api/admin', adminRoutes);
 
 
