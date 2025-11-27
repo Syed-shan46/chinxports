@@ -13,7 +13,7 @@ const adminRoutes = require('./routes/adminRoutes');
 
 // ✅ Define CORS options FIRST
 const corsOptions = {
-  origin: ["http://localhost:5173", "http://192.168.31.58:5173"], // Your React frontend URL
+  origin: ["http://localhost:5173", "https://chinxports-client.onrender.com"], // Your React frontend URL
   credentials: true,               // Allow cookies
   methods: "GET,POST,PUT,DELETE",  // Allow required methods
   allowedHeaders: "Content-Type,Authorization"
