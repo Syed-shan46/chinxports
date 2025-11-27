@@ -11,6 +11,8 @@ export default function Home() {
     <>
       <Hero />
 
+      <CategoryTabs/>
+
       <BestDeals />
 
       <div className="container d-flex justify-content-center mt-4">
@@ -19,7 +21,7 @@ export default function Home() {
         </a>
       </div>
 
-      <CategoryTabs/>
+      
 
       <CardsSection />
 

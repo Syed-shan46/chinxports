@@ -9,7 +9,7 @@ export default function ProductCard({ product,col=4 ,cartBtnPdg="10px 15px"}) {
       >
         <div className="product-item" data-aos="fade-up" data-aos-delay="100">
 
-          <div className="product-image">
+          <div className="product-image" style={{borderRadius: "15px"}}>
             {product.featured && <div className="product-badge">Limited</div>}
 
             <img
@@ -22,7 +22,7 @@ export default function ProductCard({ product,col=4 ,cartBtnPdg="10px 15px"}) {
 
           <div className="product-info">
             <div className="product-category" style={{ fontWeight: "600" }}>
-              {product.category?.name || "Category"}
+              {product.subCategory?.name || ""}
             </div>
 
             <h4

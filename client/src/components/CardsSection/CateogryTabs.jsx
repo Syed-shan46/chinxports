@@ -47,9 +47,10 @@ export default function CategoryTabs() {
     return (
         <section id="portfolio" className="portfolio section">
 
-            <div className="container section-title" data-aos="fade-up">
+            {/* <div className="container section-title" data-aos="fade-up">
+                <span className="description-title">Categories</span>
                 <h2>Categories</h2>
-            </div>
+            </div> */}
 
             <div className="container">
                 <div className="isotope-layout">
