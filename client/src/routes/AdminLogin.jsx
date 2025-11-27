@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { BASE_URL } from "../config";
 
 export default function AdminLogin() {
+    const { loginAdmin } = useContext(AdminContext);
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
     const navigate = useNavigate();
@@ -14,15 +15,15 @@ export default function AdminLogin() {
             const res = await axios.post(
                 `${BASE_URL}/api/admin`,
                 { password },
-                { withCredentials: true } // Important!
+                { withCredentials: true }
             );
-            console.log("Login response:", res.data);
 
             if (res.data.success) {
-                navigate("/upload-product"); // redirect after login
+                loginAdmin();          // <<< IMPORTANT
+                navigate("/upload-product");
             }
         } catch (err) {
-            console.log("Error response:", err.response?.data);
+            setError("Incorrect password");
         }
     };
 
