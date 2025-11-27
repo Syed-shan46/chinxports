@@ -24,7 +24,7 @@ export default function ProductUpload() {
 
     // ⬇️ Fetch Main Categories
     useEffect(() => {
-        axios.get(`${BASE_URL}/categories/get-maincategories`)
+        axios.get(`${BASE_URL}/api/categories/get-maincategories`)
             .then(res => {
                 if (res.data.success) {
                     setMainCategories(res.data.categories || []);
@@ -37,7 +37,7 @@ export default function ProductUpload() {
     // ⬇️ Fetch Sub Categories based on selected main category
     useEffect(() => {
         if (form.mainCategory) {
-            axios.get(`${BASE_URL}/categories/get-subcategories/${form.mainCategory}`)
+            axios.get(`${BASE_URL}/api/categories/get-subcategories/${form.mainCategory}`)
                 .then(res => {
                     if (res.data.success) {
                         setSubCategories(res.data.subcategories || []);
@@ -83,7 +83,7 @@ export default function ProductUpload() {
             });
 
             const res = await axios.post(
-                `${BASE_URL}/products/upload-product`,
+                `${BASE_URL}/api/products/upload-product`,
                 formData,
                 {
                     headers: { "Content-Type": "multipart/form-data" },
