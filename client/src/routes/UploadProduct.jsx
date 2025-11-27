@@ -4,6 +4,8 @@ import { BASE_URL } from "../config";
 
 
 export default function ProductUpload() {
+    const [loading, setLoading] = useState(false);
+
     const [mainCategories, setMainCategories] = useState([]);
     const [subCategories, setSubCategories] = useState([]);
 
@@ -67,6 +69,7 @@ export default function ProductUpload() {
     // ⬇️ Handle Submit
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setLoading(true);
 
         try {
             const formData = new FormData();
@@ -77,7 +80,6 @@ export default function ProductUpload() {
                 }
             });
 
-            // Append each image file separately under `imageUrl`
             images.forEach(img => {
                 formData.append("imageUrl", img);
             });
@@ -87,10 +89,9 @@ export default function ProductUpload() {
                 formData,
                 {
                     headers: { "Content-Type": "multipart/form-data" },
-                    withCredentials: true, // 🔥 IMPORTANT: send session cookie
+                    withCredentials: true,
                 }
             );
-
 
             alert("Product Created Successfully");
             console.log(res.data);
@@ -98,8 +99,11 @@ export default function ProductUpload() {
         } catch (error) {
             console.error(error);
             alert(error.response?.data?.error || "Upload failed");
+        } finally {
+            setLoading(false);
         }
     };
+
 
 
     return (
@@ -225,9 +229,19 @@ export default function ProductUpload() {
 
 
                 {/* Submit */}
-                <button className="btn btn-primary mt-4" type="submit">
-                    Upload Product
+                <button
+                    className="btn btn-primary mt-4 d-flex align-items-center justify-content-center"
+                    type="submit"
+                    disabled={loading}
+                    style={{ minWidth: "140px" }}
+                >
+                    {loading ? (
+                        <div className="spinner-border spinner-border-sm text-light" role="status"></div>
+                    ) : (
+                        "Upload Product"
+                    )}
                 </button>
+
             </form>
         </div>
     );

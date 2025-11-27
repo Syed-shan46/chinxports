@@ -51,7 +51,7 @@ const ProductSchema = new mongoose.Schema({
     default: false
   },
   imageUrl: {
-    type: [String], 
+    type: [String],
     required: true,
     validate: [arrayLimit, '{PATH} must have at least one image']
   },

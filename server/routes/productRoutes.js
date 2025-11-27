@@ -14,7 +14,7 @@ router.get('/products/trending', getTrendingProducts);
 
 router.get('/products/:id', getProductDetail);
 
-router.post('/products/upload-product', adminAuth, upload.array('imageUrl', 6), uploadProduct);
+router.post('/products/upload-product', upload.array('imageUrl', 6), uploadProduct);
 
 
 module.exports = router;

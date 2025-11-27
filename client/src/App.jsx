@@ -27,14 +27,15 @@ function App() {
             <Route path="/about" element={<About />} />
             <Route path="/bulk-upload" element={<BulkUpload />} />
             <Route path="/admin-login" element={<AdminLogin />} />
-            <Route
+            <Route path="/upload-product" element={<ProductUpload />} />
+            {/* <Route
               path="/upload-product"
               element={
                 <PrivateRoute>
                   <ProductUpload />
                 </PrivateRoute>
               }
-            />
+            /> */}
 
           </Routes>
         </MainLayout>
