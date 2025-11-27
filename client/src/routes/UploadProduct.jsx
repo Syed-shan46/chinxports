@@ -107,7 +107,7 @@ export default function ProductUpload() {
 
 
     return (
-        <div style={{ maxWidth: "700px", margin: "auto", padding: "20px" }}>
+        <div style={{ maxWidth: "700px", margin: "auto", padding: "20px" ,marginTop:"60px"}}>
             <h2>Add New Product</h2>
             <form onSubmit={handleSubmit}>
 
