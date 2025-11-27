@@ -1,15 +1,52 @@
 const express = require('express');
 const app = express();
 const cors = require('cors');
+const dotenv = require('dotenv');
+const session = require("express-session");
+dotenv.config();
+const connectDB = require('./db');
+
+const productRoutes = require('./routes/productRoutes');
+const categoryRoutes = require('./routes/categoryRoutes');
+const storeRoutes = require('./routes/storeRoutes');
+const bulkUploadRoutes = require('./routes/bulkUploadRoutes');
+const adminRoutes = require('./routes/adminRoutes');
+
+// ✅ Define CORS options FIRST
 const corsOptions = {
-  origin: 'http://localhost:5173', // Adjust this to your client's origin
+  origin: ["http://localhost:5173", "http://192.168.31.58:5173"], // Your React frontend URL
+  credentials: true,               // Allow cookies
+  methods: "GET,POST,PUT,DELETE",  // Allow required methods
+  allowedHeaders: "Content-Type,Authorization"
 };
 app.use(cors(corsOptions));
 
-app.get('/api', (req, res) => {
-  res.json({fruits: ['apple', 'banana', 'cherry']});
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+app.use(
+  session({
+    secret: process.env.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+      secure: false, // true only if HTTPS
+      maxAge: 24 * 60 * 60 * 1000 // 1 day
+    }
+  })
+);
+
+connectDB();
+
+// Routes
+app.use('/api', productRoutes);
+app.use('/api/categories', categoryRoutes);
+app.use('/api/store', storeRoutes);
+app.use('/api', bulkUploadRoutes);
+app.use('/api/admin', adminRoutes);
+
+
+app.listen(3000, '0.0.0.0', () => {
+  console.log("Server running on all network interfaces");
 });
 
-app.listen(3000, () => {
-  console.log('Server is running on port 3000');
-});
