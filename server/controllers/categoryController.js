@@ -67,6 +67,26 @@ exports.createMainCategory = async (req, res) => {
   }
 };
 
+module.exports.getAllSubCats = async (req, res) => {
+  try {
+    const subcategories = await SubCategory.find()
+      .populate("mainCategory", "name") // optional: shows main category name
+      .lean();
+
+    res.json({
+      success: true,
+      subcategories
+    });
+
+  } catch (error) {
+    console.error("Error fetching subcategories:", error);
+    res.status(500).json({
+      success: false,
+      message: "Failed to fetch subcategories"
+    });
+  }
+};
+
 // Get all subcategories with main category populated
 module.exports.getAllSubCategories = async (req, res) => {
   try {
@@ -80,6 +100,27 @@ module.exports.getAllSubCategories = async (req, res) => {
     res.status(500).json({ error: "Failed to fetch subcategories" });
   }
 };
+module.exports.getProductsBySubCategory = async (req, res) => {
+  try {
+    const { subCatId } = req.params;
+
+    console.log("Requested SubCategory:", subCatId);
+
+    const products = await Product.find({
+      subCategory: subCatId
+    });
+
+    console.log("Matched Products:", products.length);
+
+    res.json({ success: true, products });
+  } catch (error) {
+    console.error("Error fetching products by subcategory:", error);
+    res.status(500).json({ error: "Failed to fetch products" });
+  }
+};
+
+
+
 // Get MainCategories with SubCategories included
 exports.getAllMainCategories = async (req, res) => {
   try {

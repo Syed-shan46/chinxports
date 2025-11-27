@@ -3,6 +3,7 @@ import BestDeals from "../components/BestDeals/BestDeals";
 import CardsSection from "../components/CardsSection/CardsSection";
 import Services from "../components/Services/Services";
 import Stats from "../components/Stats/Stats";
+import CategoryTabs from "../components/CardsSection/CateogryTabs";
 
 
 export default function Home() {
@@ -17,6 +18,8 @@ export default function Home() {
           <i className="bi bi-box-seam me-2"></i> View All Products
         </a>
       </div>
+
+      <CategoryTabs/>
 
       <CardsSection />
 
