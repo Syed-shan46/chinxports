@@ -20,7 +20,8 @@ const corsOptions = {
     "https://chinaxports.com",], // Your React frontend URL
   credentials: true,               // Allow cookies
   methods: "GET,POST,PUT,DELETE",  // Allow required methods
-  allowedHeaders: "Content-Type,Authorization"
+  allowedHeaders: "Content-Type,Authorization",
+  optionsSuccessStatus: 200,
 };
 app.use(cors(corsOptions));
 
@@ -33,7 +34,8 @@ app.use(
     resave: false,
     saveUninitialized: false,
     cookie: {
-      secure: false, // true only if HTTPS
+      secure: true, // true only if HTTPS
+      sameSite: 'none',
       maxAge: 24 * 60 * 60 * 1000 // 1 day
     }
   })
