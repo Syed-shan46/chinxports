@@ -97,7 +97,7 @@ module.exports.getTrendingProducts = async (req, res) => {
 
     const trendingProducts = await Product.aggregate([
       { $match: { trending: true } },
-      { $sample: { size: 6 } }
+      { $sample: { size: 4 } }
     ]);
 
     console.log("Raw trending products:", trendingProducts);
@@ -127,7 +127,7 @@ module.exports.getSpecialProducts = async (req, res) => {
 
     const specialProducts = await Product.aggregate([
       { $match: { special: true } },
-      { $sample: { size: 6 } }
+      { $sample: { size: 4 } }
     ]);
 
     console.log("Raw special products:", specialProducts);

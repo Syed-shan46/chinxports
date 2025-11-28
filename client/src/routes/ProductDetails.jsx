@@ -4,12 +4,40 @@ import { useParams } from "react-router-dom";
 import "../styles/Product.css";
 import { BASE_URL } from "../config";
 
+const generateWhatsAppLink = (product) => {
+  const phone = "918593939333"; // Example: "919876543210"
+
+  const quantity = product.qty || 1;
+  const name = product.name;
+  const price = product.price;
+
+  const total = price * quantity;
+
+  const message = `
+Hello, I would like to order:
+
+🛍 *Product:* ${name}
+🔢 *Quantity:* ${quantity}
+💵 *Price (each):* $${price}
+💰 *Total:* $${total}
+
+Please proceed with checkout.
+  `;
+
+  return `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
+};
+
+
 function ProductDetails() {
   const { id: productId } = useParams();
   const [product, setProduct] = useState(null);
   const [activeImage, setActiveImage] = useState("");
   const [imageIndex, setImageIndex] = useState(0);
   const [quantity, setQuantity] = useState(1);
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [productId]);
 
   useEffect(() => {
     if (!productId) return;
@@ -229,12 +257,7 @@ function ProductDetails() {
               </div>
 
               {/* Quantity Controller - Desktop Version */}
-              <div className="quantity-section mb-5 mt-md-4 desktop-quantity">
-                <p className="total-price">
-                  <span className="total-label">Total:</span>
-                  <span className="total-amount">₹{(product.price * quantity).toLocaleString()}</span>
-                </p>
-
+              <div className="quantity-section mb-4 mt-md-4 desktop-quantity">
                 <div className="quantity-controller">
                   <button
                     className="qty-btn decrement"
@@ -259,23 +282,33 @@ function ProductDetails() {
                     <i className="bi bi-plus-lg"></i>
                   </button>
                 </div>
+                <p className="total-price">
+                  <span className="total-label">Total:</span>
+                  <span className="total-amount">₹{(product.price * quantity).toLocaleString()}</span>
+                </p>
               </div>
 
               {/* Features/Highlights */}
 
 
+              {/* WhatsApp Info Box */}
+              <div className="whatsapp-info-box rounded-4 mt-3">
+
+                <p>Pricing and quantity options are available before checkout. WhatsApp will open with the selected details pre-filled, and our team will personally assist with payment.</p>
+              </div>
+
               {/* Action Buttons - Premium */}
               <div className="action-buttons-premium d-flex flex-column gap-3">
                 <a
-                  href={product.whatsappLink}
-
+                  href={generateWhatsAppLink(product)}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="btn btn-whatsapp text-light btn-lg w-100 "
+                  className="btn btn-whatsapp text-light btn-lg w-100"
                 >
-                  <i className="bi bi-whatsapp me-2 "></i>
+                  <i className="bi bi-whatsapp me-2"></i>
                   Checkout Via WhatsApp
                 </a>
+
 
                 {/* <button
                   className="btn btn-secondary btn-lg w-100"
@@ -374,6 +407,8 @@ function ProductDetails() {
       </div>
     </section>
   );
+
+
 }
 
 export default ProductDetails;

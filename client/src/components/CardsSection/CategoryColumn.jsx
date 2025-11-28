@@ -11,7 +11,7 @@ export default function CategoryColumn({ title, icon, products = [] }) {
         <h5 className="mb-0">{title}</h5>
       </div>
 
-      <div className="  rounded-3 shadow-sm">
+      <div className="rounded-3 shadow-sm">
         {productList.length > 0 ? (
           <div className="row gy-3">
             {productList.map((p, idx) => (
@@ -64,12 +64,7 @@ export default function CategoryColumn({ title, icon, products = [] }) {
                         {p.productName || p.name || "Untitled"}
                       </h6>
 
-                      {/* Price */}
-                      {/* {p.price != null && (
-                        <div className="text-danger fw-bold mb-2" style={{ fontSize: "1.1rem" }}>
-                          ₹{p.price}
-                        </div>
-                      )} */}
+
 
                       {/* Old Price */}
                       {p.oldPrice && (
@@ -83,16 +78,21 @@ export default function CategoryColumn({ title, icon, products = [] }) {
                         </div>
                       )}
 
-                      {/* Category & Stock */}
-                      <div className="small text-muted mt-2">
-                        {p.category?.name && (
-                          <span className="badge bg-success text-dark me-2">
-                            {p.category.name}
+                      {/* Category, Stock & Price */}
+                      <div className="small text-muted mt-2 d-flex align-items-center flex-wrap gap-2">
+                        {p.price != null && (
+                          <span className="badge bg-info text-dark">
+                            Price: ₹{p.price}
                           </span>
                         )}
                         {p.minQty && (
-                          <span className="badge bg-info">
+                          <span className="badge bg-info text-dark">
                             MOQ: {p.minQty}
+                          </span>
+                        )}
+                        {p.category?.name && (
+                          <span className="badge bg-secondary">
+                            {p.category.name}
                           </span>
                         )}
                       </div>

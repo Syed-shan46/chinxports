@@ -15,6 +15,7 @@ const adminRoutes = require('./routes/adminRoutes');
 const corsOptions = {
   origin: [
     "http://localhost:5173",
+    "http://192.168.31.58:5173",
     "https://chinxports-client.onrender.com",
     "https://www.chinaxports.com",
     "https://chinaxports.com",], // Your React frontend URL

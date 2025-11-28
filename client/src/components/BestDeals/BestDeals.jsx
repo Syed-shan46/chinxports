@@ -35,24 +35,29 @@ export default function BestDeals() {
   return (
     <>
       <section id="best-sellers
-      " className="best-sellers">
+      " className="best-sellers mt-3">
         <div className="container section-title" data-aos="fade-up">
-          <span className="description-title">Best Deals</span>
-          <h2>Best Deals</h2>
+          <h2>Best Picks</h2>
         </div>
         {/* <div className="section-badge mb-3 justify-content-center d-flex" data-aos="fade-up">
           <i className="bi bi-star-fill"></i>
           <span>WHAT WE DO</span>
         </div> */}
 
-        <div className="container" >
-          <div className="row ">
+        <div className="container " >
+          <div className="row gy-4 ">
             {handpickedProducts.length === 0 && <p>No products found.</p>}
 
             {handpickedProducts.map((product) => (
               <ProductCard key={product._id} product={product} col={4} cartBtnPdg="5px 20px" />
             ))}
           </div>
+        </div>
+
+        <div className="container d-flex justify-content-center mt-4">
+          <a href="/store" className="btn btn-outline px-4 py-2 rounded-3 col-pink">
+            <i className="bi bi-compass  me-2  col-pink"></i> Discover the Range
+          </a>
         </div>
 
       </section>

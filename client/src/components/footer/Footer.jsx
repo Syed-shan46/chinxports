@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 
 export default function Footer() {
   return (
-    <footer id="footer" className="footer">
+    <footer id="footer" className="footer border-outline">
       <div className="footer-main">
         <div className="container">
           <div className="row gy-4 justify-content-center">

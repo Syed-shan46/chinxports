@@ -285,10 +285,7 @@ export default function Header() {
                   <i className="bi bi-search"></i>
                 </button>
 
-                <a href="/account" className="header-action-btn d-none d-md-block">
-                  <i className="bi bi-heart"></i>
-                  <span className="badge">0</span>
-                </a>
+              
               </div>
             </div>
           </div>

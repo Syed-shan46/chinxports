@@ -377,11 +377,6 @@
   border-radius: 12px;
 }
 
-.section-title {
-  font-size: 1.1rem;
-  font-weight: 700;
-  color: var(--theme-text);
-}
 
 .highlights-list {
   list-style: none;
@@ -406,6 +401,28 @@
 }
 
 /* ============ ACTION BUTTONS ============ */
+.whatsapp-info-box {
+  background-color: #e6f7ffdb;
+  border-left: 4px solid #1890ff;
+  padding: 15px 20px;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  border-radius: 4px;
+}
+
+.whatsapp-info-box i {
+  color: #1890ff;
+  font-size: 1.5rem;
+  margin-right: 15px;
+}
+
+.whatsapp-info-box p {
+  margin: 0;
+  font-size: 0.95rem;
+  color: #333;
+}
+
 .action-buttons-premium {
   margin: 20px 0;
 }
@@ -816,6 +833,7 @@
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   cursor: pointer;
   background: var(--theme-card-bg);
+
 }
 
 .product-card-mini:hover {

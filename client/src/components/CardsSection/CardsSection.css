@@ -1,0 +1,32 @@
+
+
+
+.cards .section-title p {
+  font-size: 1.1rem;
+  color: #666;
+}
+
+.category-column {
+  background-color: #fff;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.category-column .title {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.category-column .title i {
+  font-size: 1.8rem;
+  margin-right: 15px;
+  color: #007bff;
+}
+
+.category-column .title h3 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #333;
+}

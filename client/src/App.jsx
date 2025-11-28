@@ -1,4 +1,5 @@
-import { BrowserRouter, Route, Routes, } from 'react-router-dom';
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { useState, useEffect } from "react";
 import './App.css'
 import './styles/theme.css';
 import Home from './routes/Home';
@@ -12,11 +13,17 @@ import ProductUpload from './routes/UploadProduct';
 import AdminLogin from './routes/AdminLogin';
 import { AdminProvider } from './context/AdminContext';
 import PrivateRoute from './components/PrivateRoute/PrivateRoute';
+import Popup from './components/Popup';
 
 function App() {
+  const [showPopup, setShowPopup] = useState(true);
+
+  const handleClosePopup = () => {
+    setShowPopup(false);
+  };
   return (
     <AdminProvider>
-
+      {showPopup && <Popup handleClose={handleClosePopup} />}
       <BrowserRouter>
         <MainLayout>
           <Routes>

@@ -55,7 +55,7 @@ export function ProductGrid({ items }) {
             <p style={{ margin: 0, color: "#777", fontSize: "0.9rem" }}>
               {p.category?.name}
             </p>
-
+            
             <p style={{
               marginTop: "12px",
               fontWeight: "700",

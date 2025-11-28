@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import CategoryColumn from "./CategoryColumn";
 import { BASE_URL } from "../../config";
+import "../CardsSection/CardsSection.css";
 
 export default function CardsSection() {
 
@@ -29,6 +30,12 @@ export default function CardsSection() {
     <section id="cards" className="cards section">
       <div className="container">
 
+         <div className="container section-title" data-aos="fade-up">
+          <h2>Elite Picks</h2>
+          <p>Check out our special, trending, and random picks</p>
+        </div>
+
+      
         <div className="row gy-4">
 
           <div className="col-lg-4 col-md-6">
