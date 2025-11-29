@@ -111,7 +111,7 @@ export default function Hero() {
             <div className="hero-visual">
               <div className="hero-image-wrapper">
 
-                <div className="col-lg-6 order-1 order-lg-2"  >
+                
                   <lottie-player
                     ref={lottieRef}
                     background="transparent"
@@ -120,7 +120,6 @@ export default function Hero() {
                     autoplay
                     style={{ width: "100%", height: "250px" }}
                   />
-                </div>
                 {/* <img
                   src="assets/img/illustration/illustration-15.webp"
                   className="img-fluid hero-image"

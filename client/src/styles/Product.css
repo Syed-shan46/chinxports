@@ -524,7 +524,7 @@
 /* ============ MOBILE STICKY BOTTOM QUANTITY BAR ============ */
 .mobile-sticky-quantity {
   display: none;
-  position: fixed;
+ position: sticky;
   bottom: 0;
   left: 0;
   right: 0;
@@ -797,6 +797,44 @@
 
 
 }
+
+/* Mobile Sticky Quantity Bar */
+.mobile-sticky-quantity {
+  display: none;
+  position: fixed;        /* FIXED instead of sticky */
+  bottom: 0;
+  left: 0;
+  right: 0;
+
+  z-index: 9999;
+  background: linear-gradient(180deg, transparent 0%, rgba(0, 0, 0, 0.05) 100%);
+  backdrop-filter: blur(10px);
+
+  padding: 12px 16px 16px;
+  box-shadow: 0 -8px 24px rgba(0, 0, 0, 0.12);
+
+  animation: slideUp 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Ensure parent does NOT cut it off */
+body, html {
+  overflow-x: hidden;
+}
+
+/* Show on mobile */
+@media (max-width: 768px) {
+  .mobile-sticky-quantity {
+    display: block;
+  }
+}
+
+/* iOS Bottom Safe Area Fix */
+@supports (padding-bottom: env(safe-area-inset-bottom)) {
+  .mobile-sticky-quantity {
+    padding-bottom: calc(16px + env(safe-area-inset-bottom));
+  }
+}
+
 
 /* Cart Button Styles */
 .add-cart-btn {

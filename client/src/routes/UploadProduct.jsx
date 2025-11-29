@@ -3,11 +3,18 @@ import axios from "axios";
 import { BASE_URL } from "../config";
 
 
+
 export default function ProductUpload() {
     const [loading, setLoading] = useState(false);
 
     const [mainCategories, setMainCategories] = useState([]);
     const [subCategories, setSubCategories] = useState([]);
+
+    const [selectedImages, setSelectedImages] = useState([]);
+
+
+
+
 
     const [form, setForm] = useState({
         productName: "",
@@ -60,11 +67,15 @@ export default function ProductUpload() {
         });
     };
 
-    // ⬇️ Handle Image Selection
     const handleImageChange = (e) => {
         const files = Array.from(e.target.files);
         setImages(files);
+        setSelectedImages(files); // <-- ADD THIS
     };
+
+
+
+
 
     // ⬇️ Handle Submit
     const handleSubmit = async (e) => {
@@ -107,19 +118,42 @@ export default function ProductUpload() {
 
 
     return (
-        <div style={{ maxWidth: "700px", margin: "auto", padding: "20px" ,marginTop:"60px"}}>
+        <div style={{ maxWidth: "700px", margin: "auto", padding: "20px", marginTop: "60px" }}>
             <h2>Add New Product</h2>
             <form onSubmit={handleSubmit}>
-
-                {/* Product Name */}
-                <label>Product Name</label>
+                {/* Product Name <label>Product Name</label> <input type="text" name="productName" className="form-control" onChange={handleChange} /> */}
+                <label className="mt-3">Upload Images</label>
                 <input
-                    type="text"
-                    name="productName"
+                    type="file"
                     className="form-control"
-                    onChange={handleChange}
+                    multiple
+                    accept="image/*"
+                    onChange={handleImageChange}
                     required
                 />
+
+                {/* Large Image Preview */}
+                {selectedImages.length > 0 && (
+                    <div className="image-preview mt-3">
+                        {selectedImages.map((img, index) => (
+                            <img
+                                key={index}
+                                src={URL.createObjectURL(img)}
+                                alt={`Preview ${index}`}
+                                style={{
+                                    width: "100%",
+                                    maxHeight: "400px",
+                                    objectFit: "cover",
+                                    borderRadius: "10px",
+                                    marginTop: "10px",
+                                    border: "1px solid #ccc"
+                                }}
+                            />
+                        ))}
+                    </div>
+                )}
+
+
 
                 {/* Description */}
                 <label className="mt-3">Description</label>
@@ -136,7 +170,6 @@ export default function ProductUpload() {
                     name="price"
                     className="form-control"
                     onChange={handleChange}
-                    required
                 />
 
                 {/* Min Qty */}
@@ -189,15 +222,7 @@ export default function ProductUpload() {
                 </select>
 
                 {/* Images */}
-                <label className="mt-3">Upload Images</label>
-                <input
-                    type="file"
-                    className="form-control"
-                    multiple
-                    accept="image/*"
-                    onChange={handleImageChange}
-                    required
-                />
+
 
                 {/* Trending */}
                 <div className="form-check mt-3">

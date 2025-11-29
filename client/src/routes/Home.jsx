@@ -12,14 +12,12 @@ export default function Home() {
     <>
       <Hero />
 
-    
-
       <CategoryTabs/>
 
       <BestDeals />
-
-      <CardsSection />
-
+      
+      {/* <CardsSection /> */}
+      
       <Services />
     </>
   );

@@ -14,6 +14,7 @@ const adminRoutes = require('./routes/adminRoutes');
 // ✅ Define CORS options FIRST
 const corsOptions = {
   origin: [
+    "http://192.168.31.108:5173",
     "http://localhost:5173",
     "http://192.168.31.58:5173",
     "https://chinxports-client.onrender.com",

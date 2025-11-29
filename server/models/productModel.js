@@ -9,7 +9,6 @@ function arrayLimit(val) {
 const ProductSchema = new mongoose.Schema({
   productName: {
     type: String,
-    required: true,
     trim: true
   },
   description: {
@@ -18,7 +17,6 @@ const ProductSchema = new mongoose.Schema({
   },
   price: {
     type: Number,
-    required: true,
     min: 0
   },
   minQty: {

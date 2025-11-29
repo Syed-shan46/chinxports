@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 
 export default function ProductCard({ product,col=4 ,cartBtnPdg="10px 15px"}) {
   return (
-    <div className={`col-lg-3 col-${col} col-md-6`}>
+    <div className={`col-lg-2 col-${col} col-md-6`}>
       <Link
         to={`/products/product-details/${product._id}`}
         className="text-decoration-none text-dark"
