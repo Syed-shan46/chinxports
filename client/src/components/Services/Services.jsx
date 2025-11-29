@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import StepsSection from "../steps/StepsSection";
+import StepsSection from "./StepsSection";
 
 export default function Services() {
   return (

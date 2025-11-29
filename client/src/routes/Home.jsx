@@ -5,6 +5,7 @@ import Services from "../components/Services/Services";
 import Stats from "../components/Stats/Stats";
 import CategoryTabs from "../components/CardsSection/CateogryTabs";
 import CategoryCarousel from "../components/CategoryCarousel/CategoryCarousel";
+import StepsSection from "../components/Services/StepsSection";
 
 
 export default function Home() {
@@ -17,8 +18,9 @@ export default function Home() {
       <BestDeals />
       
       {/* <CardsSection /> */}
-      
+
       <Services />
+
     </>
   );
 }
