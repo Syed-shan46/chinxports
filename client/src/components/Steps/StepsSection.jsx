@@ -1,6 +1,6 @@
 import './StepsSection.css'
 
-function StepsSection() {
+export default function StepsSection() {
     return (
         <section id="steps" className="steps section">
             {/* Section Title */}
@@ -122,4 +122,3 @@ function StepsSection() {
     );
 }
 
-export default StepsSection;
