@@ -2,15 +2,6 @@ import { useCart } from "../context/CartContext";
 import { Link } from "react-router-dom";
 import { generateCartWhatsApp } from "../utils/whatsappCartMessage";
 
-async function handleWhatsAppCheckout() {
-    const excelRes = await axios.get(`${BASE_URL}/api/excel/generate-cart-excel`, {
-        withCredentials: true
-    });
-
-    const excelUrl = excelRes.data.url;
-
-    window.location.href = generateCartWhatsApp(cart, excelUrl);
-}
 
 
 
@@ -37,9 +28,9 @@ export default function Cart() {
                             <h5>{item.productName}</h5>
 
                             {/* UNIT PRICE */}
-                            <p className="mb-1">
-                                Price per unit: <strong>₹{item.price.toLocaleString()}</strong>
-                            </p>
+                             <p className="mb-1">
+                  Price per unit: <strong>₹{item.price.toLocaleString()}</strong>
+                </p>
 
 
                             {/* ITEM TOTAL */}
@@ -91,13 +82,13 @@ export default function Cart() {
                     </button>
 
                     <a
-                        href={generateCartWhatsApp(cart)}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="btn btn-success mt-3 me-3"
-                    >
-                        Checkout via WhatsApp
-                    </a>
+      href={generateCartWhatsApp(cart)}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="btn btn-success mt-3 me-3"
+    >
+      Checkout via WhatsApp
+    </a>
                 </>
             )}
         </section>
