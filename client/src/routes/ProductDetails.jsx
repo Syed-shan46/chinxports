@@ -20,8 +20,8 @@ const convertToINR = (chinaPrice) => {
 /* ==========================================================
    WHATSAPP MESSAGE GENERATOR (uses converted INR price)
    ========================================================== */
-const generateWhatsAppLink = (product, quantity) => {
-  const phone = "918593939333";
+const generateWhatsAppLink = (product, quantity, url) => {
+  const phone = "919747304599";
 
   const name = product?.productName || product?.name || "Product";
   const unitPrice = product?.priceINR ?? convertToINR(product?.price);
@@ -31,6 +31,8 @@ const generateWhatsAppLink = (product, quantity) => {
 Hello, I would like to order:
 
 🛍 *Product:* ${name}
+🔗 *Product Link:* ${url}
+
 🔢 *Quantity:* ${quantity}
 💵 *Price (each):* ₹${unitPrice}
 💰 *Total:* ₹${total}
@@ -40,6 +42,7 @@ Please proceed with checkout.
 
   return `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
 };
+
 
 function ProductDetails() {
   const { id: productId } = useParams();
@@ -227,7 +230,8 @@ function ProductDetails() {
               {/* WHATSAPP BUTTON */}
               <div className="action-buttons-premium d-flex flex-column gap-3">
                 <a
-                  href={generateWhatsAppLink(product, quantity)}
+                  href={generateWhatsAppLink(product, quantity, window.location.href)}
+
                   target="_blank"
                   rel="noopener noreferrer"
                   className="btn btn-whatsapp text-light btn-lg w-100"
