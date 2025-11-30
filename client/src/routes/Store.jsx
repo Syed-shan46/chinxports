@@ -15,16 +15,19 @@ export default function Store() {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [loading, setLoading] = useState(true);
-  
+
   const API_BASE_URL = `${BASE_URL}/api`;
 
   // Fetch Main Categories
   useEffect(() => {
-    axios
-      .get(`${API_BASE_URL}/categories/get-maincategories`)
-      .then((res) => setMainCats(res.data || res.data.categories || []))
-      .catch(() => console.log("Failed to fetch main categories"));
-  }, []);
+  axios
+    .get(`${API_BASE_URL}/categories/get-maincategories`)
+    .then((res) => {
+      setMainCats(res.data?.categories ?? []);
+    })
+    .catch(() => console.log("Failed to fetch main categories"));
+}, []);
+
 
   useEffect(() => {
     // Update state whenever the URL changes
@@ -34,19 +37,18 @@ export default function Store() {
   }, [searchParams]);
 
 
-  // Fetch Subcategories When Main Category Selected
-  useEffect(() => {
-    if (!selectedMainCat) {
-      setSubCats([]);
-      setSelectedSubCat(""); // Reset subcategory
-      return;
-    }
+// Fetch Subcategories When Main Category Selected
+useEffect(() => {
+  if (!selectedMainCat) {
+    setSubCats([]);
+    return;
+  }
 
-    axios
-      .get(`${API_BASE_URL}/categories/get-subcategories/${selectedMainCat}`)
-      .then((res) => setSubCats(res.data))
-      .catch(() => console.log("Failed to fetch sub categories"));
-  }, [selectedMainCat]);
+  const selectedCat = mainCats.find(cat => cat._id === selectedMainCat);
+
+  setSubCats(selectedCat?.subCategories || []);
+}, [selectedMainCat, mainCats]);
+
 
   // Fetch Products
   useEffect(() => {
@@ -69,13 +71,17 @@ export default function Store() {
   }, [currentPage, selectedMainCat, selectedSubCat]);
 
 
+
+
+
   return (
     <main className="main">
       <div className="container mt-5">
         <div className="row">
 
           {/* Sidebar */}
-          <div className="col-lg-4 sidebar d-none d-lg-block">
+          {/* Sidebar */}
+          <div className="col-lg-4 sidebar">
             <div className="widgets-container">
               <div className="product-categories-widget widget-item">
                 <h3 className="widget-title">Categories</h3>
@@ -83,57 +89,66 @@ export default function Store() {
                 <ul className="category-tree list-unstyled mb-0">
 
                   {/* All Products */}
-                  <li className="category-item">
+                  <li className="category-item mb-2">
                     <button
-                      className={`category-link ${!selectedMainCat ? "active" : ""}`}
+                      className={`category-link w-100 text-start ${!selectedMainCat ? "active" : ""}`}
                       onClick={() => {
-                        setSelectedMainCat("");
-                        setSelectedSubCat("");
-                        setCurrentPage(1);
+                        setSearchParams({});
                       }}
                     >
+                      <i className="bi bi-grid me-2"></i>
                       All Products
                     </button>
                   </li>
 
-                  {/* Main Category */}
-                  {Array.isArray(mainCats) && mainCats.map((cat) => (
-                    <li key={cat._id} className="category-item">
-                      <button
-                        className={`category-link ${selectedMainCat === cat._id ? "active" : ""}`}
-                        onClick={() => {
-                          setSelectedMainCat(cat._id);
-                          setCurrentPage(1);
-                        }}
-                      >
-                        {cat.name}
-                      </button>
+                  {/* MAIN CATEGORIES */}
+                  {mainCats.map((cat) => {
+                    const isOpen = selectedMainCat === cat._id;
+                    return (
+                      <li key={cat._id} className="category-item mb-1">
 
-                      {/* Dropdown Subcategories */}
-                      {selectedMainCat === cat._id && subCats.length > 0 && (
-                        <ul className="ps-3">
-                          {subCats.map((sub) => (
-                            <li key={sub._id}>
-                              <button
-                                className={`category-link ${selectedSubCat === sub._id ? "active" : ""}`}
-                                onClick={() => {
-                                  setSelectedSubCat(sub._id);
-                                  setCurrentPage(1);
-                                }}
-                              >
-                                {sub.name}
-                              </button>
-                            </li>
-                          ))}
-                        </ul>
-                      )}
-                    </li>
-                  ))}
+                        {/* Main Category Button */}
+                        <button
+                          className={`category-link w-100 d-flex justify-content-between align-items-center text-start ${isOpen ? "active" : ""}`}
+                          onClick={() => {
+                            setSearchParams({ category: cat._id });
+                          }}
+                        >
+                          <span>
+                            <i className="bi bi-folder2-open me-2"></i>
+                            {cat.name}
+                          </span>
+
+                          <i className={`bi ms-2 ${isOpen ? "bi-chevron-down" : "bi-chevron-right"}`}></i>
+                        </button>
+
+                        {/* SUBCATEGORIES */}
+                        {isOpen && subCats.length > 0 && (
+                          <ul className="ps-4 mt-2">
+                            {subCats.map((sub) => (
+                              <li key={sub._id} className="py-1">
+                                <button
+                                  className={`category-link w-100 text-start ${selectedSubCat === sub._id ? "active" : ""}`}
+                                  onClick={() => {
+                                    setSearchParams({ category: cat._id, sub: sub._id });
+                                  }}
+                                >
+                                  <i className="bi bi-chevron-right me-2 small"></i>
+                                  {sub.name}
+                                </button>
+                              </li>
+                            ))}
+                          </ul>
+                        )}
+                      </li>
+                    );
+                  })}
                 </ul>
 
               </div>
             </div>
           </div>
+
 
           {/* Products Area */}
           <div className="col-lg-8">
