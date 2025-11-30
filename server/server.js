@@ -10,6 +10,8 @@ const productRoutes = require('./routes/productRoutes');
 const categoryRoutes = require('./routes/categoryRoutes');
 const storeRoutes = require('./routes/storeRoutes');
 const adminRoutes = require('./routes/adminRoutes');
+const cartRoutes = require('./routes/cartRoutes');
+const excelRoutes = require("./routes/excelRoutes");
 
 // ✅ Define CORS options FIRST
 const corsOptions = {
@@ -37,7 +39,7 @@ app.use(
     saveUninitialized: false,
     cookie: {
       secure: true, // true only if HTTPS
-      sameSite: 'None',
+      sameSite: 'none', 
       maxAge: 24 * 60 * 60 * 1000 // 1 day
     }
   })
@@ -50,6 +52,10 @@ app.use('/api', productRoutes);
 app.use('/api/categories', categoryRoutes);
 app.use('/api/store', storeRoutes);
 app.use('/api/admin', adminRoutes);
+app.use('/api/cart', cartRoutes);
+app.use("/api/excel", excelRoutes);
+
+app.use("/excel", express.static("public/excel"));
 
 
 app.listen(3000, '0.0.0.0', () => {

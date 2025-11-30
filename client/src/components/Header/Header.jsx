@@ -235,9 +235,9 @@ export default function Header() {
               </button>
 
               {/* Logo */}
-              <a href="/" className="logo d-flex align-items-center" style={{ textDecoration: 'none' }}>
+              <Link to="/cart" className="logo d-flex align-items-center" style={{ textDecoration: 'none' }}>
                 <h1 className="sitename text-dark">ChinaXports</h1>
-              </a>
+              </Link>
 
               {/* Desktop Search */}
               <form className="search-form desktop-search-form position-relative" autoComplete="off">
@@ -308,6 +308,8 @@ export default function Header() {
                 <button className="btn" type="submit">
                   <i className="bi bi-search"></i>
                 </button>
+
+            
               </div>
 
               <div
@@ -319,6 +321,8 @@ export default function Header() {
           </div>
         </div>
       </header>
+
+      
 
       {/* SIDEBAR */}
       <div style={{ border: 'none' }} className="offcanvas offcanvas-start mobile-sidebar" id="mobileSidebar">
