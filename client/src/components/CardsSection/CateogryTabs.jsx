@@ -32,7 +32,7 @@ export default function CategoryTabs() {
         fetch(`${BASE_URL}/api/categories/subcategory/${categoryId}`)
             .then(res => res.json())
             .then(data => {
-                setProducts(data.products || []);
+                setProducts(data.products?.slice(-9).reverse() || []);
             })
             .catch(err => console.error("Product fetch failed:", err))
             .finally(() => {

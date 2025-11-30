@@ -100,6 +100,7 @@ module.exports.getAllSubCategories = async (req, res) => {
     res.status(500).json({ error: "Failed to fetch subcategories" });
   }
 };
+
 module.exports.getProductsBySubCategory = async (req, res) => {
   try {
     const { subCatId } = req.params;

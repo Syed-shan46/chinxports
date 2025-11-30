@@ -196,7 +196,6 @@ export default function Store() {
               </nav>
             )}
           </div>
-
         </div>
       </div>
     </main>

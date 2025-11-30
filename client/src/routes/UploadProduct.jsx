@@ -1,26 +1,70 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
+import Cropper from "react-easy-crop";
 import axios from "axios";
 import { BASE_URL } from "../config";
 
-
-
 export default function ProductUpload() {
+
+    const [croppingImage, setCroppingImage] = useState(null);
+    const [crop, setCrop] = useState({ x: 0, y: 0 });
+    const [zoom, setZoom] = useState(1);
+    const [croppedAreaPixels, setCroppedAreaPixels] = useState(null);
+    const [showCropModal, setShowCropModal] = useState(false);
+
+    const onCropComplete = (croppedArea, croppedAreaPixels) => {
+        setCroppedAreaPixels(croppedAreaPixels);
+    };
+
+    async function getCroppedImg(imageSrc, cropPixels) {
+        const image = await new Promise((resolve) => {
+            const img = new Image();
+            img.src = imageSrc;
+            img.onload = () => resolve(img);
+        });
+
+        const canvas = document.createElement("canvas");
+        const ctx = canvas.getContext("2d");
+
+        canvas.width = cropPixels.width;
+        canvas.height = cropPixels.height;
+
+        ctx.drawImage(
+            image,
+            cropPixels.x,
+            cropPixels.y,
+            cropPixels.width,
+            cropPixels.height,
+            0,
+            0,
+            cropPixels.width,
+            cropPixels.height
+        );
+
+        return new Promise((resolve) => {
+            canvas.toBlob((blob) => {
+                resolve(blob);
+            }, "image/jpeg");
+        });
+    }
+
+
+
+
     const [loading, setLoading] = useState(false);
 
     const [mainCategories, setMainCategories] = useState([]);
     const [subCategories, setSubCategories] = useState([]);
 
     const [selectedImages, setSelectedImages] = useState([]);
+    const [images, setImages] = useState([]);
 
-
-
-
+    const fileInputRef = useRef(null);
 
     const [form, setForm] = useState({
         productName: "",
         description: "",
         price: "",
-        minQty: 1,
+        minQty: 6,
         tags: "",
         mainCategory: "",
         subCategory: "",
@@ -29,9 +73,9 @@ export default function ProductUpload() {
         special: false
     });
 
-    const [images, setImages] = useState([]);
-
-    // ⬇️ Fetch Main Categories
+    /* ============================
+       FETCH MAIN CATEGORIES
+    ============================ */
     useEffect(() => {
         axios.get(`${BASE_URL}/api/categories/get-maincategories`)
             .then(res => {
@@ -42,8 +86,9 @@ export default function ProductUpload() {
             .catch(err => console.error(err));
     }, []);
 
-
-    // ⬇️ Fetch Sub Categories based on selected main category
+    /* ============================
+       FETCH SUB CATEGORIES
+    ============================ */
     useEffect(() => {
         if (form.mainCategory) {
             axios.get(`${BASE_URL}/api/categories/get-subcategories/${form.mainCategory}`)
@@ -56,41 +101,76 @@ export default function ProductUpload() {
         }
     }, [form.mainCategory]);
 
-
-    // ⬇️ Handle Input Change
+    /* ============================
+       HANDLE INPUT CHANGES
+    ============================ */
     const handleChange = (e) => {
         const { name, value, type, checked } = e.target;
 
-        setForm({
-            ...form,
+        setForm(prev => ({
+            ...prev,
             [name]: type === "checkbox" ? checked : value
-        });
+        }));
     };
 
+    /* ============================
+       IMAGE CHOOSE
+    ============================ */
     const handleImageChange = (e) => {
-        const files = Array.from(e.target.files);
-        setImages(files);
-        setSelectedImages(files); // <-- ADD THIS
+        const file = e.target.files[0]; // only crop one at a time
+        if (!file) return;
+
+        const imageURL = URL.createObjectURL(file);
+
+        setCroppingImage({ file, imageURL });
+        setShowCropModal(true);
+    };
+
+    const handleCropSave = async () => {
+        const croppedBlob = await getCroppedImg(
+            croppingImage.imageURL,
+            croppedAreaPixels
+        );
+
+        const croppedFile = new File([croppedBlob], croppingImage.file.name, {
+            type: "image/jpeg",
+        });
+
+        // push to images array
+        setImages(prev => [...prev, croppedFile]);
+        setSelectedImages(prev => [...prev, croppedFile]);
+
+        // close modal
+        setShowCropModal(false);
+        setCroppingImage(null);
     };
 
 
 
-
-
-    // ⬇️ Handle Submit
+    /* ============================
+       HANDLE SUBMIT
+    ============================ */
     const handleSubmit = async (e) => {
         e.preventDefault();
         setLoading(true);
 
         try {
+            if (images.length === 0) {
+                alert("Please select at least one image.");
+                setLoading(false);
+                return;
+            }
+
             const formData = new FormData();
 
+            // Append fields
             Object.keys(form).forEach(key => {
                 if (key !== "imageUrl") {
                     formData.append(key, form[key]);
                 }
             });
 
+            // Append images
             images.forEach(img => {
                 formData.append("imageUrl", img);
             });
@@ -104,24 +184,46 @@ export default function ProductUpload() {
                 }
             );
 
-            alert("Product Created Successfully");
-            console.log(res.data);
+
+
+            /* ----------------------------
+               RESET EVERYTHING PROPERLY
+            ----------------------------- */
+            setForm({
+                productName: "",
+                description: "",
+                price: "",
+                minQty: 6,
+                tags: "",
+                mainCategory: "",
+                subCategory: "",
+                imageUrl: [],
+                trending: false,
+                special: false
+            });
+
+            setImages([]);
+            setSelectedImages([]);
+
+            // Clear file input
+            if (fileInputRef.current) {
+                fileInputRef.current.value = "";
+            }
 
         } catch (error) {
-            console.error(error);
-            alert(error.response?.data?.error || "Upload failed");
+            console.error("UPLOAD ERROR:", error);
+            alert(error.response?.data?.error || "Upload failed - Server error");
         } finally {
             setLoading(false);
         }
     };
 
-
-
     return (
         <div style={{ maxWidth: "700px", margin: "auto", padding: "20px", marginTop: "60px" }}>
             <h2>Add New Product</h2>
             <form onSubmit={handleSubmit}>
-                {/* Product Name <label>Product Name</label> <input type="text" name="productName" className="form-control" onChange={handleChange} /> */}
+
+                {/* Image Upload */}
                 <label className="mt-3">Upload Images</label>
                 <input
                     type="file"
@@ -129,10 +231,11 @@ export default function ProductUpload() {
                     multiple
                     accept="image/*"
                     onChange={handleImageChange}
+                    ref={fileInputRef}
                     required
                 />
 
-                {/* Large Image Preview */}
+                {/* Preview */}
                 {selectedImages.length > 0 && (
                     <div className="image-preview mt-3">
                         {selectedImages.map((img, index) => (
@@ -153,22 +256,22 @@ export default function ProductUpload() {
                     </div>
                 )}
 
-
-
                 {/* Description */}
-                <label className="mt-3">Description</label>
+                {/* <label className="mt-3">Description</label>
                 <textarea
                     name="description"
                     className="form-control"
+                    value={form.description}
                     onChange={handleChange}
-                />
+                /> */}
 
                 {/* Price */}
-                <label className="mt-3">Price</label>
+                <label className="mt-3">Price (RMB)</label>
                 <input
                     type="number"
                     name="price"
                     className="form-control"
+                    value={form.price}
                     onChange={handleChange}
                 />
 
@@ -179,25 +282,27 @@ export default function ProductUpload() {
                     name="minQty"
                     className="form-control"
                     min="1"
+                    value={form.minQty}
                     onChange={handleChange}
                     required
                 />
 
                 {/* Tags */}
-                <label className="mt-3">Tags (comma separated)</label>
+                {/* <label className="mt-3">Tags</label>
                 <input
                     type="text"
                     name="tags"
                     className="form-control"
-                    placeholder="example: test, sample, offer"
+                    value={form.tags}
                     onChange={handleChange}
-                />
+                /> */}
 
                 {/* Main Category */}
                 <label className="mt-3">Main Category</label>
                 <select
                     name="mainCategory"
                     className="form-control"
+                    value={form.mainCategory}
                     onChange={handleChange}
                     required
                 >
@@ -212,6 +317,7 @@ export default function ProductUpload() {
                 <select
                     name="subCategory"
                     className="form-control"
+                    value={form.subCategory}
                     onChange={handleChange}
                     required
                 >
@@ -221,37 +327,29 @@ export default function ProductUpload() {
                     ))}
                 </select>
 
-                {/* Images */}
-
-
                 {/* Trending */}
-                <div className="form-check mt-3">
+                {/* <div className="form-check mt-3">
                     <input
-                        className="form-check-input"
                         type="checkbox"
+                        className="form-check-input"
                         name="trending"
                         checked={form.trending}
                         onChange={handleChange}
                     />
-                    <label className="form-check-label">
-                        Trending
-                    </label>
-                </div>
+                    <label className="form-check-label">Trending</label>
+                </div> */}
 
                 {/* Special */}
-                <div className="form-check mt-2">
+                {/* <div className="form-check mt-2">
                     <input
-                        className="form-check-input"
                         type="checkbox"
+                        className="form-check-input"
                         name="special"
                         checked={form.special}
                         onChange={handleChange}
                     />
-                    <label className="form-check-label">
-                        Special Product
-                    </label>
-                </div>
-
+                    <label className="form-check-label">Special Product</label>
+                </div> */}
 
                 {/* Submit */}
                 <button
@@ -261,13 +359,37 @@ export default function ProductUpload() {
                     style={{ minWidth: "140px" }}
                 >
                     {loading ? (
-                        <div className="spinner-border spinner-border-sm text-light" role="status"></div>
+                        <div className="spinner-border spinner-border-sm text-light"></div>
                     ) : (
                         "Upload Product"
                     )}
                 </button>
 
             </form>
+
+            {showCropModal && (
+                <div className="crop-modal">
+                    <div className="crop-content">
+                        <div style={{ position: "relative", width: "100%", height: 400 }}>
+                            <Cropper
+                                image={croppingImage.imageURL}
+                                crop={crop}
+                                zoom={zoom}
+                                aspect={1}
+                                onCropChange={setCrop}
+                                onZoomChange={setZoom}
+                                onCropComplete={onCropComplete}
+                            />
+                        </div>
+
+                        <div className="crop-buttons">
+                            <button className="btn btn-secondary" onClick={() => setShowCropModal(false)}>Cancel</button>
+                            <button className="btn btn-primary" onClick={handleCropSave}>Save Crop</button>
+                        </div>
+                    </div>
+                </div>
+            )}
+
         </div>
     );
 }

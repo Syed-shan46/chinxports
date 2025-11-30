@@ -6,7 +6,7 @@ module.exports.storePage = async (req, res) => {
     const mainCategory = req.query.mainCategory || "";
     const subCategory = req.query.subCategory || "";
     const page = Number(req.query.page) || 1;
-    const limit = 6;
+    const limit = 30;
     const skip = (page - 1) * limit;
 
     let filter = {};

@@ -892,3 +892,29 @@ body, html {
 .transition-all {
   transition: all 0.3s ease;
 }
+
+
+/* Crop model styling */
+.crop-modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 99999;
+}
+
+.crop-content {
+  background: #fff;
+  padding: 20px;
+  width: 90%;
+  max-width: 500px;
+  border-radius: 12px;
+}
+
+.crop-buttons {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 15px;
+}
