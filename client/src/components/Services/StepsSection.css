@@ -66,7 +66,7 @@
   flex-shrink: 0;
   width: 70px;
   height: 70px;
-  background-color: var(--accent-color);
+  background-color: var(--theme-primary);
   border-radius: 15px;
   display: grid;
   place-items: center;

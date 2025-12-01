@@ -3,8 +3,12 @@ import "../../styles/theme.css"; // Add this import
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import { Link, NavLink } from "react-router-dom";
 import { BASE_URL } from "../../config";
+import { useCart } from "../../context/CartContext";
+
 
 export default function Header() {
+  const { cart } = useCart();
+
   // Refs for Live Search
   const desktopInputRef = useRef(null);
   const desktopDropdownRef = useRef(null);
@@ -235,7 +239,7 @@ export default function Header() {
               </button>
 
               {/* Logo */}
-              <Link to="/cart" className="logo d-flex align-items-center" style={{ textDecoration: 'none' }}>
+              <Link to="/cart" className="logo d-flex" style={{ textDecoration: 'none' }}>
                 <h1 className="sitename text-dark">ChinaXports</h1>
               </Link>
 
@@ -263,6 +267,17 @@ export default function Header() {
 
               {/* Actions */}
               <div className="header-actions d-flex align-items-center justify-content-end gap-2">
+                <Link to="/cart" className="header-action-btn bag-indicator position-relative">
+                  <i className="bi bi-bag fs-5 me-3"></i>
+
+                  {cart.length > 0 && (
+                    <span className="cart-count-badge">
+                      {cart.length}
+                    </span>
+                  )}
+                </Link>
+
+
                 {/* Theme Toggle */}
                 <button
                   className="header-action-btn theme-toggle-btn me-3"
@@ -285,7 +300,7 @@ export default function Header() {
                   <i className="bi bi-search"></i>
                 </button>
 
-              
+
               </div>
             </div>
           </div>
@@ -309,7 +324,7 @@ export default function Header() {
                   <i className="bi bi-search"></i>
                 </button>
 
-            
+
               </div>
 
               <div
@@ -322,7 +337,7 @@ export default function Header() {
         </div>
       </header>
 
-      
+
 
       {/* SIDEBAR */}
       <div style={{ border: 'none' }} className="offcanvas offcanvas-start mobile-sidebar" id="mobileSidebar">

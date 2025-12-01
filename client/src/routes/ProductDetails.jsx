@@ -1,8 +1,10 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import "../styles/Product.css";
 import { BASE_URL } from "../config";
+import { useCart } from "../context/CartContext";
+
 
 /* ==========================================================
    PRICE CONVERSION (always keep these at TOP)
@@ -45,11 +47,24 @@ Please proceed with checkout.
 
 
 function ProductDetails() {
+  const { cart, add } = useCart();
+  const navigate = useNavigate(); // <-- React Router
   const { id: productId } = useParams();
   const [product, setProduct] = useState(null);
   const [activeImage, setActiveImage] = useState("");
   const [imageIndex, setImageIndex] = useState(0);
   const [quantity, setQuantity] = useState(1);
+
+  const [justAdded, setJustAdded] = useState(false);
+
+
+  const [addedAnimation, setAddedAnimation] = useState(false);
+
+  const isInCart = product
+    ? cart.some(item => item.productId === product._id)
+    : false;
+
+
 
   /* ======================
      PAGE INITIAL SCROLL
@@ -228,7 +243,7 @@ function ProductDetails() {
               </div>
 
               {/* WHATSAPP BUTTON */}
-              <div className="action-buttons-premium d-flex flex-column gap-3">
+              {/* <div className="action-buttons-premium d-flex flex-column gap-3">
                 <a
                   href={generateWhatsAppLink(product, quantity, window.location.href)}
 
@@ -239,7 +254,9 @@ function ProductDetails() {
                   <i className="bi bi-whatsapp me-2"></i>
                   Checkout Via WhatsApp
                 </a>
-              </div>
+              </div> */}
+
+
 
               {/* TRUST BADGES */}
               <div className="trust-badges mt-3">
@@ -270,7 +287,31 @@ function ProductDetails() {
             <span className="sticky-total-amount">₹{(unitPrice * quantity).toLocaleString()}</span>
           </div>
 
-          <div className="sticky-quantity-controller">
+
+          {/* Add to Cart Button */}
+          <button
+            className={`sticky-add-to-cart-btn ${isInCart ? "added" : ""}`}
+            onClick={() => {
+              if (!product) return;
+
+              if (isInCart) {
+                navigate("/cart");
+                return;
+              }
+
+              // ADD FIRST TIME
+              add(product._id, product.minQty || 6);
+            }}
+          >
+            <i
+              className={`bi ${isInCart ? "bi-bag-check-fill" : "bi-cart-plus"
+                } me-2`}
+            ></i>
+
+            {isInCart ? " Go to Cart" : "Add to Cart"}
+          </button>
+
+          {/* <div className="sticky-quantity-controller">
             <button className="sticky-qty-btn decrement" onClick={decrementQuantity}>
               <i className="bi bi-dash-lg"></i>
             </button>
@@ -280,7 +321,7 @@ function ProductDetails() {
             <button className="sticky-qty-btn increment" onClick={incrementQuantity}>
               <i className="bi bi-plus-lg"></i>
             </button>
-          </div>
+          </div> */}
         </div>
       </div>
     </section>

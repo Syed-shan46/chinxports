@@ -4,7 +4,10 @@ import { convertToINR } from "../../utils/priceUtils";
 
 
 export default function ProductCard({ product, col = 4, cartBtnPdg = "10px 15px" }) {
-  const { add } = useCart();
+  const { add, cart } = useCart();
+
+
+  const isInCart = cart.some(item => item.productId === product._id);
 
   // Convert price here
   const priceINR = convertToINR(product.price);
@@ -55,15 +58,19 @@ export default function ProductCard({ product, col = 4, cartBtnPdg = "10px 15px"
 
           {/* Add to Cart Button */}
           <button
-            className="add-cart-btn mt-2"
+            className={`add-cart-btn mt-2 ${isInCart ? "added" : ""}`}
             style={{ padding: cartBtnPdg }}
             onClick={() => {
+              if (isInCart) return;  // already added → do nothing
+
               console.log("Adding from ProductCard:", product._id);
-              add(product._id, product.minQty || 6); // add with minimum quantity
+              add(product._id, product.minQty || 6);
             }}
           >
-            <i className="fa-solid fa-bag-shopping"></i> Pick
+            <i className={`fa-solid ${isInCart ? "fa-circle-check" : "fa-bag-shopping"}`}></i>
+            {isInCart ? " Picked" : " Pick"}
           </button>
+
         </div>
       </div>
     </div>
