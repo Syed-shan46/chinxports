@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import ProductCard from "../product/ProductCard";
 import { BASE_URL } from "../../config";
+import { Link } from "react-router-dom";
 
 
 export default function BestDeals() {
@@ -55,9 +56,9 @@ export default function BestDeals() {
         </div>
 
         <div className="container d-flex justify-content-center mt-4">
-          <a href="/store" className="btn btn-outline px-4 py-2 rounded-3 col-pink">
+          <Link to="/store" href="/store" className="btn btn-outline px-4 py-2 rounded-3 col-pink">
             <i className="bi bi-compass  me-2  col-pink"></i> Discover the Range
-          </a>
+          </Link>
         </div>
 
       </section>
