@@ -41,8 +41,8 @@ app.use(
     resave: false,
     saveUninitialized: false,
     cookie: {
-      secure: false, // true only if HTTPS
-      sameSite: 'Lax',
+      secure: true, // true only if HTTPS
+      sameSite: 'None',
       maxAge: 24 * 60 * 60 * 1000 // 1 day
     }
   })
