@@ -4,6 +4,8 @@ import { useNavigate, useParams } from "react-router-dom";
 import "../styles/Product.css";
 import { BASE_URL } from "../config";
 import { useCart } from "../context/CartContext";
+import "../components/product/ProductCard"
+import ProductCard from "../components/product/ProductCard";
 
 
 /* ==========================================================
@@ -55,10 +57,15 @@ function ProductDetails() {
   const [imageIndex, setImageIndex] = useState(0);
   const [quantity, setQuantity] = useState(1);
 
+  const [similarProducts, setSimilarProducts] = useState([]);
+
+
   const [justAdded, setJustAdded] = useState(false);
 
 
   const [addedAnimation, setAddedAnimation] = useState(false);
+
+
 
   const isInCart = product
     ? cart.some(item => item.productId === product._id)
@@ -145,6 +152,13 @@ function ProductDetails() {
      ====================== */
   const unitPrice = product?.priceINR ?? convertToINR(product?.price);
 
+  // FETCH SIMILAR PRODUCTS (same subCategory)
+  axios
+    .get(`${BASE_URL}/api/categories/subcategory/${product.subCategory._id}`)
+    .then((res) => setSimilarProducts(res.data.products || []))
+    .catch((err) => console.error("Error fetching similar:", err));
+
+
   return (
     <section className="product-details-premium section mt-lg-5 pt-lg-5 mt-3">
       {/* MOBILE IMAGE VIEW */}
@@ -194,12 +208,14 @@ function ProductDetails() {
           </div>
 
           {/* RIGHT SIDE PRODUCT INFO */}
-          <div className="col-lg-6 mt-3">
-            <div className="product-info-premium">
+          <div className="col-lg-6">
+            <div className="product-info-premium mt-3">
+              <i className="badge btn-pink">{product.mainCategory.name}</i>
+              <i className="badge ms-2 bg-primary">{product.subCategory.name}</i>
               <h1 className="mb-3 fs-sm fw-bold">{product.productName}</h1>
 
               {/* PRICE & MOQ */}
-              <div className="pricing-moq-premium mt-md-5">
+              <div className="pricing-moq-premium mt-md-5 mt-3">
                 <div className="row g-4">
                   <div className="col-6">
                     <div className="price-card">
@@ -221,6 +237,35 @@ function ProductDetails() {
                   </div>
                 </div>
               </div>
+
+              <div className="offer-card d-flex align-items-center mt-4">
+                <div className="offer-icon-wrapper d-flex align-items-center justify-content-center">
+                  <i className="bi bi-gift-fill offer-icon text-succes"></i>
+                </div>
+
+                <div className="offer-content">
+                  {/* <h5 className="offer-title mb-1">Special Discount</h5> */}
+                  <p className="offer-text mb-0">
+                    When you purchase over <strong>₹50,000</strong>, get up to
+                    <span className="text-success fw-semibold ms-1">10% OFF</span>
+                  </p>
+                </div>
+              </div>
+
+              <div className="offer-card d-flex align-items-center mt-4">
+                <div className="offer-icon-wrapper d-flex align-items-center justify-content-center">
+                  <i className="bi bi-gift-fill offer-icon text-succes"></i>
+                </div>
+
+                <div className="offer-content">
+                  {/* <h5 className="offer-title mb-1">Special Discount</h5> */}
+                  <p className="offer-text mb-0">
+                    When you purchase over <strong>₹10,0000</strong>, get up to
+                    <span className="text-success fw-semibold ms-1">15% OFF</span>
+                  </p>
+                </div>
+              </div>
+
 
               {/* QUANTITY */}
               <div className="quantity-section mb-4 mt-md-4 desktop-quantity">
@@ -259,14 +304,30 @@ function ProductDetails() {
 
 
               {/* TRUST BADGES */}
-              <div className="trust-badges mt-3">
+              {/* <div className="trust-badges mt-3">
                 <div className="badge-item"><i className="bi bi-shield-check"></i><span>Verified Seller</span></div>
                 <div className="badge-item"><i className="bi bi-truck"></i><span>Free Shipping</span></div>
                 <div className="badge-item"><i className="bi bi-arrow-repeat"></i><span>Easy Returns</span></div>
-              </div>
+              </div> */}
             </div>
           </div>
         </div>
+
+        {/* SIMILAR PRODUCTS */}
+        {similarProducts.length > 0 && (
+          <div className="similar-products-section mt-5">
+            <h3 className="mb-3">Similar Products</h3>
+
+            <div className="similar-scroll-wrapper">
+              {similarProducts.map((p) => (
+                <div className="similar-item" key={p._id}>
+                  <ProductCard product={p} col={10} />
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
 
         {/* DESCRIPTION */}
         {product.description && (

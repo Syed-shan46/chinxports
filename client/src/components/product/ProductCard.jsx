@@ -1,11 +1,10 @@
 import { Link } from "react-router-dom";
-import { useCart } from "../../context/CartContext";
+import { useCart, } from "../../context/CartContext";
 import { convertToINR } from "../../utils/priceUtils";
 
 
 export default function ProductCard({ product, col = 4, cartBtnPdg = "10px 15px" }) {
-  const { add, cart } = useCart();
-
+  const { add, cart, removeItem } = useCart();
 
   const isInCart = cart.some(item => item.productId === product._id);
 
@@ -36,40 +35,28 @@ export default function ProductCard({ product, col = 4, cartBtnPdg = "10px 15px"
             {product.subCategory?.name || ""}
           </div>
 
-          <p className="text-dark fw-semibold mb-1">
-            ₹{priceINR.toLocaleString()}
+          <p className="text-dark fw-semibold mb-0">
+            ₹{priceINR.toLocaleString()}/-
           </p>
+          <p className="cart-moq mb-0">MOQ: <span className="cart-moq-value">6</span></p>
 
-          <h4
-            className="product-name-handpicked"
-            style={{
-              fontSize: "0.8rem",
-              marginTop: "2px",
-              fontWeight: "500",
-              overflow: "hidden",
-              textOverflow: "ellipsis",
-              display: "-webkit-box",
-              WebkitBoxOrient: "vertical",
-              WebkitLineClamp: 2,
-            }}
-          >
-            {product.productName}
-          </h4>
 
           {/* Add to Cart Button */}
           <button
             className={`add-cart-btn mt-2 ${isInCart ? "added" : ""}`}
             style={{ padding: cartBtnPdg }}
             onClick={() => {
-              if (isInCart) return;  // already added → do nothing
-
-              console.log("Adding from ProductCard:", product._id);
-              add(product._id, product.minQty || 6);
+              if (isInCart) {
+                removeItem(product._id);     // toggle remove
+              } else {
+                add(product._id, product.minQty || 6); // add first time
+              }
             }}
           >
-            <i className={`fa-solid ${isInCart ? "fa-circle-check" : "fa-bag-shopping"}`}></i>
-            {isInCart ? " Picked" : " Pick"}
+            <i className={`fa-solid ${isInCart ? "fa-circle-xmark" : "fa-bag-shopping"}`}></i>
+            {isInCart ? " Remove" : " Pick"}
           </button>
+
 
         </div>
       </div>

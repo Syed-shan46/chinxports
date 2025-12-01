@@ -1,6 +1,6 @@
-export function generateCartWhatsApp(cart) {
+export function generateCartWhatsApp(cart, userNote = "") {
   const phone = "918593939333";
-  const domain = "https://chinaxports.com"; // change to your domain
+  const domain = "https://chinaxports.com";
 
   let message = `Hello, I would like to place an order:\n\n`;
 
@@ -25,6 +25,10 @@ export function generateCartWhatsApp(cart) {
   message += `
 🧾 *Grand Total:* ₹${grandTotal}
 `;
+
+  if (userNote.trim() !== "") {
+    message += `\n📝 *Customer Note:* ${userNote}\n`;
+  }
 
   return `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
 }

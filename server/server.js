@@ -16,6 +16,7 @@ const excelRoutes = require("./routes/excelRoutes");
 // ✅ Define CORS options FIRST
 const corsOptions = {
   origin: [
+    "http://10.160.199.157:5173",
     "http://192.168.31.108:5173",
     "http://localhost:5173",
     "http://192.168.31.58:5173",
@@ -40,8 +41,8 @@ app.use(
     resave: false,
     saveUninitialized: false,
     cookie: {
-      secure: true, // true only if HTTPS
-      sameSite: 'None', 
+      secure: false, // true only if HTTPS
+      sameSite: 'Lax',
       maxAge: 24 * 60 * 60 * 1000 // 1 day
     }
   })

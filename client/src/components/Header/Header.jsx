@@ -124,9 +124,7 @@ export default function Header() {
             if (current > 20) header.classList.add("header-scrolled");
             else header.classList.remove("header-scrolled");
 
-            if (current > lastScrollTop && current > 100)
-              header.classList.add("header-hidden");
-            else header.classList.remove("header-hidden");
+
           }
 
           lastScrollTop = current <= 0 ? 0 : current;
@@ -163,7 +161,7 @@ export default function Header() {
 
         debounceTimer = setTimeout(async () => {
           try {
-            const resp = await fetch(`/search?q=${encodeURIComponent(query)}`);
+            const resp = await fetch(`${BASE_URL}/api/categories/search?q=${encodeURIComponent(query)}`);
             const data = await resp.json();
 
             let html = "";
@@ -181,15 +179,19 @@ export default function Header() {
               });
             }
 
-            if (data.categories?.length) {
-              html += `<div class="fw-bold text-muted small mt-2 mb-1 px-2">Categories</div>`;
-              data.categories.forEach((cat) => {
+            if (data.subCategories?.length) {
+              html += `<div class="fw-bold text-muted small mt-2 mb-1 px-2">Subcategories</div>`;
+
+              data.subCategories.forEach((sub) => {
                 html += `
-                  <a href="/store?category=${cat._id}" class="dropdown-item">
-                    <i class="bi bi-folder2-open text-primary"></i> ${cat.name}
-                  </a>`;
+      <a href="/store?sub=${sub._id}" 
+         class="dropdown-item d-flex align-items-center">
+         <i class="bi bi-tag-fill  col-pink me-2"></i>
+         ${sub.name}
+      </a>`;
               });
             }
+
 
             if (!html) {
               html = `<span class="dropdown-item text-muted">No results found</span>`;
@@ -286,7 +288,7 @@ export default function Header() {
                   aria-label="Toggle theme"
                 >
                   {theme === "light" ? (
-                    <i className="bi bi-moon-stars  "></i>
+                    <i className="bi bi-moon-stars"></i>
                   ) : (
                     <i className="bi bi-sun-fill "></i>
                   )}
@@ -342,9 +344,9 @@ export default function Header() {
       {/* SIDEBAR */}
       <div style={{ border: 'none' }} className="offcanvas offcanvas-start mobile-sidebar" id="mobileSidebar">
 
-        {/* <div className="offcanvas-header">
+        <div className="offcanvas-header">
           <button className="btn-close" data-bs-dismiss="offcanvas"></button>
-        </div> */}
+        </div>
         <div className="offcanvas-body px-0">
           <ul className="nav nav-tabs nav-fill trendy-tabs" id="mobileSidebarTabs">
             <li className="nav-item">
@@ -403,8 +405,8 @@ export default function Header() {
                                 className="menu-item text-decoration-none d-flex justify-content-between align-items-center w-100"
                               >
                                 <span>
-                                  <i className="bi bi-chevron-right me-2 small"></i>
                                   {sub.name}
+
                                 </span>
                               </Link>
                             </li>

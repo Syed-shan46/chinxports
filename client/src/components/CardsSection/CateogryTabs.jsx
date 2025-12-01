@@ -2,6 +2,10 @@ import { useEffect, useState } from "react";
 import ProductCard from "../../components/product/ProductCard";
 import { BASE_URL } from "../../config";
 
+let cachedCategories = null;
+let cachedProducts = {};
+
+
 export default function CategoryTabs() {
 
     const [categories, setCategories] = useState([]);
@@ -12,6 +16,23 @@ export default function CategoryTabs() {
     const [initialLoading, setInitialLoading] = useState(true);
 
     useEffect(() => {
+        // If categories are already cached, use them instantly
+        if (cachedCategories) {
+            setCategories(cachedCategories);
+
+            const firstCatId = cachedCategories[0]._id;
+            setActiveCategory(firstCatId);
+
+            // load products from cache
+            if (cachedProducts[firstCatId]) {
+                setProducts(cachedProducts[firstCatId]);
+                setInitialLoading(false);
+            } else {
+                fetchProducts(firstCatId, true);
+            }
+            return;
+        }
+
         fetch(`${BASE_URL}/api/categories/get-subcategories`)
             .then(res => res.json())
             .then(data => {
@@ -29,10 +50,19 @@ export default function CategoryTabs() {
     const fetchProducts = (categoryId, isInitial = false) => {
         if (isInitial) setInitialLoading(true);
 
+        // Check product cache
+        if (cachedProducts[categoryId]) {
+            setProducts(cachedProducts[categoryId]);
+            if (isInitial) setInitialLoading(false);
+            return;
+        }
+
         fetch(`${BASE_URL}/api/categories/subcategory/${categoryId}`)
             .then(res => res.json())
             .then(data => {
-                setProducts(data.products?.slice(-9).reverse() || []);
+                const prods = data.products?.slice(-9).reverse() || [];
+                cachedProducts[categoryId] = prods;  // save to cache
+                setProducts(prods);
             })
             .catch(err => console.error("Product fetch failed:", err))
             .finally(() => {

@@ -15,6 +15,7 @@ import { AdminProvider } from './context/AdminContext';
 import PrivateRoute from './components/PrivateRoute/PrivateRoute';
 import Popup from './components/Popup';
 import Cart from "./routes/Cart";
+import ScrollToTop from "./components/common/scrollToTop";
 
 function App() {
   const [showPopup, setShowPopup] = useState(true);
@@ -27,6 +28,7 @@ function App() {
       {showPopup && <Popup handleClose={handleClosePopup} />}
       <BrowserRouter>
         <MainLayout>
+          <ScrollToTop />
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/store" element={<Store />} />
@@ -36,7 +38,7 @@ function App() {
             <Route path="/bulk-upload" element={<BulkUpload />} />
             <Route path="/admin-login" element={<AdminLogin />} />
             <Route path="/upload-product" element={<ProductUpload />} />
-            <Route path="/cart" element={<Cart/>}/>
+            <Route path="/cart" element={<Cart />} />
             {/* <Route
               path="/upload-product"
               element={

@@ -145,3 +145,31 @@ exports.getAllMainCategories = async (req, res) => {
   }
 };
 
+exports.searchCategories = async (req, res) => {
+  try {
+    const q = req.query.q?.trim() || "";
+
+    if (!q) return res.json({ products: [], subCategories: [] });
+
+    // Search Products
+    const products = await Product.find({
+      productName: { $regex: q, $options: "i" }
+    })
+      .select("productName imageUrl")
+      .limit(10);
+
+    // Search Subcategories
+    const subCategories = await SubCategory.find({
+      name: { $regex: q, $options: "i" }
+    })
+      .select("name mainCategory")
+      .limit(10);
+
+    res.json({ products, subCategories });
+
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ error: "Server error" });
+  }
+}
+

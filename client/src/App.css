@@ -219,7 +219,6 @@ h6 {
 }
 
 .header .top-bar .dropdown-menu .dropdown-item:hover {
-  background-color: color-mix(in srgb, var(--accent-color), transparent 90%);
   color: var(--accent-color);
 }
 
@@ -275,6 +274,8 @@ h6 {
 .header .main-header .header-actions .header-action-btn i.bi-person {
   font-size: 28px;
 }
+
+
 
 
 
@@ -337,7 +338,6 @@ h6 {
 }
 
 .header .main-header .account-dropdown .dropdown-menu .dropdown-body .dropdown-item:hover {
-  background-color: color-mix(in srgb, var(--accent-color), transparent 90%);
   color: var(--accent-color);
 }
 
@@ -703,7 +703,7 @@ h6 {
   }
 
   .mobile-nav-active .navmenu {
-    position: fixed;
+    position: sticky;
     overflow: hidden;
     inset: 0;
     background: rgba(33, 37, 41, 0.8);
@@ -2011,10 +2011,7 @@ h6 {
   transition: all 0.4s ease;
 }
 
- .product-item:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.06);
-}
+
 
  .product-item:hover .product-image img {
   transform: scale(1.02);
@@ -4047,7 +4044,6 @@ h6 {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  border: 1px solid #eee;
   border-radius: 12px;
   transition: all 0.5s ease;
 }

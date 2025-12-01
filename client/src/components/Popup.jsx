@@ -9,7 +9,7 @@ const Popup = ({ handleClose }) => {
           &times;
         </button>
         <h2>Special <span style={{ color: '#ff4fa3' }}>50%</span> Offer!</h2>
-        <p>Enjoy Flat 50% Off When You Shop Over ₹50,000</p>
+        <p>Enjoy Up To 10% Off When You Shop Over ₹50,000</p>
         <button className="btn btn-pink rounded-3 py-1" onClick={handleClose}>
           Shop Now
         </button>

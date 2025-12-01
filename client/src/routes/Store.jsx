@@ -3,8 +3,21 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import ProductCard from "../components/product/ProductCard";
 import { BASE_URL } from "../config";
-
+import "../../src/styles/Store.css"
 export default function Store() {
+
+  const updatePage = (page) => {
+    const params = {};
+
+    if (selectedMainCat) params.category = selectedMainCat;
+    if (selectedSubCat) params.sub = selectedSubCat;
+
+    params.page = page;
+
+    setSearchParams(params);
+  };
+
+
   const [mainCats, setMainCats] = useState([]);
   const [subCats, setSubCats] = useState([]);
   const [products, setProducts] = useState([]);
@@ -20,34 +33,35 @@ export default function Store() {
 
   // Fetch Main Categories
   useEffect(() => {
-  axios
-    .get(`${API_BASE_URL}/categories/get-maincategories`)
-    .then((res) => {
-      setMainCats(res.data?.categories ?? []);
-    })
-    .catch(() => console.log("Failed to fetch main categories"));
-}, []);
+    axios
+      .get(`${API_BASE_URL}/categories/get-maincategories`)
+      .then((res) => {
+        setMainCats(res.data?.categories ?? []);
+      })
+      .catch(() => console.log("Failed to fetch main categories"));
+  }, []);
 
 
   useEffect(() => {
     // Update state whenever the URL changes
+    setCurrentPage(Number(searchParams.get("page")) || 1);
     setSelectedMainCat(searchParams.get("category") || "");
     setSelectedSubCat(searchParams.get("sub") || "");
     setCurrentPage(1); // reset pagination when URL changes
   }, [searchParams]);
 
 
-// Fetch Subcategories When Main Category Selected
-useEffect(() => {
-  if (!selectedMainCat) {
-    setSubCats([]);
-    return;
-  }
+  // Fetch Subcategories When Main Category Selected
+  useEffect(() => {
+    if (!selectedMainCat) {
+      setSubCats([]);
+      return;
+    }
 
-  const selectedCat = mainCats.find(cat => cat._id === selectedMainCat);
+    const selectedCat = mainCats.find(cat => cat._id === selectedMainCat);
 
-  setSubCats(selectedCat?.subCategories || []);
-}, [selectedMainCat, mainCats]);
+    setSubCats(selectedCat?.subCategories || []);
+  }, [selectedMainCat, mainCats]);
 
 
   // Fetch Products
@@ -80,72 +94,70 @@ useEffect(() => {
         <div className="row">
 
           {/* Sidebar */}
-          {/* Sidebar */}
-          <div className="col-lg-4 sidebar">
-            <div className="widgets-container">
-              <div className="product-categories-widget widget-item">
-                <h3 className="widget-title">Categories</h3>
+          <div className="col-lg-4 sidebar mt-4">
+            <div className="category-box">
 
-                <ul className="category-tree list-unstyled mb-0">
+              <h3 className="category-heading">Categories</h3>
 
-                  {/* All Products */}
-                  <li className="category-item mb-2">
-                    <button
-                      className={`category-link w-100 text-start ${!selectedMainCat ? "active" : ""}`}
-                      onClick={() => {
-                        setSearchParams({});
-                      }}
-                    >
-                      <i className="bi bi-grid me-2"></i>
-                      All Products
-                    </button>
-                  </li>
+              <ul className="category-list">
 
-                  {/* MAIN CATEGORIES */}
-                  {mainCats.map((cat) => {
-                    const isOpen = selectedMainCat === cat._id;
-                    return (
-                      <li key={cat._id} className="category-item mb-1">
+                {/* ALL PRODUCTS */}
+                {/* <li>
+                  <button
+                    className={`cat-btn ${!selectedMainCat ? "active" : ""}`}
+                    onClick={() => setSearchParams({})}
+                  >
+                    <i className="bi bi-grid me-2"></i>
+                    All Products
+                  </button>
+                </li> */}
 
-                        {/* Main Category Button */}
-                        <button
-                          className={`category-link w-100 d-flex justify-content-between align-items-center text-start ${isOpen ? "active" : ""}`}
-                          onClick={() => {
-                            setSearchParams({ category: cat._id });
-                          }}
-                        >
-                          <span>
-                            <i className="bi bi-folder2-open me-2"></i>
-                            {cat.name}
-                          </span>
+                {/* MAIN CATEGORIES */}
+                {mainCats.map((cat) => {
+                  const isOpen = selectedMainCat === cat._id;
 
-                          <i className={`bi ms-2 ${isOpen ? "bi-chevron-down" : "bi-chevron-right"}`}></i>
-                        </button>
+                  return (
+                    <li key={cat._id} className="main-cat-item">
 
-                        {/* SUBCATEGORIES */}
-                        {isOpen && subCats.length > 0 && (
-                          <ul className="ps-4 mt-2">
-                            {subCats.map((sub) => (
-                              <li key={sub._id} className="py-1">
-                                <button
-                                  className={`category-link w-100 text-start ${selectedSubCat === sub._id ? "active" : ""}`}
-                                  onClick={() => {
-                                    setSearchParams({ category: cat._id, sub: sub._id });
-                                  }}
-                                >
-                                  <i className="bi bi-chevron-right me-2 small"></i>
-                                  {sub.name}
-                                </button>
-                              </li>
-                            ))}
-                          </ul>
-                        )}
-                      </li>
-                    );
-                  })}
-                </ul>
+                      {/* MAIN CATEGORY BUTTON */}
+                      <button
+                        className={`cat-btn d-flex justify-content-between ${isOpen ? "active" : ""}`}
+                        onClick={() => {
+                          if (selectedMainCat === cat._id) {
+                            setSearchParams({});             // collapse category
+                          } else {
+                            setSearchParams({ category: cat._id }); // expand category
+                          }
+                        }}
+                      >
+                        <span>
+                          <i className="bi bi-folder2-open me-2"></i>
+                          {cat.name}
+                        </span>
 
-              </div>
+                        <i className={`bi ${isOpen ? "bi-chevron-down" : "bi-chevron-right"}`}></i>
+                      </button>
+
+                      {/* SUB CATEGORIES */}
+                      <ul className={`subcat-list ${isOpen ? "open" : ""}`}>
+                        {subCats.map((sub) => (
+                          <li key={sub._id}>
+                            <button
+                              className={`subcat-btn ${selectedSubCat === sub._id ? "active" : ""}`}
+                              onClick={() =>
+                                setSearchParams({ category: cat._id, sub: sub._id })
+                              }
+                            >
+                              <i className="bi bi-caret-right ms-3"></i> {sub.name}
+                            </button>
+                          </li>
+                        ))}
+                      </ul>
+
+                    </li>
+                  );
+                })}
+              </ul>
             </div>
           </div>
 
@@ -162,7 +174,6 @@ useEffect(() => {
                     </div>
                   </div>
                 )}
-
                 {!loading && products.length > 0 &&
                   products.map((product) => (
                     <ProductCard key={product._id} product={product} cartBtnPdg="5px 18px" />
@@ -185,7 +196,14 @@ useEffect(() => {
 
                   {currentPage > 1 && (
                     <li className="page-item">
-                      <button className="page-link" onClick={() => setCurrentPage(currentPage - 1)}>
+                      <button className="page-link"
+                        onClick={() => {
+                          updatePage(i + 1);
+                          window.scrollTo({ top: 0, behavior: "smooth" });
+
+                        }
+                        }
+                      >
                         &laquo;
                       </button>
                     </li>
@@ -193,7 +211,13 @@ useEffect(() => {
 
                   {[...Array(totalPages)].map((_, i) => (
                     <li key={i} className={`page-item ${currentPage === i + 1 ? "active" : ""}`}>
-                      <button className="page-link" onClick={() => setCurrentPage(i + 1)}>
+                      <button className="page-link"
+                        onClick={() => {
+                          setCurrentPage(i + 1);
+                          window.scrollTo({ top: 0, behavior: "smooth" });
+                        }
+                        }
+                      >
                         {i + 1}
                       </button>
                     </li>
@@ -201,7 +225,12 @@ useEffect(() => {
 
                   {currentPage < totalPages && (
                     <li className="page-item">
-                      <button className="page-link" onClick={() => setCurrentPage(currentPage + 1)}>
+                      <button className="page-link" onClick={() => {
+                        setCurrentPage(currentPage + 1);
+                        window.scrollTo({ top: 0, behavior: "smooth" });
+                      }
+                      }
+                      >
                         &raquo;
                       </button>
                     </li>
