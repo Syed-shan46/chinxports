@@ -46,7 +46,7 @@ export default function ProductCard({ product, col = 4, cartBtnPdg = "10px 15px"
           <p className="text-dark fw-semibold mb-0">
             ₹{priceINR.toLocaleString()}/-
           </p>
-          <p className="cart-moq mb-0">MOQ: <span className="cart-moq-value">6</span></p>
+          <p className="cart-moq mb-0 fs-x">MOQ: <span className="cart-moq-value">6</span></p>
 
 
           {/* Add to Cart Button */}

@@ -21,25 +21,9 @@ export default function Hero() {
     }
   ];
 
-  const promoCards = [
-    {
-      img: "/images/banners/banner6.png",
-      title: "New Arrivals"
-    },
-    {
-      img: "/images/banners/banner7.png",
-      title: "Best Sellers"
-    },
-    {
-      img: "/images/banners/banner8.png",
-     
-      title: "Exclusive Discounts"
-    }
-  ];
-
   const [index, setIndex] = useState(0);
 
-  // Auto Slide
+  // Auto Slide (3 seconds)
   useEffect(() => {
     const interval = setInterval(() => {
       setIndex((prev) => (prev + 1) % banners.length);

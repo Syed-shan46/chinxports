@@ -60,7 +60,7 @@
 }
 
 .popup-content .btn-pink {
-  background-color: #e91e63;
+  background-color: var(--theme-primary);
   color: white;
   padding: 12px 25px;
   border-radius: 5px;
@@ -70,5 +70,5 @@
 }
 
 .popup-content .btn-pink:hover {
-  background-color: #c2185b;
+  background-color: var(--theme-primary);
 }

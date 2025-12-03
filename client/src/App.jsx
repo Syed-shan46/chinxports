@@ -25,6 +25,9 @@ function App() {
   const handleClosePopup = () => {
     setShowPopup(false);
   };
+
+  
+
   return (
     <AdminProvider>
       {showPopup && <Popup handleClose={handleClosePopup} />}
@@ -32,6 +35,7 @@ function App() {
         <MainLayout>
           <ScrollToTop />
           <Routes>
+
             <Route path="/" element={<Home />} />
             <Route path="/store" element={<Store />} />
             <Route path="/products/product-details/:id" element={<ProductDetails />} />

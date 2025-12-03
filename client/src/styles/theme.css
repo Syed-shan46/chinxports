@@ -7,7 +7,8 @@
   --theme-input-bg: #ffffff;
   --theme-input-border: #dee2e6;
   --theme-card-bg: #ffffff;
-  --theme-primary: #ff4d6d;
+  /* --theme-primary: #ff4d6d; */
+  --theme-primary: #886e55;
 }
 
 /* Dark Theme Variables */
@@ -18,7 +19,9 @@
   --theme-input-bg: #2d3139;
   --theme-input-border: #495057;
   --theme-card-bg: #252a30;
-  --theme-primary: #ff4d6d;
+  /* --theme-primary: #ff4d6d; */
+  --theme-primary: #5b4836;
+
 }
 
 /* Light mode fallback for body.dark-theme */

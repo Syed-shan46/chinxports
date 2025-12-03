@@ -65,8 +65,8 @@
 
 /* ACTIVE TAB */
 .cat-tab-item.active {
-    background: #ff4d6d;
-    border-color: #ff4d6d;
+    background: var(--theme-primary);
+    border-color: var(--theme-primary);
     color: #fff;
 }
 

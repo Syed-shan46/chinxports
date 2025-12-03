@@ -109,7 +109,7 @@ exports.createMainCategory = async (req, res) => {
 module.exports.getAllSubCats = async (req, res) => {
   try {
     const subcategories = await SubCategory.find()
-      .populate("mainCategory", "name") // optional: shows main category name
+      .populate("mainCategory", "name imageUrl") // optional: shows main category name
       .lean();
 
     res.json({

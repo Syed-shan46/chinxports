@@ -81,6 +81,8 @@ export default function ProductUpload() {
             .then(res => {
                 if (res.data.success) {
                     setMainCategories(res.data.categories || []);
+
+                    
                 }
             })
             .catch(err => console.error(err));

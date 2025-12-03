@@ -52,32 +52,63 @@
     margin-top: 8px;
 }
 
-/* DOTS */
+/* ---------------------------------------- */
+/*   NEW IMPROVED DOT INDICATORS            */
+/* ---------------------------------------- */
+
 .hero-dots {
     position: absolute;
-    bottom: 20px;
+    bottom: 18px;
     width: 100%;
-    text-align: center;
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+
+    z-index: 50 !important;   /* always stay on top */
+    opacity: 1 !important;    /* never fade */
+    visibility: visible !important; /* always visible */
+    pointer-events: auto;     /* keep clickable */
 }
+
 
 .dot {
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-    background: #fff8;
-    display: inline-block;
-    margin: 0 6px;
+    width: 8px;
+    height: 6px;
+    border-radius: 50px;
+    background: rgba(255, 255, 255, 0.4);
     cursor: pointer;
-    transition: 0.3s;
+    position: relative;
+    overflow: hidden;
+    transition: all .35s ease;
 }
 
+/* ACTIVE DOT — expands + glow */
 .dot.active {
-    background: #fff;
-    width: 14px;
-    height: 14px;
+    width: 26px;
+    background: rgba(255, 255, 255, 0.95);
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.9);
 }
 
-/* PROMO CARDS */
+/* Internal loading animation */
+.dot.active::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 0%;
+    background:var(--theme-primary); /* indicator bar color */
+    border-radius: 50px;
+    animation: fillBar 3s linear forwards;
+}
+
+/* Animation fills based on slide duration */
+@keyframes fillBar {
+    from { width: 0%; }
+    to { width: 100%; }
+}
+
+/* PROMO CARDS (if you use later) */
 .promo-wrapper {
     display: flex;
     gap: 20px;
@@ -119,9 +150,11 @@
     .hero-slider {
         height: 25vh;
     }
+
     .hero-text h1 {
         font-size: 1.4rem;
     }
+
     .hero-text p {
         font-size: 1rem;
     }

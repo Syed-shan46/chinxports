@@ -665,7 +665,7 @@
 
 .sticky-add-to-cart-btn {
   width: 100%;
-  background: #ff4d6d;
+  background: var(--theme-primary);
   color: #fff;
   padding: 12px;
   border-radius: 12px;
@@ -854,7 +854,7 @@ html {
 
 .add-cart-btn {
   width: 100%;
-  background: #ff4d6d;
+  background: var(--theme-primary);
   color: #fff;
   border: none;
   border-radius: 8px;
@@ -1002,7 +1002,7 @@ html {
   position: absolute;
   top: 6px;
   left: 6px;
-  background: #5b4836;
+  background: var(--theme-primary);
   color: #fff;
   font-size: 10px;
   font-weight: 600;
