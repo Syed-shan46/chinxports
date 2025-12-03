@@ -62,31 +62,31 @@ export default function CategoryScroller() {
         <div className="cat-scroll-wrapper">
           <div className="cat-scroll">
             {categories.map((cat, idx) => (
-              <Link 
-  to={`/store?sub=${cat._id}`} 
-  className="text-decoration-none"
->
-              <div key={idx} className="cat-item text-center p-0 m-0 me-3">
+              <Link
+                to={`/store?sub=${cat._id}`}
+                className="text-decoration-none"
+              >
+                <div key={idx} className="cat-item text-center p-0 m-0 me-3">
 
-                {/* Image */}
-                <div
-                  className="cat-img-wrapper d-flex align-items-center justify-content-center"
-                  style={{ width: "47px", height: "47px", borderRadius: "14px" }}
-                >
-                  <img
-                    src={cat.imageUrl}
-                    alt={cat.name}
-                    className="img-fluid"
-                    style={{ width: "70%", height: "70%", objectFit: "contain" }}
-                  />
+                  {/* Image */}
+                  <div
+                    className="cat-img-wrapper d-flex align-items-center justify-content-center"
+                    style={{ width: "47px", height: "47px", borderRadius: "14px" }}
+                  >
+                    <img
+                      src={cat.imageUrl}
+                      alt={cat.name}
+                      className="img-fluid"
+                      style={{ width: "70%", height: "70%", objectFit: "contain" }}
+                    />
+                  </div>
+
+                  {/* Name */}
+                  <p className="cat-name mt-2 mb-0 text-dark" style={{ fontSize: "11px", maxWidth: "70px", whiteSpace: "normal", lineHeight: "12px" }}>
+                    {cat.name}
+                  </p>
+
                 </div>
-
-                {/* Name */}
-                <p className="cat-name mt-2 mb-0 text-dark" style={{ fontSize: "11px", maxWidth: "70px", whiteSpace: "normal", lineHeight: "12px"}}>
-                  {cat.name}
-                </p>
-
-              </div>
               </Link>
             ))}
           </div>

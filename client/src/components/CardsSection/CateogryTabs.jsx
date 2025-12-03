@@ -134,8 +134,8 @@ export default function CategoryTabs() {
             </div>
 
             <div className="container d-flex justify-content-center mt-4">
-                <Link to="/store" className="btn btn-outline px-4 py-2 rounded-3 col-pink fs-sm">
-                    <i className="bi bi-box-seam me-2 col-pink"></i> View All
+                <Link to="/store" className="btn btn-outline px-4 py-2 rounded-3 fs-sm">
+                    <i className="bi bi-box-seam me-2 "></i> View All
                 </Link>
             </div>
 

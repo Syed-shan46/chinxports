@@ -58,8 +58,8 @@ export default function BestDeals() {
         </div>
 
         <div className="container d-flex justify-content-center mt-4">
-          <Link to="/store" href="/store" className="btn btn-outline px-4 py-2 rounded-3 col-pink">
-            <i className="bi bi-compass  me-2  col-pink"></i> Discover the Range
+          <Link to="/store" href="/store" className="btn btn-outline px-4 py-2 rounded-3 ">
+            <i className="bi bi-compass  me-2 "></i> Discover the Range
           </Link>
         </div>
 

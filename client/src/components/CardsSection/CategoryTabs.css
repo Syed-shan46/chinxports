@@ -80,8 +80,8 @@
 
 /* VIEW ALL BUTTON */
 .view-all-btn {
-    border: 2px solid #ff5585;
-    color: #ff5585;
+    border: 2px solid var(--theme-primary);
+    color: var(--theme-primary);
     padding: 8px 24px;
     border-radius: 10px;
     font-weight: 600;
@@ -89,6 +89,6 @@
 }
 
 .view-all-btn:hover {
-    background: #ff5585;
+    background: var(--theme-primary);
     color: #fff;
 }

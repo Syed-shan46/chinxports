@@ -1,33 +1,41 @@
 
 import "./PromoCards.css"
+import { Link } from "react-router-dom";
 export default function PromoCards() {
     const promoCards = [
-        
+
 
         {
             img: "/images/banners/banner8.png",
             title: "Necklaces",
             subtitle: "Timeless pieces that complete every outfit",
-            link: "/store?category=necklaces"
+            link: "/store?sub=69306865ca452e54325b5c5b"
         },
         {
             img: "/images/banners/banner7.png",
             title: "Bracelets Collection",
             subtitle: "Elegant designs crafted to elevate your style",
-            link: "/store?category=bracelets"
+            link: "/store?sub=69306e66ca452e54325b5c63"
         },
         {
             img: "/images/banners/banner6.png",
             title: "Rings Selection",
             subtitle: "Premium rings crafted for every occasion",
-            link: "/store?category=rings"
+            link: "/store?sub=6930682dca452e54325b5c57"
         },
         {
             img: "/images/banners/banner10.png",
             title: "Earrings Collection",
             subtitle: "Chic and versatile earrings for daily wear",
-            link: "/store?category=earrings"
+            link: "/store?sub=69306814ca452e54325b5c53"
         },
+
+        {
+            img: "/images/banners/banner9.png",
+            title: "Bangles Collection",
+            subtitle: "Traditional and modern bangles for every style",
+            link: "/store?sub=69306e52ca452e54325b5c5f"
+        }
 
     ];
 
@@ -44,9 +52,9 @@ export default function PromoCards() {
                         <h3 className="promo-title">{p.title}</h3>
                         <p className="promo-subtitle">{p.subtitle}</p>
 
-                        <a href={p.link} className="promo-btn">
+                       <Link to={p.link} className="promo-btn">
                             Shop Now
-                        </a>
+                        </Link>
                     </div>
                 </div>
             ))}
