@@ -167,7 +167,7 @@ module.exports.getProductDetail = async (req, res) => {
 
     // WhatsApp message
     const whatsappNumber = "YOUR_NUMBER_HERE"; // <-- You must define or import it
-    const message = encodeURIComponent(`I want to know more about ${product.productName}`);
+    const message = encodeURIComponent(``);
     const whatsappLink = `https://wa.me/${whatsappNumber}?text=${message}`;
 
     // Recommended products from SAME main category

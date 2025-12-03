@@ -12,6 +12,8 @@ const storeRoutes = require('./routes/storeRoutes');
 const adminRoutes = require('./routes/adminRoutes');
 const cartRoutes = require('./routes/cartRoutes');
 const excelRoutes = require("./routes/excelRoutes");
+const rateRoutes = require('./routes/rateRoutes');
+const mailRoutes = require('./routes/mailRoutes');
 
 // ✅ Define CORS options FIRST
 const corsOptions = {
@@ -57,7 +59,8 @@ app.use('/api/store', storeRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api/cart', cartRoutes);
 app.use("/api/excel", excelRoutes);
-
+app.use("/api/rate", rateRoutes);
+app.use('/api/', mailRoutes);
 app.use("/excel", express.static("public/excel"));
 
 

@@ -458,6 +458,165 @@ h6 {
   }
 }
 
+/* -----------------------------
+   Compact mobile header helper
+   ----------------------------- */
+
+/* Hide top-bar entirely on mobile (if you have one) */
+@media (max-width: 991.98px) {
+  .header .top-bar {
+    display: none !important;
+    height: 0 !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    overflow: hidden;
+  }
+}
+
+/* Make main header compact on mobile */
+@media (max-width: 991.98px) {
+  .header .main-header {
+    padding: 6px 10px !important;     /* small vertical padding */
+    min-height: 52px !important;      /* overall header height */
+    height: 52px !important;
+    display: flex;
+    align-items: center;
+  }
+
+  /* Remove extra container padding that pushes header height */
+  .header .main-header .container-fluid,
+  .header .main-header .container-xl {
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+    margin: 0;
+    width: 100%;
+  }
+
+  /* Logo: smaller and inline */
+  .header .main-header .logo {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 0;
+  }
+  .header .main-header .logo img {
+    max-height: 22px !important;
+    width: auto;
+  }
+  .header .main-header .logo .sitename,
+  .header .main-header .logo h1 {
+    font-size: 16px !important;
+    line-height: 1;
+    margin: 0;
+    font-weight: 500;
+  }
+
+  /* Hide desktop search on mobile */
+  .header .desktop-search-form {
+    display: none !important;
+    height: 0 !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    overflow: hidden;
+  }
+
+  /* Header actions (icons) — reduce sizes */
+  .header .main-header .header-actions {
+    gap: 8px !important;
+    align-items: center;
+  }
+  .header .main-header .header-actions .header-action-btn {
+    padding: 6px !important;
+    background: transparent;
+    border: none;
+  }
+  .header .main-header .header-actions .header-action-btn i {
+    font-size: 18px !important;
+    line-height: 1;
+  }
+
+  /* Bag badge smaller */
+  .cart-count-badge {
+    top: -4px;
+    right: -8px;
+    font-size: 10px;
+    padding: 1px 5px;
+  }
+
+  /* Mobile hamburger smaller */
+  #mobileHamburgerBtn {
+    padding: 4px 6px;
+    margin-right: 6px;
+  }
+  #mobileHamburgerBtn i {
+    font-size: 20px;
+  }
+}
+
+/* Mobile collapse search styling - compact */
+@media (max-width: 991.98px) {
+  #mobileSearch {
+    padding-top: 6px;
+    padding-bottom: 6px;
+    background: transparent;
+  }
+  #mobileSearch .search-form .input-group {
+    border-radius: 8px;
+    border: 1px solid rgba(0,0,0,0.08);
+    padding: 4px;
+    background: #fff;
+    box-shadow: none;
+  }
+  #mobileSearch .form-control {
+    padding: 8px 10px;
+    height: 36px;
+    font-size: 14px;
+  }
+  #mobileSearch .btn {
+    padding: 6px 8px;
+    height: 36px;
+  }
+}
+
+/* Remove ugly focus thick outline but keep subtle accessible focus */
+.header .search-form .input-group .form-control:focus,
+.header .search-form .input-group .form-control:active {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(100, 100, 255, 0.06);
+  border-color: rgba(0,0,0,0.12);
+}
+
+/* Offcanvas mobile sidebar compact header */
+.offcanvas.mobile-sidebar .offcanvas-header {
+  padding: 8px 12px;
+  min-height: 44px;
+  align-items: center;
+}
+.offcanvas.mobile-sidebar .offcanvas-body {
+  padding-top: 8px;
+}
+
+/* Reduce vertical spacing inside header rows that might push down the slider */
+@media (max-width: 991.98px) {
+  .hero-wrapper, .promo-wrapper, .category-box, .container + .hero-wrapper {
+    margin-top: 10px !important;
+  }
+}
+
+/* Optional: if your header wrapper had .py-3, consider overriding */
+.header.fixed-top .py-3 {
+  padding-top: 6px !important;
+  padding-bottom: 6px !important;
+}
+
+/* If you want even tighter: change to 48px */
+@media (max-width: 480px) {
+  .header .main-header { min-height: 48px; height: 48px; }
+  .header .main-header .logo img { max-height: 20px; }
+  .header .main-header .header-actions .header-action-btn i { font-size: 16px !important; }
+}
+
+
 .bag-indicator {
   color: var(--bs-body-color);
   text-decoration: none;
@@ -476,6 +635,9 @@ h6 {
   font-weight: 600;
   box-shadow: 0 2px 6px rgba(255, 77, 109, 0.3);
 }
+
+
+
 
 
 /*--------------------------------------------------------------
@@ -1690,8 +1852,8 @@ h6 {
 --------------------------------------------------------------*/
 .section-title {
   text-align: center;
-  padding-top:20px;
-  padding-bottom: 20px;
+  padding-top:10px;
+  padding-bottom: 10px;
   position: relative;
 }
 
@@ -1706,7 +1868,7 @@ h6 {
   content: "";
   width: 50px;
   height: 2px;
-  background: var(--accent-color);
+  background: linear-gradient(180deg, #5b4836 0%, #f3e0c8 50%, #f8ead6 100%) !important;
   display: inline-block;
 }
 
@@ -4666,7 +4828,6 @@ h6 {
 }
 
 .connect-card {
-  background: #fff;
   border-radius: 12px;
   padding: 20px;
   width: 140px;
@@ -4828,13 +4989,11 @@ h6 {
 .portfolio .portfolio-filters li {
   cursor: pointer;
   display: inline-block;
-  padding: 8px 20px 10px 20px;
+  padding: 10px 10;
   margin: 0;
   font-size: 15px;
   font-weight: 500;
   line-height: 1;
-  margin-bottom: 5px;
-  border-radius: 50px;
   transition: all 0.3s ease-in-out;
   font-family: var(--heading-font);
 }

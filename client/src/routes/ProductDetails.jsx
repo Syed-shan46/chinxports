@@ -6,49 +6,40 @@ import { BASE_URL } from "../config";
 import { useCart } from "../context/CartContext";
 import "../components/product/ProductCard"
 import ProductCard from "../components/product/ProductCard";
+import useRMBRate from "../hooks/useRMBRate";
+import { convertToINR } from "../utils/priceUtils";
 
-
-/* ==========================================================
-   PRICE CONVERSION (always keep these at TOP)
-   ========================================================== */
-const RMB_RATE = 13.15;       // convert RMB → INR
-const MULTIPLIER = 1.25;     // multiply china price by this (profit/margin)
-
-const convertToINR = (chinaPrice) => {
-  const cp = parseFloat(chinaPrice);
-  if (!isFinite(cp)) return 0;
-  const finalRMB = cp * MULTIPLIER; // multiply (not add)
-  return Math.round(finalRMB * RMB_RATE);
-};
 
 /* ==========================================================
    WHATSAPP MESSAGE GENERATOR (uses converted INR price)
    ========================================================== */
-const generateWhatsAppLink = (product, quantity, url) => {
-  const phone = "919747304599";
+// const generateWhatsAppLink = (product, quantity, url) => {
+//   const phone = "919747304599";
 
-  const name = product?.productName || product?.name || "Product";
-  const unitPrice = product?.priceINR ?? convertToINR(product?.price);
-  const total = unitPrice * quantity;
+//   const name = product?.productName || product?.name || "Product";
+//   const unitPrice = product?.priceINR ?? convertToINR(product?.price);
+//   const total = unitPrice * quantity;
 
-  const message = `
-Hello, I would like to order:
+//   const message = `
+// Hello, I would like to order:
 
-🛍 *Product:* ${name}
-🔗 *Product Link:* ${url}
+// 🛍 *Product:* ${name}
+// 🔗 *Product Link:* ${url}
 
-🔢 *Quantity:* ${quantity}
-💵 *Price (each):* ₹${unitPrice}
-💰 *Total:* ₹${total}
+// 🔢 *Quantity:* ${quantity}
+// 💵 *Price (each):* ₹${unitPrice}
+// 💰 *Total:* ₹${total}
 
-Please proceed with checkout.
-  `;
+// Please proceed with checkout.
+//   `;
 
-  return `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
-};
+//   return `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
+// };
 
 
 function ProductDetails() {
+
+
   const { cart, add } = useCart();
   const navigate = useNavigate(); // <-- React Router
   const { id: productId } = useParams();
@@ -57,21 +48,19 @@ function ProductDetails() {
   const [imageIndex, setImageIndex] = useState(0);
   const [quantity, setQuantity] = useState(1);
 
-  const [similarProducts, setSimilarProducts] = useState([]);
+  const rmbRate = useRMBRate();
 
+  const priceINR = product ? convertToINR(product.price, rmbRate) : 0;
+
+  const [similarProducts, setSimilarProducts] = useState([]);
 
   const [justAdded, setJustAdded] = useState(false);
 
-
   const [addedAnimation, setAddedAnimation] = useState(false);
-
-
 
   const isInCart = product
     ? cart.some(item => item.productId === product._id)
     : false;
-
-
 
   /* ======================
      PAGE INITIAL SCROLL
@@ -150,7 +139,7 @@ function ProductDetails() {
   /* ======================
      SAFE PRICE VARIABLE
      ====================== */
-  const unitPrice = product?.priceINR ?? convertToINR(product?.price);
+  const unitPrice = product.price;
 
   // FETCH SIMILAR PRODUCTS (same subCategory)
   axios
@@ -221,7 +210,8 @@ function ProductDetails() {
                     <div className="price-card">
                       <span className="price-label">Price Per Unit</span>
                       <div className="price-display-premium d-flex align-items-baseline gap-2">
-                        <span className="sale-price">₹{unitPrice}</span>
+                        <span className="sale-price">₹{priceINR.toLocaleString()}/-
+                        </span>
                       </div>
                     </div>
                   </div>
@@ -246,7 +236,21 @@ function ProductDetails() {
                 <div className="offer-content">
                   {/* <h5 className="offer-title mb-1">Special Discount</h5> */}
                   <p className="offer-text mb-0">
-                    When you purchase over <strong>₹50,000</strong>, get up to
+                    When you purchase over <strong>₹10,000</strong>, get flat
+                    <span className="text-success fw-semibold ms-1">5% OFF</span>
+                  </p>
+                </div>
+              </div>
+
+              <div className="offer-card d-flex align-items-center mt-4">
+                <div className="offer-icon-wrapper d-flex align-items-center justify-content-center">
+                  <i className="bi bi-gift-fill offer-icon text-succes"></i>
+                </div>
+
+                <div className="offer-content">
+                  {/* <h5 className="offer-title mb-1">Special Discount</h5> */}
+                  <p className="offer-text mb-0">
+                    When you purchase over <strong>₹50,000</strong>, get flat
                     <span className="text-success fw-semibold ms-1">10% OFF</span>
                   </p>
                 </div>
@@ -260,7 +264,7 @@ function ProductDetails() {
                 <div className="offer-content">
                   {/* <h5 className="offer-title mb-1">Special Discount</h5> */}
                   <p className="offer-text mb-0">
-                    When you purchase over <strong>₹10,0000</strong>, get up to
+                    When you purchase over <strong>₹10,0000</strong>, get flat
                     <span className="text-success fw-semibold ms-1">15% OFF</span>
                   </p>
                 </div>
@@ -283,7 +287,7 @@ function ProductDetails() {
 
                 <p className="total-price">
                   <span className="total-label">Total:</span>
-                  <span className="total-amount">₹{(unitPrice * quantity).toLocaleString()}</span>
+                  <span className="total-amount">₹{(priceINR.toLocaleString() * quantity).toLocaleString()}</span>
                 </p>
               </div>
 
@@ -345,7 +349,7 @@ function ProductDetails() {
         <div className="sticky-quantity-wrapper">
           <div className="sticky-price-info">
             <span className="sticky-total-label">Total</span>
-            <span className="sticky-total-amount">₹{(unitPrice * quantity).toLocaleString()}</span>
+            <span className="sticky-total-amount">₹{(priceINR.toLocaleString() * quantity).toLocaleString()}</span>
           </div>
 
 
@@ -361,7 +365,7 @@ function ProductDetails() {
               }
 
               // ADD FIRST TIME
-              add(product._id, product.minQty || 6);
+              add(product._id, product.minQty || 6, priceINR.toLocaleString());
             }}
           >
             <i

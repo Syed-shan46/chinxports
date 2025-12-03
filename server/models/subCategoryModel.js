@@ -10,7 +10,12 @@ const subCategorySchema = new mongoose.Schema(
             type: mongoose.Schema.Types.ObjectId,
             ref: "MainCategory",
             required: true
-        }
+        },
+        imageUrl: {
+            type: String,
+            required: true,
+            default: "",
+        },
     },
     { timestamps: true }
 );

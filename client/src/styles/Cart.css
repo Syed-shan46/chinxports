@@ -32,7 +32,7 @@
   background: var(--theme-bg);
   border: solid 1px var(--theme-border);
   /* Smooth universal shadow */
-  box-shadow: 0 1px 4px rgba(0,0,0,0.12);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.12);
   margin-bottom: 10px;
 }
 
@@ -79,7 +79,7 @@
   height: 30px;
   border-radius: 6px;
   border: 1px solid var(--theme-primary);
-  background: var(--theme-primary) ;
+  background: var(--theme-primary);
   color: #fff;
   font-size: 18px;
   font-weight: 500;
@@ -137,13 +137,13 @@
   margin-top: 2px;
 }
 
-.cart-moq-value { 
+.cart-moq-value {
   font-weight: bold !important;
 }
 
 
 .cart-summary {
-  border: none ;
+  border: none;
 }
 
 
@@ -159,7 +159,8 @@
   padding: 0;
   line-height: 16px;
   transition: 0.2s;
-  z-index: 3; /* ensures above other elements */
+  z-index: 3;
+  /* ensures above other elements */
 }
 
 .cart-remove-btn:hover {
@@ -202,10 +203,88 @@
 .cart-note-input::placeholder {
   color: #666 !important;
   font-size: 13px;
-  opacity: 1; /* ensure full visibility */
+  opacity: 1;
+  /* ensure full visibility */
 }
 
-.cart-note-input:focus { 
+.cart-note-input:focus {
   box-shadow: none !important;
   border-color: none !important;
+}
+
+input:focus, 
+select:focus, 
+textarea:focus {
+    outline: none !important;
+    box-shadow: none !important;
+    border-color: inherit !important; /* Keep same border */
+}
+
+
+/* Success popup */
+.email-popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(3px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+.email-popup-box {
+  background: var(--theme-bg);
+  width: 90%;
+  max-width: 420px;
+  padding: 25px;
+  border-radius: 16px;
+  text-align: center;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+}
+
+.popup-icon {
+  font-size: 48px;
+  color: #28c76f;
+  margin-bottom: 10px;
+}
+
+.email-popup-box h4 {
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.email-popup-box p {
+  color: var(--theme-muted);
+  font-size: 15px;
+}
+
+.email-popup-box input,
+.email-popup-box select {
+  border-radius: 10px;
+  padding: 10px;
+  font-size: 15px;
+}
+
+.email-popup-box h4 {
+  font-weight: 700;
+}
+
+.email-popup-box {
+  animation: popupScale 0.25s ease;
+}
+
+@keyframes popupScale {
+  from {
+    transform: scale(0.8);
+    opacity: 0;
+  }
+
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
 }

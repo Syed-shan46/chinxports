@@ -1,15 +1,19 @@
 import { Link } from "react-router-dom";
 import { useCart, } from "../../context/CartContext";
 import { convertToINR } from "../../utils/priceUtils";
+import useRMBRate from "../../hooks/useRMBRate";
 
 
-export default function ProductCard({ product, col = 4, cartBtnPdg = "10px 15px" }) {
+export default function ProductCard({ product, col = 4, cartBtnPdg = "10px 15px", specialBadge = false }) {
   const { add, cart, removeItem } = useCart();
+
+  const rmbRate = useRMBRate();  // 🔥 LIVE RMB RATE HERE
+
 
   const isInCart = cart.some(item => item.productId === product._id);
 
   // Convert price here
-  const priceINR = convertToINR(product.price);
+  const priceINR = convertToINR(product.price, rmbRate);
 
   return (
     <div className={`col-lg-2 col-${col} col-md-6`}>
@@ -19,6 +23,10 @@ export default function ProductCard({ product, col = 4, cartBtnPdg = "10px 15px"
           className="text-decoration-none text-dark"
         >
           <div className="product-image" style={{ borderRadius: "15px" }}>
+
+            {/* ⭐ Special Badge */}
+            {specialBadge && <div className="special-badge">★ Special</div>}
+
             {product.featured && <div className="product-badge">Limited</div>}
 
             <img
@@ -49,7 +57,7 @@ export default function ProductCard({ product, col = 4, cartBtnPdg = "10px 15px"
               if (isInCart) {
                 removeItem(product._id);     // toggle remove
               } else {
-                add(product._id, product.minQty || 6); // add first time
+                add(product._id, product.minQty || 6, priceINR.toLocaleString());
               }
             }}
           >

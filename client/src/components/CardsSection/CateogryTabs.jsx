@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import ProductCard from "../../components/product/ProductCard";
 import { BASE_URL } from "../../config";
 import { Link } from "react-router-dom";
+import "./CategoryTabs.css"
 
 let cachedCategories = null;
 let cachedProducts = {};
@@ -78,46 +79,56 @@ export default function CategoryTabs() {
     };
 
     return (
-        <section id="portfolio" className="portfolio section">
-
-            <div className="container section-title" data-aos="fade-up">
-                <h2>Explore Our Range</h2>
-            </div>
-
+        <section id="portfolio" className="portfolio section mt-3">
             <div className="container">
+                <div className="container section-title" data-aos="fade-up">
+                    <h2>Categories</h2>
+                </div>
                 <div className="isotope-layout">
 
                     {/* Category Tabs */}
-                    <ul className="portfolio-filters isotope-filters" data-aos="fade-up" data-aos-delay="100">
-                        {categories.map(cat => (
-                            <li
-                                key={cat._id}
-                                className={activeCategory === cat._id ? "filter-active" : ""}
-                                onClick={() => handleCategoryClick(cat._id)}
-                                style={{ cursor: "pointer" }}
-                            >
-                                {cat.name}
-                            </li>
-                        ))}
-                    </ul>
+                    <section >
+                        {/* Scrollable Tabs */}
+                        <div className="cat-tabs-container" data-aos="fade-up">
+                            <ul className="cat-tabs-list">
+                                {categories.map((cat) => (
+                                    <li
+                                        key={cat._id}
+                                        className={`cat-tab-item rounded-3 ${activeCategory === cat._id ? "active" : ""}`}
+                                        onClick={() => handleCategoryClick(cat._id)}
+                                    >
+                                        {cat.name}
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
 
-                    {/* Products */}
-                    <div className="row gy-4 isotope-container" data-aos="fade-up" data-aos-delay="200">
-                        {initialLoading ? (
-                            <p>Loading...</p>
-                        ) : products.length === 0 ? (
-                            <p>No products found.</p>
-                        ) : (
-                            products.map(product => (
-                                <ProductCard
-                                    key={product._id}
-                                    product={product}
-                                    col={4}
-                                    cartBtnPdg="5px 20px"
-                                />
-                            ))
-                        )}
-                    </div>
+                        {/* Products Section */}
+                        <div className="row gy-4 m">
+                            {initialLoading ? (
+                                <p className="loading-text">Loading products…</p>
+                            ) : products.length === 0 ? (
+                                <p className="loading-text">No products found.</p>
+                            ) : (
+                                products.map((product) => (
+                                    <ProductCard
+                                        key={product._id}
+                                        product={product}
+                                        col={4}
+                                        cartBtnPdg="5px 20px"
+                                    />
+                                ))
+                            )}
+                        </div>
+
+
+
+                    </section>
+
+
+
+
+
 
                 </div>
             </div>

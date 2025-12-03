@@ -2,7 +2,7 @@ import './StepsSection.css'
 
 export default function StepsSection() {
     return (
-        <section id="steps" className="steps section">
+        <section id="steps" className="steps section mt-3">
             {/* Section Title */}
 
 

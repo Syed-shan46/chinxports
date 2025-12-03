@@ -33,6 +33,8 @@ export default function BestDeals() {
   </div>;
   if (error) return <p>Error: {error}</p>;
 
+ 
+
   return (
     <>
       <section id="best-sellers
@@ -60,6 +62,8 @@ export default function BestDeals() {
             <i className="bi bi-compass  me-2  col-pink"></i> Discover the Range
           </Link>
         </div>
+
+     
 
       </section>
     </>

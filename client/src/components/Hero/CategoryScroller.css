@@ -1,0 +1,52 @@
+.category-scroll-section {
+    margin-top: 12px;
+}
+
+.cat-title {
+    font-size: 17px;
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+
+/* Wrapper */
+.cat-scroll-wrapper {
+    overflow-x: auto;
+    scrollbar-width: none;
+}
+
+.cat-scroll-wrapper::-webkit-scrollbar {
+    display: none;
+}
+
+/* 2-row horizontal grid */
+.cat-scroll {
+    display: grid;
+    grid-auto-flow: column;
+    grid-template-rows: repeat(1, auto);
+    grid-auto-columns: 62px;
+    /* fits 6 per row */
+    column-gap: 8px;
+    row-gap: 2px;
+    /* extremely tight rows */
+    padding: 0 0 8px 0;
+}
+
+.cat-img-wrapper {
+    background: linear-gradient(180deg, #5b4836 0%, #f3e0c8 50%, #f8ead6 100%);
+}
+
+/* Item box */
+.cat-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0 !important;
+    margin: 0 !important;
+}
+
+/* Name */
+.cat-name {
+    font-size: 11px;
+    line-height: 12px;
+    text-align: center;
+}

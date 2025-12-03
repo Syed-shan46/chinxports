@@ -1,0 +1,94 @@
+/* SECTION WRAPPER */
+.category-area {
+    padding-top: 40px;
+    padding-bottom: 60px;
+    position: relative;
+}
+
+/* HEADER */
+.cat-header {
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.cat-title {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #222;
+}
+
+.cat-subtitle {
+    font-size: 0.95rem;
+    color: #777;
+    margin-top: 5px;
+}
+
+/* TABS CONTAINER */
+.cat-tabs-container {
+    overflow-x: auto;
+    white-space: nowrap;
+    padding-bottom: 10px;
+    margin-bottom: 10px;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+.cat-tabs-container::-webkit-scrollbar {
+    display: none;
+}
+
+/* TABS LIST */
+.cat-tabs-list {
+    display: inline-flex;
+    gap: 14px;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+}
+
+/* INDIVIDUAL TAB */
+.cat-tab-item {
+    padding: 5px 18px;
+    border: 1px solid var(--theme-border);
+    font-size: 0.95rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.04);
+    white-space: nowrap;
+}
+
+.cat-tab-item:hover {
+    background: #ffe4ef;
+    border-color: #ffc8dc;
+}
+
+/* ACTIVE TAB */
+.cat-tab-item.active {
+    background: #ff4d6d;
+    border-color: #ff4d6d;
+    color: #fff;
+}
+
+/* LOADING TEXT */
+.loading-text {
+    text-align: center;
+    font-size: 1rem;
+    color: #777;
+    padding: 20px 0;
+}
+
+/* VIEW ALL BUTTON */
+.view-all-btn {
+    border: 2px solid #ff5585;
+    color: #ff5585;
+    padding: 8px 24px;
+    border-radius: 10px;
+    font-weight: 600;
+    transition: 0.25s;
+}
+
+.view-all-btn:hover {
+    background: #ff5585;
+    color: #fff;
+}

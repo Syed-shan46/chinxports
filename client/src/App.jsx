@@ -16,6 +16,8 @@ import PrivateRoute from './components/PrivateRoute/PrivateRoute';
 import Popup from './components/Popup';
 import Cart from "./routes/Cart";
 import ScrollToTop from "./components/common/scrollToTop";
+import WeChat from "./components/WeChat/WeChat";
+import CreateSubCategory from "./routes/CreateSubCategory";
 
 function App() {
   const [showPopup, setShowPopup] = useState(true);
@@ -39,6 +41,9 @@ function App() {
             <Route path="/admin-login" element={<AdminLogin />} />
             <Route path="/upload-product" element={<ProductUpload />} />
             <Route path="/cart" element={<Cart />} />
+            <Route path="/wechat" element={<WeChat />} />
+            <Route path="/create-subcategory" element={<CreateSubCategory />} />
+
             {/* <Route
               path="/upload-product"
               element={

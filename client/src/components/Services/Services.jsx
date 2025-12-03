@@ -23,16 +23,15 @@ export default function Services() {
                 <span>WHAT WE DO</span>
               </div>
 
-              <h2 className="section-heading mb-4">Connecting Markets with Quality Imports</h2>
 
               <p className="section-description mb-4">
                 We facilitate smooth trade flows by ensuring competitive
                 pricing, reliable shipping, and end-to-end support for your import needs.
               </p>
 
-              <a href="/contact-us" className="cta-button">
-                Contact Our Experts
-              </a>
+              <Link to="/contact" className="cta-button">
+                Contact
+              </Link>
             </div>
           </div>
 
@@ -47,7 +46,7 @@ export default function Services() {
             </div>
           </div>
 
-          <StepsSection/>
+          <StepsSection />
 
         </div>
       </div>

@@ -22,28 +22,67 @@ module.exports.getCategoriesAndCount = async (req, res) => {
 
 module.exports.createSubCategory = async (req, res) => {
   try {
-    const { name, mainCategoryId } = req.body;
+    const { name, mainCategoryId, imageUrl } = req.body;
 
-    // Create subcategory
+    // ----------------------------
+    // VALIDATE MAIN CATEGORY
+    // ----------------------------
+    const mainCategoryExists = await MainCategory.findById(mainCategoryId);
+    if (!mainCategoryExists) {
+      return res.status(400).json({ error: "Invalid mainCategoryId" });
+    }
+
+    // ----------------------------
+    // HANDLE IMAGE (Multer + JSON)
+    // ----------------------------
+    let finalImage = "";
+
+    // 1️⃣ If multer file uploaded → use that
+    if (req.file) {
+      finalImage = req.file.path;
+    }
+
+    // 2️⃣ If frontend sends JSON imageUrl → override
+    if (typeof imageUrl === "string" && imageUrl.trim() !== "") {
+      finalImage = imageUrl.trim();
+    }
+
+    // 3️⃣ If no image provided → optional placeholder
+    if (!finalImage) {
+      finalImage = "";
+      // You can also add:
+      // finalImage = "/placeholder/subcategory.png";
+    }
+
+    // ----------------------------
+    // CREATE SUBCATEGORY
+    // ----------------------------
     const subCategory = await SubCategory.create({
       name,
-      mainCategory: mainCategoryId
+      mainCategory: mainCategoryId,
+      imageUrl: finalImage
     });
 
-    // Push subcategory into main category
+    // ----------------------------
+    // PUSH TO MAIN CATEGORY
+    // ----------------------------
     await MainCategory.findByIdAndUpdate(mainCategoryId, {
       $push: { subcategories: subCategory._id }
     });
 
-    res.status(201).json({
-      message: "Subcategory created",
+    return res.status(201).json({
+      message: "SubCategory created successfully",
       subCategory
     });
+
   } catch (error) {
     console.error("Error creating subcategory:", error);
-    res.status(500).json({ error: "Something went wrong" });
+    return res.status(500).json({ error: "Server error" });
   }
 };
+
+
+
 
 exports.createMainCategory = async (req, res) => {
   try {

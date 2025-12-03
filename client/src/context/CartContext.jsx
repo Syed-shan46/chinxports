@@ -17,8 +17,8 @@ export function CartProvider({ children }) {
   }, []);
 
   // Add item
-  const add = (productId, quantity) =>
-    cartApi.addToCart(productId, quantity).then((res) => setCart(res.data.cart));
+  const add = (productId, quantity, price) =>
+    cartApi.addToCart(productId, quantity, price).then((res) => setCart(res.data.cart));
 
   // Update item qty
   const update = (productId, quantity) =>

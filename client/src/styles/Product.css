@@ -994,6 +994,27 @@ html {
   padding: 0 !important;
   /* fixed card width */
   /* natural width */
-    flex: 0 0 140px;   /* fixed card width */
+  flex: 0 0 140px;
+  /* fixed card width */
+}
 
+.special-badge {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  background: #5b4836;
+  color: #fff;
+  font-size: 10px;
+  font-weight: 600;
+  padding: 2px 6px;
+  border-radius: 6px;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.special-badge::before {
+  content: "";
+  font-size: 9px;
 }

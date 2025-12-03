@@ -270,6 +270,7 @@ export default function ProductUpload() {
                 <input
                     type="number"
                     name="price"
+                    step="0.01"
                     className="form-control"
                     value={form.price}
                     onChange={handleChange}

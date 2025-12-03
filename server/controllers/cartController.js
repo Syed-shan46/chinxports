@@ -15,7 +15,7 @@ const initCart = (req) => {
 ---------------------------------------------------- */
 exports.addToCart = async (req, res) => {
   try {
-    const { productId, quantity } = req.body;
+    const { productId, quantity, price } = req.body;
 
     if (!req.session.cart) {
       req.session.cart = [];  // initialize ONCE
@@ -42,7 +42,7 @@ exports.addToCart = async (req, res) => {
         productId,
         productName: product.productName,
         imageUrl: product.imageUrl[0] || "",
-        price: convertToINR(product.price),
+        price: price,
         quantity,
       });
     }

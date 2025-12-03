@@ -8,13 +8,13 @@ export default function Contact() {
         <p className="text-muted mb-4">Stay in touch through your favorite platform</p>
 
         <div className="d-flex justify-content-center gap-4 flex-wrap">
-          
+
           {/* WeChat */}
           <div className="connect-card text-center">
             <i className="bi bi-wechat fs-1 text-success"></i>
             <h5 className="mt-2">WeChat</h5>
-            <Link to="/wechat-qr" className="btn btn-wechat btn-sm mt-2">
-              Scan QR
+            <Link to="/wechat" className="btn btn-wechat btn-sm">
+              <span className="text-success">Scan QR</span>
             </Link>
           </div>
 
@@ -26,7 +26,7 @@ export default function Contact() {
               href="https://wa.me/8615669528151"
               target="_blank"
               rel="noopener noreferrer"
-              className="btn btn-whatsapp btn-sm mt-2"
+              className=" btn-sm mt-2 text-decoration-none text-success"
             >
               Chat Now
             </a>
@@ -36,7 +36,7 @@ export default function Contact() {
           <div className="connect-card text-center">
             <i className="bi bi-telephone fs-1 text-dark"></i>
             <h5 className="mt-2">Call Us</h5>
-            <a href="tel:+8615669528151" className="btn btn-phone btn-sm mt-2">
+            <a href="tel:+8615669528151" className="btn btn-phone btn-sm mt-2 text-primary">
               Call Now
             </a>
           </div>
