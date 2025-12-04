@@ -69,7 +69,7 @@ export default function ProductUpload() {
         mainCategory: "",
         subCategory: "",
         imageUrl: [],
-        trending: false,
+        ceramics: false,
         special: false
     });
 
@@ -186,6 +186,7 @@ export default function ProductUpload() {
                 }
             );
 
+            console.log(res.data);
 
 
             /* ----------------------------
@@ -200,7 +201,7 @@ export default function ProductUpload() {
                 mainCategory: "",
                 subCategory: "",
                 imageUrl: [],
-                trending: false,
+                ceramics: false,
                 special: false
             });
 
@@ -211,6 +212,7 @@ export default function ProductUpload() {
             if (fileInputRef.current) {
                 fileInputRef.current.value = "";
             }
+
 
         } catch (error) {
             console.error("UPLOAD ERROR:", error);
@@ -330,29 +332,29 @@ export default function ProductUpload() {
                     ))}
                 </select>
 
-                {/* Trending */}
-                {/* <div className="form-check mt-3">
+                {/* ceramics */}
+                <div className="form-check mt-3">
                     <input
                         type="checkbox"
-                        className="form-check-input"
-                        name="trending"
-                        checked={form.trending}
+                        className="form-check-input py-2 px-2"
+                        name="ceramics"
+                        checked={form.ceramics}
                         onChange={handleChange}
                     />
-                    <label className="form-check-label">Trending</label>
-                </div> */}
+                    <label className="form-check-label">ceramics</label>
+                </div>
 
                 {/* Special */}
-                {/* <div className="form-check mt-2">
+                <div className="form-check mt-2 ">
                     <input
                         type="checkbox"
-                        className="form-check-input"
+                        className="form-check-input py-2 px-2"
                         name="special"
                         checked={form.special}
                         onChange={handleChange}
                     />
                     <label className="form-check-label">Special Product</label>
-                </div> */}
+                </div>
 
                 {/* Submit */}
                 <button

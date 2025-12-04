@@ -25,20 +25,16 @@ export default function CategoryScroller() {
       ))
       : categories.map((cat, idx) => (
         <div key={idx} className="cat-item text-center p-0 m-0 me-3">
-          <div className="cat-img-wrapper d-flex align-items-center justify-content-center"
-            style={{ width: "47px", height: "47px", borderRadius: "14px" }}>
+          <div className="cat-img-wrapper">
+
 
             <img
-              src={cat.imageUrl}
-              alt={cat.name}
-              loading="lazy"
-              className="img-fluid"
-              style={{
-                width: "70%",
-                height: "70%",
-                objectFit: "contain"
-              }}
-            />
+  src={cat.imageUrl}
+  alt={cat.name}
+  className="img-fluid"
+  style={{ width: "70%", height: "70%", objectFit: "contain" }}
+/>
+
           </div>
           <p className="cat-name mt-1 mb-0 text-truncate">
             {cat.name}

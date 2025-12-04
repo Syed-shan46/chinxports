@@ -164,25 +164,34 @@ module.exports.getProductsBySubCategory = async (req, res) => {
 // Get MainCategories with SubCategories included
 exports.getAllMainCategories = async (req, res) => {
   try {
-    // Get all main categories
     const mainCategories = await MainCategory.find().sort({ name: 1 }).lean();
 
-    // For each main category, fetch its subcategories
     const categoriesWithSubs = await Promise.all(
       mainCategories.map(async (main) => {
+
         const subCategories = await SubCategory.find({ mainCategory: main._id })
           .sort({ name: 1 })
           .lean();
-        return { ...main, subCategories };
+
+        const subCategoriesWithCount = await Promise.all(
+          subCategories.map(async (sub) => {
+            const count = await Product.countDocuments({ subCategory: sub._id });
+            return { ...sub, productCount: count };
+          })
+        );
+
+        return { ...main, subCategories: subCategoriesWithCount };
       })
     );
 
     res.json({ success: true, categories: categoriesWithSubs });
+
   } catch (err) {
     console.error(err);
     res.status(500).json({ success: false, message: "Server error" });
   }
 };
+
 
 exports.searchCategories = async (req, res) => {
   try {

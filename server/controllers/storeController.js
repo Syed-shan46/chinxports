@@ -3,6 +3,18 @@ const Product = require("../models/productModel");
 
 module.exports.storePage = async (req, res) => {
   try {
+    let sortQuery = {};
+
+    if (req.query.sort === "latest") {
+      sortQuery = { createdAt: -1 };
+    }
+    if (req.query.sort === "price_asc") {
+      sortQuery = { price: 1 }; // RMB low → high
+    }
+    if (req.query.sort === "price_desc") {
+      sortQuery = { price: -1 }; // RMB high → low
+    }
+
     const mainCategory = req.query.mainCategory || "";
     const subCategory = req.query.subCategory || "";
     const page = Number(req.query.page) || 1;
@@ -22,12 +34,13 @@ module.exports.storePage = async (req, res) => {
     const totalCount = await Product.countDocuments(filter);
 
     const products = await Product.find(filter)
+      .sort(sortQuery)
       .populate("mainCategory", "name")
       .populate("subCategory", "name")
       .skip(skip)
       .limit(limit)
       .sort({ createdAt: -1 });
- 
+
     const totalPages = Math.ceil(totalCount / limit);
 
     res.json({

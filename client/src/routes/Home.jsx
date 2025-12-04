@@ -19,24 +19,15 @@ export default function Home() {
 
       <CategoryScroller/>
       
-
       <HorizontalProductSlider/>
 
       <PromoCards />
-
-
 
       <CategoryTabs />
 
       <BestDeals />
 
-
-      
-
-
       {/* <CardsSection /> */}
-
-      <Services />
 
     </>
   );

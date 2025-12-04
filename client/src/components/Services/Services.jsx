@@ -3,10 +3,10 @@ import StepsSection from "./StepsSection";
 
 export default function Services() {
   return (
-    <section id="services" className="services section mb-5 mt-4">
+    <section id="services" className="services section mb-5 mt-5">
 
       {/* Section Title */}
-      <div className="container section-title">
+      <div className="container section-title mt-5">
         <h2>Services</h2>
         <p>Your trusted partner in sourcing, importing, and delivering quality products worldwide.</p>
       </div>

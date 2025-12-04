@@ -63,8 +63,8 @@ module.exports.getHandpickedProducts = async (req, res) => {
     console.log("Fetching handpicked products...");
 
     const handpickedProducts = await Product.aggregate([
-      { $match: { handpicked: false } },
-      { $sample: { size: 6 } }
+      { $match: { special: true } },
+      { $sample: { size: 10 } }
     ]);
 
     console.log("Raw handpicked products:", handpickedProducts);
@@ -75,9 +75,6 @@ module.exports.getHandpickedProducts = async (req, res) => {
     ]);
 
     console.log("Populated handpicked products:", populatedHandpicked);
-
-
-
     res.json(populatedHandpicked);
   } catch (error) {
     console.error("Error fetching handpicked products:", error);
@@ -201,7 +198,7 @@ module.exports.uploadProduct = async (req, res) => {
       description,
       price,
       tags,
-      trending,
+      ceramics,
       special,
       handpicked,
       mainCategory,
@@ -264,7 +261,7 @@ module.exports.uploadProduct = async (req, res) => {
       price,
       minQty: Number(minQty) || 1,
       tags: tagsArr,
-      trending: trending === "true" || trending === true,
+      ceramics: ceramics === "true" || ceramics === true,
       special: special === "true" || special === true,
       handpicked: handpicked === "true" || handpicked === true,
       imageUrl: finalImages,   // NOW accepts both
@@ -289,3 +286,24 @@ module.exports.uploadProduct = async (req, res) => {
 }
 
 
+
+
+// DELETE /api/products/:id
+module.exports.deleteProduct = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const product = await Product.findById(id);
+    if (!product) {
+      return res.status(404).json({ error: "Product not found" });
+    }
+
+    await Product.findByIdAndDelete(id);
+
+    return res.status(200).json({ message: "Product deleted successfully" });
+
+  } catch (error) {
+    console.error("Delete product error:", error);
+    return res.status(500).json({ error: "Server error while deleting product" });
+  }
+};

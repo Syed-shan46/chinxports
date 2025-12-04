@@ -56,6 +56,8 @@
   scroll-behavior: smooth;
 }
 
+
+
 /*--------------------------------------------------------------
 # General Styling & Shared Classes
 --------------------------------------------------------------*/
@@ -73,7 +75,6 @@ body {
   font-size-adjust: 100%
 } */
 
-
 a {
   color: var(--accent-color);
   text-decoration: none;
@@ -81,7 +82,6 @@ a {
 }
 
 a:hover {
-  color: color-mix(in srgb, var(--accent-color), transparent 25%);
   text-decoration: none;
 }
 
@@ -274,6 +274,7 @@ h6 {
 }
 
 .header .main-header .header-actions .header-action-btn {
+
   position: relative;
   background: none;
   border: none;
@@ -284,7 +285,16 @@ h6 {
 }
 
 .header .main-header .header-actions .header-action-btn i {
+  -webkit-appearance: none !important;
+  appearance: none !important;
+
   font-size: 20px;
+}
+
+
+
+.header .main-header .header-actions .header-action-btn i:focus, i:active {
+  color: none !important;
 }
 
 .header .main-header .header-actions .header-action-btn i.bi-person {
@@ -643,18 +653,13 @@ h6 {
   position: absolute;
   top: 4px;
   right: 15px;
-  background: #ff4d6d;
+  background: var(--theme-primary);
   color: #fff;
   font-size: 11px;
   padding: 0px 2px;
   border-radius: 50px;
   font-weight: 600;
-  box-shadow: 0 2px 6px rgba(255, 77, 109, 0.3);
 }
-
-
-
-
 
 /*--------------------------------------------------------------
 # Navigation Menu
@@ -740,7 +745,7 @@ h6 {
     font-size: 12px;
   }
 
-  .navmenu .dropdown ul a:hover,
+  .navmenu .dropdown,
   .navmenu .dropdown ul .active:hover,
   .navmenu .dropdown ul li:hover>a {
     color: var(--nav-dropdown-hover-color);
@@ -4785,7 +4790,7 @@ h6 {
 /* Tabs */
 .trendy-tabs .nav-link {
   border: none !important;
-  color: #555;
+  color: #fff;
   font-weight: 500;
   padding: 12px;
   transition: color 0.3s;
@@ -5089,4 +5094,8 @@ h6 {
 .portfolio .portfolio-item:hover .portfolio-info {
   opacity: 1;
   bottom: 0;
+}
+
+span:hover {
+  color: none !important;
 }

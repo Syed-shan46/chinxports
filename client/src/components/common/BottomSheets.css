@@ -1,0 +1,90 @@
+/* BottomSheets.css */
+
+/* Backdrop */
+.sheet-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 1400;
+  background: rgba(0,0,0,0.32);
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+/* Panels */
+.sheet-panel {
+  width: 100%;
+  max-width: 980px;
+  background: var(--theme-bg);
+  border-top-left-radius: 14px;
+  border-top-right-radius: 14px;
+  box-shadow: 0 -8px 30px rgba(0,0,0,0.18);
+  transform: translateY(0);
+  animation: sheetUp 280ms cubic-bezier(.2,.9,.3,1);
+}
+
+/* Full height panel for filters */
+.sheet-panel-full {
+  max-height: 85vh;
+  overflow: auto;
+  padding: 12px 16px 16px;
+}
+
+/* Compact panel for sort */
+.sheet-panel-compact {
+  max-height: 46vh;
+  padding: 10px 14px 14px;
+}
+
+/* handle */
+.sheet-handle {
+  width: 48px;
+  height: 6px;
+  background: #ddd;
+  border-radius: 4px;
+  margin: 8px auto;
+}
+
+/* header/body/footer */
+.sheet-header { display:flex; align-items:center; justify-content:space-between; padding: 8px 4px; }
+.sheet-body { padding: 8px 4px; }
+.sheet-footer { display:flex; gap:10px; padding: 12px 4px; justify-content: flex-end; }
+
+/* animation */
+@keyframes sheetUp {
+  from { transform: translateY(30px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+/* Bottom fixed bar (mobile) */
+.bottom-fixed-bar {
+  position: fixed;
+  left: 12px;
+  right: 12px;
+  bottom: 12px;
+  z-index: 1350;
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  pointer-events: auto;
+  transition: transform 240ms ease, opacity 240ms ease;
+}
+.bottom-fixed-bar.hidden {
+  transform: translateY(120%);
+  opacity: 0;
+}
+.bottom-fixed-bar .bar-btn {
+  flex: 1;
+  padding: 10px 14px;
+  border-radius: 10px;
+  background: var(--theme-bg);
+  border: 1px solid var(--theme-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  cursor: pointer;
+}
+
+/* visuals */
+.sheet-label { font-weight: 600; font-size: 13px; margin-bottom: 6px; display:block;}

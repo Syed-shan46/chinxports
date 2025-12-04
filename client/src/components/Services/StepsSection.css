@@ -71,7 +71,8 @@
   display: grid;
   place-items: center;
   transition: all 0.3s ease;
-  box-shadow: 0 5px 15px color-mix(in srgb, var(--accent-color), transparent 70%);
+  box-shadow: 0 8px 25px 
+ color-mix(in srgb, var(--theme-primary), transparent 70%);
 }
 
 .steps .process-item .step-icon i {

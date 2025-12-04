@@ -200,6 +200,10 @@ function ProductDetails() {
           <div className="col-lg-6">
             <div className="product-info-premium mt-3">
               <i className="badge btn-pink">{product.mainCategory.name}</i>
+
+              {product.ceramics && (
+                <span className="badge bg-success text-light ms-2">Ceramics</span>
+              )}
               <i className="badge ms-2 bg-primary">{product.subCategory.name}</i>
               <h1 className="mb-3 fs-sm fw-bold">{product.productName}</h1>
 
@@ -319,8 +323,10 @@ function ProductDetails() {
 
         {/* SIMILAR PRODUCTS */}
         {similarProducts.length > 0 && (
-          <div className="similar-products-section mt-5">
-            <h3 className="mb-3">Similar Products</h3>
+          <div className="scroller-title mt-5">
+             <div className="slider-title-wrapper">
+          <h3 className="slider-title">Similar Products</h3>
+        </div>
 
             <div className="similar-scroll-wrapper">
               {similarProducts.map((p) => (

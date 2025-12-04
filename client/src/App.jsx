@@ -18,6 +18,7 @@ import Cart from "./routes/Cart";
 import ScrollToTop from "./components/common/scrollToTop";
 import WeChat from "./components/WeChat/WeChat";
 import CreateSubCategory from "./routes/CreateSubCategory";
+import Services from "./components/Services/Services";
 
 function App() {
   const [showPopup, setShowPopup] = useState(true);
@@ -47,6 +48,7 @@ function App() {
             <Route path="/cart" element={<Cart />} />
             <Route path="/wechat" element={<WeChat />} />
             <Route path="/create-subcategory" element={<CreateSubCategory />} />
+            <Route path="/services" element={<Services />} />
 
             {/* <Route
               path="/upload-product"

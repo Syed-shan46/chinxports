@@ -58,7 +58,7 @@
 
 .hero-dots {
     position: absolute;
-    bottom: 18px;
+    bottom: 8px;
     width: 100%;
     display: flex;
     justify-content: center;
@@ -86,7 +86,6 @@
 .dot.active {
     width: 26px;
     background: rgba(255, 255, 255, 0.95);
-    box-shadow: 0 0 10px rgba(255, 255, 255, 0.9);
 }
 
 /* Internal loading animation */
@@ -152,7 +151,7 @@
     }
 
     .hero-text h1 {
-        font-size: 1.4rem;
+        font-size: 1.2rem;
     }
 
     .hero-text p {
@@ -166,4 +165,16 @@
     .promo-img {
         height: 150px;
     }
+}
+
+.hero-slide {
+  opacity: 0;
+  transition: opacity 0.5s ease, transform 0.5s ease;
+  position: absolute;
+  width: 100%;
+}
+
+.hero-slide.active {
+  opacity: 1;
+  transform: translateX(0);
 }

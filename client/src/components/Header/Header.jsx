@@ -269,15 +269,7 @@ export default function Header() {
 
               {/* Actions */}
               <div className="header-actions d-flex align-items-center justify-content-end gap-2">
-                <Link to="/cart" className="header-action-btn bag-indicator position-relative">
-                  <i className="bi bi-bag fs-5 me-3"></i>
-
-                  {cart.length > 0 && (
-                    <span className="cart-count-badge">
-                      {cart.length}
-                    </span>
-                  )}
-                </Link>
+                
 
 
                 {/* Theme Toggle */}
@@ -294,13 +286,23 @@ export default function Header() {
                   )}
                 </button>
 
-                <button
+                <Link to="/cart" className="header-action-btn bag-indicator position-relative">
+                  <i className="bi bi-bag fs-5"></i>
+
+                  {cart.length > 0 && (
+                    <span className="cart-count-badge">
+                      {cart.length}
+                    </span>
+                  )}
+                </Link>
+
+                {/* <button
                   className="header-action-btn mobile-search-toggle d-xl-none"
                   data-bs-toggle="collapse"
                   data-bs-target="#mobileSearch"
                 >
                   <i className="bi bi-search"></i>
-                </button>
+                </button> */}
 
 
               </div>
@@ -367,6 +369,7 @@ export default function Header() {
                 <li><NavLink to="/" className={({ isActive }) => "menu-item" + (isActive ? " active" : "")}>Home</NavLink></li>
                 <li><NavLink to="/store" className={({ isActive }) => "menu-item" + (isActive ? " active" : "")}>Store</NavLink></li>
                 <li><NavLink to="/about" className={({ isActive }) => "menu-item" + (isActive ? " active" : "")}>About</NavLink></li>
+                <li><NavLink to="/services" className={({ isActive }) => "menu-item" + (isActive ? " active" : "")}>Service</NavLink></li>
                 <li><NavLink to="/contact" className={({ isActive }) => "menu-item" + (isActive ? " active" : "")} >Contact</NavLink></li>
 
               </ul>
@@ -408,17 +411,17 @@ export default function Header() {
                                   {sub.name}
 
                                 </span>
+                                <span>{sub.productCount}</span>
                               </Link>
                             </li>
                           ))}
                         </ul>
                       )}
-
                     </li>
                   );
                 })}
               </ul>
-            </div>
+            </div>    
           </div>
         </div>
       </div>

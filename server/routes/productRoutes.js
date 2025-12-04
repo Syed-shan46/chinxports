@@ -1,5 +1,5 @@
 var express = require('express');
-const { getAllProducts, getHandpickedProducts, getProductDetail, getSpecialProducts, getTrendingProducts, uploadProduct } = require('../controllers/productController');
+const { getAllProducts, getHandpickedProducts, getProductDetail, getSpecialProducts, getTrendingProducts, uploadProduct, deleteProduct } = require('../controllers/productController');
 var router = express.Router();
 const upload = require('../upload');
 const adminAuth = require('../middlewares/adminAuth');
@@ -34,6 +34,7 @@ router.get("/search", async (req, res) => {
 
 
 router.get('/products', getAllProducts);
+router.delete('/products/delete/:id', deleteProduct);
 
 router.get('/products/handpicked', getHandpickedProducts);
 

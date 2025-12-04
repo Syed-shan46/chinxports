@@ -57,14 +57,11 @@ export default function BestDeals() {
           </div>
         </div>
 
-        <div className="container d-flex justify-content-center mt-4">
+        <div className="container d-flex justify-content-center mt-4 mb-3">
           <Link to="/store" href="/store" className="btn btn-outline px-4 py-2 rounded-3 ">
-            <i className="bi bi-compass  me-2 "></i> Discover the Range
+            <i className="bi bi-compass  me-2"></i> Discover the Range
           </Link>
         </div>
-
-     
-
       </section>
     </>
 
