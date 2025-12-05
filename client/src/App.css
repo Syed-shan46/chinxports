@@ -1562,7 +1562,7 @@ h6 {
   position: absolute;
   width: 40px;
   height: 3px;
-  background-color: var(--accent-color);
+  background-color: var(--theme-primary);
   bottom: 0;
   left: 0;
 }

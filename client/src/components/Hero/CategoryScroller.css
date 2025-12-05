@@ -1,5 +1,4 @@
 .category-scroll-section {
-    margin-top: 12px;
 }
 
 /* Wrapper */
@@ -177,52 +176,74 @@
 /* Skeleton shimmer effect */
 .skeleton-box,
 .skeleton-line {
-  background: #e3e3e3;
+  background: linear-gradient(
+    90deg,
+    rgba(0, 0, 0, 0.06) 0%,
+    rgba(0, 0, 0, 0.08) 50%,
+    rgba(0, 0, 0, 0.06) 100%
+  );
+  background-size: 200% 100%;
+  animation: skeleton-shimmer 1.5s ease-in-out infinite;
   border-radius: 8px;
   position: relative;
   overflow: hidden;
 }
 
 .skeleton-box {
-    background: #e3e3e3;
-    border-radius: 14px;
-    width: 47px;
-    height: 47px;
-    position: relative;
-    overflow: hidden;
-    margin: 0 auto;
+  width: 47px;
+  height: 47px;
+  border-radius: 14px;
+  margin: 0 auto;
 }
 
 .skeleton-line {
-    background: #e3e3e3;
-    width: 60%;
-    height: 10px;
-    border-radius: 6px;
-    margin-top: 6px;
-    position: relative;
-    overflow: hidden;
+  width: 60%;
+  height: 10px;
+  border-radius: 6px;
+  margin: 6px auto 0;
+  display: block;
+}
+
+/* Responsive skeleton sizes */
+@media (min-width: 768px) and (max-width: 1024px) {
+  .skeleton-box {
+    width: 60px;
+    height: 60px;
+    border-radius: 16px;
+  }
+  .skeleton-line {
+    height: 11px;
+  }
+}
+
+@media (min-width: 1024px) and (max-width: 1440px) {
+  .skeleton-box {
+    width: 80px;
+    height: 80px;
+    border-radius: 18px;
+  }
+  .skeleton-line {
+    height: 12px;
+  }
+}
+
+@media (min-width: 1440px) {
+  .skeleton-box {
+    width: 95px;
+    height: 95px;
+    border-radius: 22px;
+  }
+  .skeleton-line {
+    height: 14px;
+  }
 }
 
 /* Shimmer Animation */
-.skeleton-box::after,
-.skeleton-line::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: -100%;
-  height: 100%;
-  width: 100%;
-  background: linear-gradient(
-    90deg,
-    rgba(255, 255, 255, 0) 0%,
-    rgba(255, 255, 255, 0.6) 50%,
-    rgba(255, 255, 255, 0) 100%
-  );
-  animation: shimmer 1.4s infinite;
-}
-
-@keyframes shimmer {
+@keyframes skeleton-shimmer {
+  0% {
+    background-position: -200% 0;
+  }
   100% {
-    left: 100%;
+    background-position: 200% 0;
   }
 }

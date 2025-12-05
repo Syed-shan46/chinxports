@@ -46,7 +46,7 @@ export default function PromoCards() {
   useEffect(() => {
     const interval = setInterval(() => {
       setIndex((prev) => (prev + 1) % promoCards.length);
-    }, 3000);
+    }, 6000);
 
     return () => clearInterval(interval);
   }, []);

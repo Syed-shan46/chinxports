@@ -15,7 +15,8 @@ export default function CategoryScroller() {
           setCategories(res.data.subcategories);
         }
       })
-      .finally(() => setLoading(false));  // ✅ FIXED
+      // show 2 seconds loading for better UX
+      .finally(() => setTimeout(() => setLoading(false), 2000));
   }, []);
 
   return (
@@ -33,14 +34,10 @@ export default function CategoryScroller() {
               // ✅ Skeleton Loader
               [...Array(10)].map((_, i) => (
                 <div key={i} className="cat-item text-center p-0 m-0 me-3">
-                  <div
-                    className="cat-img-wrapper skeleton-box"
-                    style={{ width: "47px", height: "47px", borderRadius: "14px" }}
-                  ></div>
-
-                  <p className="cat-name mt-2 mb-0">
-                    <span className="skeleton-line"></span>
-                  </p>
+                  <div className="cat-img-wrapper">
+                    <div className="skeleton-box"></div>
+                  </div>
+                  <div className="skeleton-line"></div>
                 </div>
               ))
             ) : (

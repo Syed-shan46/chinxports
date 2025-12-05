@@ -6,6 +6,7 @@ import { BASE_URL } from "../config";
 import { useCart } from "../context/CartContext";
 import "../components/product/ProductCard"
 import ProductCard from "../components/product/ProductCard";
+import ProductDetailsSkeleton from "../components/product/ProductDetailsSkeleton";
 import useRMBRate from "../hooks/useRMBRate";
 import { convertToINR } from "../utils/priceUtils";
 
@@ -127,14 +128,9 @@ function ProductDetails() {
   /* ======================
      LOADING STATE
      ====================== */
-  if (!product)
-    return (
-      <div className="loading-container">
-        <div className="spinner-border col-pink" role="status">
-          <span className="visually-hidden">Loading...</span>
-        </div>
-      </div>
-    );
+  if (!product) {
+    return <ProductDetailsSkeleton />;
+  }
 
   /* ======================
      SAFE PRICE VARIABLE

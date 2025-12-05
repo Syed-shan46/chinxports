@@ -7,7 +7,11 @@ import useRMBRate from "../../hooks/useRMBRate";
 export default function ProductCard({ product, colLg = 2, col = 4, cartBtnPdg = "10px 15px", specialBadgeText = "Special", specialBadge = false }) {
   const { add, cart, removeItem } = useCart();
 
+
   const rmbRate = useRMBRate();  // 🔥 LIVE RMB RATE HERE
+
+  const isPriceLoading = !rmbRate || !product.price;
+
 
 
   const isInCart = cart.some(item => item.productId === product._id);
@@ -49,7 +53,12 @@ export default function ProductCard({ product, colLg = 2, col = 4, cartBtnPdg = 
           </div>
 
           <p className="text-dark fw-semibold mb-0">
-            ₹{priceINR.toLocaleString()}/-
+            <p className="text-dark fw-semibold mb-0">
+              {!rmbRate || !product.price
+                ? "•••• /-"                     // ⭐ Loading placeholder
+                : `₹${priceINR.toLocaleString()}/-`}
+            </p>
+
           </p>
           <p className="cart-moq mb-0 fs-x">MOQ: <span className="cart-moq-value">6</span></p>
 

@@ -4,25 +4,35 @@ import "./Hero.css";
 
 export default function Hero() {
  const banners = [
+   {
+    img: "/images/banners/banner17.webp",
+  },
   {
-    img: "/images/banners/banner9.webp",
+    img: "/images/banners/banner15.webp",
+  },
+  {
+    img: "/images/banners/banner16.webp",
+  },
+  {
+    img: "/images/banners/banner14.webp",
     title: "Premium Anti-Tarnish Jewelry",
     subtitle: "Long-lasting shine • Moisture resistant",
     link: '/store'
   },
   {
-    img: "/images/banners/banner7.webp",
+    img: "/images/banners/banner12.webp",
     title: "Anti-Tarnish Wholesale Collection",
     subtitle: "MOQ from 6 pieces • Superior plating ",
     link: '/store'
-
   },
   {
-    img: "/images/banners/banner8.webp",
+    img: "/images/banners/banner13.webp",
     title: "Top Selling Anti-Tarnish Designs",
     subtitle: "Durable finish • Trend-ready ",
     link: '/store'
-  }
+  },
+  
+ 
 ];
 
 
@@ -58,7 +68,7 @@ export default function Hero() {
   useEffect(() => {
     const interval = setInterval(() => {
       setIndex((prev) => (prev + 1) % banners.length);
-    }, 3000);
+    }, 6000);
 
     return () => clearInterval(interval);
   }, []);
@@ -78,13 +88,7 @@ export default function Hero() {
             className={`hero-slide ${i === index ? "active" : ""}`}
           >
             <img src={b.img} alt="" className="hero-img" />
-            <div className="hero-text">
-              <h1>{b.title}</h1>
-              <p>{b.subtitle}</p>
-              <Link to={b.link} className="promo-btn">
-              Shop Now
-            </Link>
-            </div>
+            
           </div>
         ))}
 

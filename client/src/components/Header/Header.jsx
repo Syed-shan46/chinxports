@@ -237,7 +237,7 @@ export default function Header() {
                 data-bs-toggle="offcanvas"
                 data-bs-target="#mobileSidebar"
               >
-                <i className="bi bi-list fs-3"></i>
+                <i className="bi bi-list fs-4"></i>
               </button>
 
               {/* Logo */}

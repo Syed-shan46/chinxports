@@ -3,6 +3,7 @@ import { useSearchParams } from "react-router-dom";
 import { useEffect, useState, useRef } from "react";
 import axios from "axios";
 import ProductCard from "../components/product/ProductCard";
+import StoreProductsSkeleton from "../components/common/StoreProductsSkeleton";
 import { BASE_URL } from "../config";
 import "../../src/styles/Store.css";
 import FilterBottomSheet from "../components/common/FilterBottomSheet";
@@ -13,16 +14,17 @@ import "../components/common/BottomSheets.css"; // ensure this is included
 export default function Store() {
 
 
-  // keep your existing state and logic
   const [mainCats, setMainCats] = useState([]);
   const [subCats, setSubCats] = useState([]);
   const [products, setProducts] = useState([]);
   const [searchParams, setSearchParams] = useSearchParams();
   const [selectedMainCat, setSelectedMainCat] = useState(searchParams.get("category") || "");
   const [selectedSubCat, setSelectedSubCat] = useState(searchParams.get("sub") || "");
-  const [currentPage, setCurrentPage] = useState(Number(searchParams.get("page")) || 1);
-  const [totalPages, setTotalPages] = useState(1);
-  const [loading, setLoading] = useState(true);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [hasMore, setHasMore] = useState(true);
+  const [loading, setLoading] = useState(false);
+  const [initialLoading, setInitialLoading] = useState(true);
+  const loadingRef = useRef(false);
 
   const API_BASE_URL = `${BASE_URL}/api`;
 
@@ -62,9 +64,8 @@ export default function Store() {
       .catch(() => console.log("Failed to fetch main categories"));
   }, []);
 
-  // update state when URL changes
+  // update state when URL changes - reset for new filters
   useEffect(() => {
-    setCurrentPage(Number(searchParams.get("page")) || 1);
     setSelectedMainCat(searchParams.get("category") || "");
     setSelectedSubCat(searchParams.get("sub") || "");
     setSortValue(searchParams.get("sort") || "");
@@ -77,7 +78,10 @@ export default function Store() {
       trending: searchParams.get("trending") || "",
       special: searchParams.get("special") || ""
     });
+    // Reset pagination and products when filters change
     setCurrentPage(1);
+    setProducts([]);
+    setHasMore(true);
   }, [searchParams]);
 
   // Fetch Subcategories When Main Category Selected
@@ -97,17 +101,25 @@ export default function Store() {
     if (selectedSubCat) params.sub = selectedSubCat;
 
     params.sort = value;
-    params.page = 1;
 
     setSortValue(value);
     setSearchParams(params);
+    
+    // Scroll to top when sort is applied
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
 
-  // Fetch Products
-  useEffect(() => {
+  // Fetch Products with pagination
+  const fetchProducts = async (page) => {
+    if (loadingRef.current) return;
+    
+    loadingRef.current = true;
     setLoading(true);
-    const params = new URLSearchParams(searchParams);
+
+    const params = new URLSearchParams();
+    params.set("page", page);
+    params.set("limit", 12);
     if (selectedMainCat) params.set("mainCategory", selectedMainCat);
     if (selectedSubCat) params.set("subCategory", selectedSubCat);
     if (sortValue) params.set("sort", sortValue);
@@ -117,14 +129,59 @@ export default function Store() {
     if (filterValues.trending) params.set("trending", filterValues.trending);
     if (filterValues.special) params.set("special", filterValues.special);
 
-    axios.get(`${API_BASE_URL}/store?${params.toString()}`)
-      .then((res) => {
-        setProducts(res.data.products || []);
-        setTotalPages(res.data.totalPages || 1);
-      })
-      .catch(() => setProducts([]))
-      .finally(() => setLoading(false));
-  }, [searchParams]);
+    try {
+      const res = await axios.get(`${API_BASE_URL}/store?${params.toString()}`);
+      const newProducts = res.data.products || [];
+      
+      if (page === 1) {
+        setProducts(newProducts);
+      } else {
+        setProducts(prev => [...prev, ...newProducts]);
+      }
+      
+      setHasMore(newProducts.length >= 12);
+      setCurrentPage(page);
+    } catch (error) {
+      console.error("Error fetching products:", error);
+      setHasMore(false);
+    } finally {
+      setLoading(false);
+      setInitialLoading(false);
+      loadingRef.current = false;
+    }
+  };
+
+  // Initial fetch when filters change
+  useEffect(() => {
+    setInitialLoading(true);
+    setProducts([]);
+    setCurrentPage(1);
+    setHasMore(true);
+    fetchProducts(1);
+  }, [selectedMainCat, selectedSubCat, sortValue, filterValues.priceMin, filterValues.priceMax, filterValues.moq, filterValues.trending, filterValues.special]);
+
+  // Infinite scroll observer
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting && !loadingRef.current && hasMore && !initialLoading) {
+          fetchProducts(currentPage + 1);
+        }
+      },
+      { threshold: 0.1, rootMargin: '100px' }
+    );
+
+    const sentinel = document.getElementById("scroll-sentinel");
+    if (sentinel) {
+      observer.observe(sentinel);
+    }
+
+    return () => {
+      if (sentinel) {
+        observer.unobserve(sentinel);
+      }
+    };
+  }, [currentPage, hasMore, initialLoading]);
 
   // Bottom bar show/hide on scroll (mobile)
   useEffect(() => {
@@ -200,6 +257,9 @@ export default function Store() {
 
   // 4. Close sheet
   setFilterOpen(false);
+  
+  // 5. Scroll to top when filters are applied
+  window.scrollTo({ top: 0, behavior: 'smooth' });
 };
 
 
@@ -263,19 +323,16 @@ export default function Store() {
             <section className="category-product-list section">
               <div className="row g-4">
 
-                {loading && (
-                  <div className="loading-container">
-                    <div className="spinner-border col-pink" role="status">
-                      <span className="visually-hidden">Loading...</span>
-                    </div>
-                  </div>
+                {initialLoading && (
+                  <StoreProductsSkeleton count={12} colLg={3} />
                 )}
-                {!loading && products.length > 0 &&
+                
+                {!initialLoading && products.length > 0 &&
                   products.map((product) => (
                     <ProductCard key={product._id} product={product} cartBtnPdg="5px 18px" colLg={3} />
                   ))}
 
-                {!loading && products.length === 0 && (
+                {!initialLoading && products.length === 0 && (
                   <div className="col-12 text-center py-5">
                     <h4>No Products Found</h4>
                     <p className="text-muted">Try another filter.</p>
@@ -283,32 +340,26 @@ export default function Store() {
                 )}
 
               </div>
+
+              {/* Infinite scroll sentinel */}
+              {hasMore && products.length > 0 && (
+                <div id="scroll-sentinel" style={{ height: '20px', margin: '40px 0' }}>
+                  {loading && (
+                    <div className="d-flex justify-content-center">
+                      <div className="spinner-border col-pink" role="status">
+                        <span className="visually-hidden">Loading more...</span>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              )}
+
+              {!hasMore && products.length > 0 && (
+                <div className="text-center py-4 text-muted">
+                  <p>You've reached the end</p>
+                </div>
+              )}
             </section>
-
-            {/* Pagination - same as before */}
-            {!loading && totalPages > 1 && (
-              <nav className="d-flex justify-content-center mt-4">
-                <ul className="pagination">
-                  {currentPage > 1 && (
-                    <li className="page-item">
-                      <button className="page-link" onClick={() => { setCurrentPage(currentPage - 1); window.scrollTo({ top: 0, behavior: "smooth" }); }}>&laquo;</button>
-                    </li>
-                  )}
-
-                  {[...Array(totalPages)].map((_, i) => (
-                    <li key={i} className={`page-item ${currentPage === i + 1 ? "active" : ""}`}>
-                      <button className="page-link" onClick={() => { setCurrentPage(i + 1); window.scrollTo({ top: 0, behavior: "smooth" }); }}>{i + 1}</button>
-                    </li>
-                  ))}
-
-                  {currentPage < totalPages && (
-                    <li className="page-item">
-                      <button className="page-link" onClick={() => { setCurrentPage(currentPage + 1); window.scrollTo({ top: 0, behavior: "smooth" }); }}>&raquo;</button>
-                    </li>
-                  )}
-                </ul>
-              </nav>
-            )}
 
           </div>
         </div>

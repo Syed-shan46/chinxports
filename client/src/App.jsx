@@ -16,19 +16,27 @@ import PrivateRoute from './components/PrivateRoute/PrivateRoute';
 import Popup from './components/Popup';
 import Cart from "./routes/Cart";
 import ScrollToTop from "./components/common/scrollToTop";
+import ScrollToTopButton from "./components/common/ScrollToTopButton";
+import OffersWidget from "./components/common/OffersWidget";
 import WeChat from "./components/WeChat/WeChat";
 import CreateSubCategory from "./routes/CreateSubCategory";
 import Services from "./components/Services/Services";
 
 function App() {
-  const [showPopup, setShowPopup] = useState(true);
+  const [showPopup, setShowPopup] = useState(false);
+
+  useEffect(() => {
+    // Show popup after 15 seconds
+    const timer = setTimeout(() => {
+      setShowPopup(true);
+    }, 15000);
+
+    return () => clearTimeout(timer);
+  }, []);
 
   const handleClosePopup = () => {
     setShowPopup(false);
   };
-
-  
-
   return (
     <AdminProvider>
       {showPopup && <Popup handleClose={handleClosePopup} />}
@@ -36,7 +44,6 @@ function App() {
         <MainLayout>
           <ScrollToTop />
           <Routes>
-
             <Route path="/" element={<Home />} />
             <Route path="/store" element={<Store />} />
             <Route path="/products/product-details/:id" element={<ProductDetails />} />
@@ -60,6 +67,8 @@ function App() {
             /> */}
 
           </Routes>
+          <ScrollToTopButton />
+          {/* <OffersWidget /> */}
         </MainLayout>
       </BrowserRouter>
     </AdminProvider>

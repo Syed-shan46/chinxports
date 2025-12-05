@@ -60,7 +60,7 @@ app.use('/api/admin', adminRoutes);
 app.use('/api/cart', cartRoutes);
 app.use("/api/excel", excelRoutes);
 app.use("/api/rate", rateRoutes);
-app.use('/api/', mailRoutes);
+app.use('/api', mailRoutes);
 app.use("/excel", express.static("public/excel"));
 
 

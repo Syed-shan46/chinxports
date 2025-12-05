@@ -144,7 +144,7 @@ module.exports.getProductsBySubCategory = async (req, res) => {
   try {
     const { subCatId } = req.params;
 
-    console.log("Requested SubCategory:", subCatId);
+    
 
     const products = await Product.find({
       subCategory: subCatId
