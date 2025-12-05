@@ -139,8 +139,8 @@ export default function Cart() {
                 <div>
                     <h5 className="cart-info-title mb-1"> <span className="bi bi-info-circle cart-info-icon"></span> Important Information</h5>
                     <p className="cart-info-text mb-0">
-                        When you proceed to checkout, your cart will be redirected to WhatsApp with all item
-                        details pre-filled. Our team will assist you with order confirmation and payment.
+                        When you proceed to checkout, your order details will be sent via email to our team.
+                        We will review your order and contact you shortly for confirmation and payment details.
                     </p>
                 </div>
             </div>
@@ -152,7 +152,7 @@ export default function Cart() {
                     rows="3"
                     value={userNote}
                     onChange={(e) => setUserNote(e.target.value)}
-                    placeholder="Add any instructions (e.g., color, size, delivery note). This will be added to your WhatsApp message."
+                    placeholder="Add any special instructions or requirements (e.g., color preferences, size specifications, delivery notes)."
                 ></textarea>
             </div>
 
@@ -169,7 +169,7 @@ export default function Cart() {
                             onClick={() => setShowUserPopup(true)}
                             className="btn btn-pink  px-5 py-2 text-light  w-100"
                         >
-                            <span className="bi bi-mail"></span> Submit Your ROder
+                            <span className="bi bi-envelope"></span> Submit Your Order
                         </button>
 
 
