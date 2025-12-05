@@ -88,13 +88,14 @@ module.exports.getHandpickedProducts = async (req, res) => {
   }
 };
 
-module.exports.getTrendingProducts = async (req, res) => {
+// Trending = ceramics
+module.exports.getCeramicsProducts = async (req, res) => {
   try {
     console.log("Fetching trending products...");
 
     const trendingProducts = await Product.aggregate([
-      { $match: { trending: true } },
-      { $sample: { size: 4 } }
+      { $match: { ceramics: true } },
+      { $sample: { size: 10 } }
     ]);
 
     console.log("Raw trending products:", trendingProducts);

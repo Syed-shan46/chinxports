@@ -130,7 +130,7 @@ function ProductDetails() {
   if (!product)
     return (
       <div className="loading-container">
-        <div className="spinner-border text-primary" role="status">
+        <div className="spinner-border col-pink" role="status">
           <span className="visually-hidden">Loading...</span>
         </div>
       </div>

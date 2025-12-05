@@ -1,5 +1,5 @@
 var express = require('express');
-const { getAllProducts, getHandpickedProducts, getProductDetail, getSpecialProducts, getTrendingProducts, uploadProduct, deleteProduct } = require('../controllers/productController');
+const { getAllProducts, getHandpickedProducts, getProductDetail, getSpecialProducts, getTrendingProducts, uploadProduct, deleteProduct, getCeramicsProducts } = require('../controllers/productController');
 var router = express.Router();
 const upload = require('../upload');
 const adminAuth = require('../middlewares/adminAuth');
@@ -40,7 +40,7 @@ router.get('/products/handpicked', getHandpickedProducts);
 
 router.get('/products/special', getSpecialProducts);
 
-router.get('/products/trending', getTrendingProducts);
+router.get('/products/trending',getCeramicsProducts);
 
 router.get('/products/:id', getProductDetail);
 

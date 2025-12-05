@@ -82,7 +82,7 @@ export default function CategoryTabs() {
         <section id="portfolio" className="portfolio section mt-3">
             <div className="container">
                 <div className="container section-title" data-aos="fade-up">
-                    <h2>Categories</h2>
+                    <h2>Best Picks</h2>
                 </div>
                 <div className="isotope-layout">
 
@@ -125,15 +125,10 @@ export default function CategoryTabs() {
 
                     </section>
 
-
-
-
-
-
                 </div>
             </div>
 
-            <div className="container d-flex justify-content-center mt-4">
+            <div className="container d-flex justify-content-center mt-4 mb-4">
                 <Link to="/store" className="btn btn-outline px-4 py-2 rounded-3 fs-sm">
                     <i className="bi bi-box-seam me-2 "></i> View All
                 </Link>

@@ -4,7 +4,7 @@ import { convertToINR } from "../../utils/priceUtils";
 import useRMBRate from "../../hooks/useRMBRate";
 
 
-export default function ProductCard({ product, col = 4, cartBtnPdg = "10px 15px", specialBadge = false }) {
+export default function ProductCard({ product, colLg = 2, col = 4, cartBtnPdg = "10px 15px", specialBadgeText = "Special", specialBadge = false }) {
   const { add, cart, removeItem } = useCart();
 
   const rmbRate = useRMBRate();  // 🔥 LIVE RMB RATE HERE
@@ -16,7 +16,7 @@ export default function ProductCard({ product, col = 4, cartBtnPdg = "10px 15px"
   const priceINR = convertToINR(product.price, rmbRate);
 
   return (
-    <div className={`col-lg-2 col-${col} col-md-6`}>
+    <div className={`col-lg-${colLg} col-${col} col-md-6`}>
 
       <div className="product-item" data-aos="fade-up" data-aos-delay="100">
         <Link to={`/products/product-details/${product._id}`}
@@ -25,7 +25,12 @@ export default function ProductCard({ product, col = 4, cartBtnPdg = "10px 15px"
           <div className="product-image" style={{ borderRadius: "15px" }}>
 
             {/* ⭐ Special Badge */}
-            {specialBadge && <div className="special-badge">★ Special</div>}
+            {specialBadge && (
+              <div className="special-badge">
+                ★ {specialBadgeText}
+              </div>
+            )}
+
 
             {product.featured && <div className="product-badge">Limited</div>}
 

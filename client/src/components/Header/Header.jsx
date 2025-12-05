@@ -246,7 +246,7 @@ export default function Header() {
               </Link>
 
               {/* Desktop Search */}
-              <form className="search-form desktop-search-form position-relative" autoComplete="off">
+              {/* <form className="search-form desktop-search-form position-relative" autoComplete="off">
                 <div className="input-group">
                   <input
                     ref={desktopInputRef}
@@ -265,7 +265,7 @@ export default function Header() {
                   id="navbarSearchDropdown"
                   className="dropdown-menu p-2"
                 ></div>
-              </form>
+              </form> */}
 
               {/* Actions */}
               <div className="header-actions d-flex align-items-center justify-content-end gap-2">

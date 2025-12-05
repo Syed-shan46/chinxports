@@ -5,19 +5,23 @@ import "./Hero.css";
 export default function Hero() {
  const banners = [
   {
-    img: "/images/banners/banner9.png",
+    img: "/images/banners/banner9.webp",
     title: "Premium Anti-Tarnish Jewelry",
-    subtitle: "Long-lasting shine • Moisture resistant "
+    subtitle: "Long-lasting shine • Moisture resistant",
+    link: '/store'
   },
   {
-    img: "/images/banners/banner7.png",
+    img: "/images/banners/banner7.webp",
     title: "Anti-Tarnish Wholesale Collection",
-    subtitle: "MOQ from 6 pieces • Superior plating "
+    subtitle: "MOQ from 6 pieces • Superior plating ",
+    link: '/store'
+
   },
   {
-    img: "/images/banners/banner8.png",
+    img: "/images/banners/banner8.webp",
     title: "Top Selling Anti-Tarnish Designs",
-    subtitle: "Durable finish • Trend-ready "
+    subtitle: "Durable finish • Trend-ready ",
+    link: '/store'
   }
 ];
 

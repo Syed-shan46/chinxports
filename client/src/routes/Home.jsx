@@ -7,6 +7,7 @@ import PromoCards from "../components/PromoCards/PromoCards";
 import HorizontalProductSlider from "../components/HorizontalProductSlider/HorizontalProductSlider";
 import BannerSlider from "../components/Hero/BannerSlider";
 import CategoryScroller from "../components/Hero/CategroyScroller";
+import HorizontalCeramicsSlider from "../components/HorizontalProductSlider/HorizontalCeramicsSlider";
 
 
 export default function Home() {
@@ -19,13 +20,16 @@ export default function Home() {
 
       <CategoryScroller/>
       
+      
       <HorizontalProductSlider/>
+
+      <HorizontalCeramicsSlider/>
 
       <PromoCards />
 
-      <CategoryTabs />
+      <CategoryTabs/>
 
-      <BestDeals />
+      {/* <BestDeals /> */}
 
       {/* <CardsSection /> */}
 

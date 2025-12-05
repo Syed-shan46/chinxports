@@ -85,21 +85,21 @@
 /* ACTIVE DOT — expands + glow */
 .dot.active {
     width: 26px;
-    background: rgba(255, 255, 255, 0.95);
+    border-radius: 8px; /* ⭐ fixes left clipping */
 }
 
-/* Internal loading animation */
 .dot.active::after {
     content: "";
     position: absolute;
-    left: 0;
+    left: -2px;  /* ⭐ ensures perfect left start */
     top: 0;
     height: 100%;
     width: 0%;
-    background:var(--theme-primary); /* indicator bar color */
-    border-radius: 50px;
+    background: var(--theme-primary);
+    border-radius: 8px;
     animation: fillBar 3s linear forwards;
 }
+
 
 /* Animation fills based on slide duration */
 @keyframes fillBar {

@@ -267,7 +267,7 @@ body.dark-theme .nav-link {
 }
 
 .col-pink {
-  color: #ff4d6d !important;
+  color: var(--theme-primary) !important;
 }
 
 [data-bs-theme="dark"] .text-dark,

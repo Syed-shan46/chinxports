@@ -5,14 +5,14 @@ import axios from "axios";
 import ProductCard from "../components/product/ProductCard";
 import { BASE_URL } from "../config";
 import "../../src/styles/Store.css";
-import FilterBottomSheet from  "../components/common/FilterBottomSheet";
+import FilterBottomSheet from "../components/common/FilterBottomSheet";
 import SortBottomSheet from "../components/common/SortBottomSheet";
 import "../components/common/BottomSheets.css"; // ensure this is included
 // ... other imports
 
 export default function Store() {
 
-  
+
   // keep your existing state and logic
   const [mainCats, setMainCats] = useState([]);
   const [subCats, setSubCats] = useState([]);
@@ -91,24 +91,23 @@ export default function Store() {
   }, [selectedMainCat, mainCats]);
 
   const handleSortApply = (value) => {
-  const params = {};
+    const params = {};
 
-  if (selectedMainCat) params.category = selectedMainCat;
-  if (selectedSubCat) params.sub = selectedSubCat;
+    if (selectedMainCat) params.category = selectedMainCat;
+    if (selectedSubCat) params.sub = selectedSubCat;
 
-  params.sort = value;
-  params.page = 1;
+    params.sort = value;
+    params.page = 1;
 
-  setSortValue(value);
-  setSearchParams(params);
-};
+    setSortValue(value);
+    setSearchParams(params);
+  };
 
 
   // Fetch Products
   useEffect(() => {
     setLoading(true);
-    const params = new URLSearchParams();
-    params.set("page", currentPage);
+    const params = new URLSearchParams(searchParams);
     if (selectedMainCat) params.set("mainCategory", selectedMainCat);
     if (selectedSubCat) params.set("subCategory", selectedSubCat);
     if (sortValue) params.set("sort", sortValue);
@@ -125,44 +124,44 @@ export default function Store() {
       })
       .catch(() => setProducts([]))
       .finally(() => setLoading(false));
-  }, [currentPage, selectedMainCat, selectedSubCat, sortValue, filterValues]);
+  }, [searchParams]);
 
   // Bottom bar show/hide on scroll (mobile)
   useEffect(() => {
-  if (!isMobile) return;
+    if (!isMobile) return;
 
-  let lastY = window.scrollY;
-  let ticking = false;
+    let lastY = window.scrollY;
+    let ticking = false;
 
-  function update() {
-    const currentY = window.scrollY;
-    const diff = currentY - lastY;
+    function update() {
+      const currentY = window.scrollY;
+      const diff = currentY - lastY;
 
-    // 🔥 More sensitive threshold for slight scroll
-    const threshold = 3;
+      // 🔥 More sensitive threshold for slight scroll
+      const threshold = 3;
 
-    if (diff > threshold) {
-      // scrolling down → hide bar
-      setBottomHidden(true);
-    } else if (diff < -threshold) {
-      // scrolling up → show bar
-      setBottomHidden(false);
+      if (diff > threshold) {
+        // scrolling down → hide bar
+        setBottomHidden(true);
+      } else if (diff < -threshold) {
+        // scrolling up → show bar
+        setBottomHidden(false);
+      }
+
+      lastY = currentY;
+      ticking = false;
     }
 
-    lastY = currentY;
-    ticking = false;
-  }
-
-  function onScroll() {
-    if (!ticking) {
-      window.requestAnimationFrame(update);
-      ticking = true;
+    function onScroll() {
+      if (!ticking) {
+        window.requestAnimationFrame(update);
+        ticking = true;
+      }
     }
-  }
 
-  window.addEventListener("scroll", onScroll, { passive: true });
-  return () => window.removeEventListener("scroll", onScroll);
-}, [isMobile]);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, [isMobile]);
 
 
   // update search params nicely
@@ -189,9 +188,21 @@ export default function Store() {
   };
 
   const applyFilterCallback = (filters) => {
-    setFilterValues(filters);
-    applyFiltersToURL(filters);
-  };
+  // 1. Update URL
+  applyFiltersToURL(filters);
+
+  // 2. Sync store states instantly (no refresh required)
+  setSelectedMainCat(filters.category || "");
+  setSelectedSubCat(filters.sub || "");
+
+  // 3. Update internal filterValues state
+  setFilterValues(filters);
+
+  // 4. Close sheet
+  setFilterOpen(false);
+};
+
+
 
   const openFilter = () => setFilterOpen(true);
   const openSort = () => setSortOpen(true);
@@ -261,7 +272,7 @@ export default function Store() {
                 )}
                 {!loading && products.length > 0 &&
                   products.map((product) => (
-                    <ProductCard key={product._id} product={product} cartBtnPdg="5px 18px" />
+                    <ProductCard key={product._id} product={product} cartBtnPdg="5px 18px" colLg={3} />
                   ))}
 
                 {!loading && products.length === 0 && (
@@ -324,12 +335,12 @@ export default function Store() {
         onApply={applyFilterCallback}
       />
 
-     <SortBottomSheet
-  open={sortOpen}
-  onClose={() => setSortOpen(false)}
-  initialSort={sortValue}
-  onApply={handleSortApply}
-/>
+      <SortBottomSheet
+        open={sortOpen}
+        onClose={() => setSortOpen(false)}
+        initialSort={sortValue}
+        onApply={handleSortApply}
+      />
 
 
     </main>
