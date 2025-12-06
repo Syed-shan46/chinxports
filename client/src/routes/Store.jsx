@@ -45,6 +45,9 @@ export default function Store() {
     special: searchParams.get("special") || ""
   });
 
+  // Grid columns toggle for mobile (3 or 2 items per row)
+  const [gridColumns, setGridColumns] = useState(3);
+
   // detect mobile viewport
   useEffect(() => {
     function update() {
@@ -320,6 +323,93 @@ export default function Store() {
 
           {/* Products Area */}
           <div className={isMobile ? "col-12" : "col-lg-8"}>
+            {/* Mobile Filter/Sort/Grid Bar */}
+            {isMobile && (
+              <div className="mobile-toolbar" style={{
+                position: 'sticky',
+                zIndex: 100,
+                backgroundColor: 'var(--theme-bg)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                gap: '10px',
+                marginTop: '20px'
+              }}>
+                <div style={{ display: 'flex', gap: '8px', flex: 1 }}>
+                  <button
+                    className="btn btn-sm"
+                    onClick={openFilter}
+                    style={{
+                      flex: 1,
+                      backgroundColor: 'var(--theme-card-bg)',
+                      color: 'var(--theme-text)',
+                      border: '1px solid var(--theme-border)',
+                      borderRadius: '12px',
+                      padding: '10px 16px',
+                      fontSize: '14px',
+                      fontWeight: '500',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      gap: '8px',
+                      transition: 'all 0.2s ease'
+                    }}
+                  >
+                    <i className="bi bi-funnel" style={{ fontSize: '16px' }}></i>
+                    <span>Filter</span>
+                  </button>
+                  
+                  <button
+                    className="btn btn-sm"
+                    onClick={openSort}
+                    style={{
+                      flex: 1,
+                      backgroundColor: 'var(--theme-card-bg)',
+                      color: 'var(--theme-text)',
+                      border: '1px solid var(--theme-border)',
+                      borderRadius: '12px',
+                      padding: '10px 16px',
+                      fontSize: '14px',
+                      fontWeight: '500',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      gap: '8px',
+                      transition: 'all 0.2s ease'
+                    }}
+                  >
+                    <i className="bi bi-arrow-down-up" style={{ fontSize: '16px' }}></i>
+                    <span>Sort</span>
+                  </button>
+                </div>
+
+                <button
+                  className="btn btn-sm"
+                  onClick={() => setGridColumns(gridColumns === 3 ? 2 : 3)}
+                  style={{ 
+                    backgroundColor: 'var(--theme-primary)',
+                    color: 'white',
+                    border: 'none',
+                    borderRadius: '12px',
+                    width: '44px',
+                    height: '44px',
+                    padding: '0',
+                    fontSize: '18px',
+                    boxShadow: '0 2px 8px rgba(0, 0, 0, 0.1)',
+                    transition: 'all 0.2s ease',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    flexShrink: 0
+                  }}
+                  onMouseDown={(e) => e.currentTarget.style.transform = 'scale(0.9)'}
+                  onMouseUp={(e) => e.currentTarget.style.transform = 'scale(1)'}
+                  onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1)'}
+                >
+                  <i className={`bi ${gridColumns === 3 ? 'bi-grid' : 'bi-grid-3x3-gap'}`}></i>
+                </button>
+              </div>
+            )}
             <section className="category-product-list section">
               <div className="row g-4">
 
@@ -329,7 +419,13 @@ export default function Store() {
                 
                 {!initialLoading && products.length > 0 &&
                   products.map((product) => (
-                    <ProductCard key={product._id} product={product} cartBtnPdg="5px 18px" colLg={3} />
+                    <ProductCard 
+                      key={product._id} 
+                      product={product} 
+                      cartBtnPdg="5px 18px" 
+                      colLg={3}
+                      col={isMobile ? (gridColumns === 3 ? 4 : 6) : undefined}
+                    />
                   ))}
 
                 {!initialLoading && products.length === 0 && (
@@ -364,18 +460,6 @@ export default function Store() {
           </div>
         </div>
       </div>
-
-      {/* Mobile Bottom Bar */}
-      {isMobile && (
-        <div className={`bottom-fixed-bar ${bottomHidden ? "hidden" : ""}`}>
-          <div className="bar-btn" onClick={openFilter}>
-            <i className="bi bi-funnel-fill"></i> Filter
-          </div>
-          <div className="bar-btn" onClick={openSort}>
-            <i className="bi bi-filter-circle"></i> Sort
-          </div>
-        </div>
-      )}
 
       {/* Bottom Sheets */}
       <FilterBottomSheet

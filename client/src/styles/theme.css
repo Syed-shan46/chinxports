@@ -18,7 +18,7 @@
   --theme-border: #2d3139;
   --theme-input-bg: #2d3139;
   --theme-input-border: #495057;
-  --theme-card-bg: #252a30;
+  --theme-card-bg: #1B211A;
   /* --theme-primary: #ff4d6d; */
   --theme-primary: #5b4836;
 
@@ -31,7 +31,7 @@ body.dark-theme {
   --theme-border: #2d3139 !important;
   --theme-input-bg: #2d3139 !important;
   --theme-input-border: #495057 !important;
-  --theme-card-bg: #252a30 !important;
+  --theme-card-bg: #252525 !important;
 }
 
 /* Add mapping so dark theme overrides the variables used throughout App.css */

@@ -80,9 +80,16 @@ export default function ProductUpload() {
         axios.get(`${BASE_URL}/api/categories/get-maincategories`)
             .then(res => {
                 if (res.data.success) {
-                    setMainCategories(res.data.categories || []);
+                    const categories = res.data.categories || [];
+                    setMainCategories(categories);
 
-                    
+                    // Set first category as default
+                    if (categories.length > 0 && !form.mainCategory) {
+                        setForm(prev => ({
+                            ...prev,
+                            mainCategory: categories[0]._id
+                        }));
+                    }
                 }
             })
             .catch(err => console.error(err));
@@ -198,7 +205,7 @@ export default function ProductUpload() {
                 price: "",
                 minQty: 6,
                 tags: "",
-                mainCategory: "",
+                mainCategory: mainCategories.length > 0 ? mainCategories[0]._id : "",
                 subCategory: "",
                 imageUrl: [],
                 ceramics: false,
@@ -303,10 +310,10 @@ export default function ProductUpload() {
                 /> */}
 
                 {/* Main Category */}
-                <label className="mt-3">Main Category</label>
+                <label className="mt-3 d-none">Main Category</label>
                 <select
                     name="mainCategory"
-                    className="form-control"
+                    className="form-control d-none"
                     value={form.mainCategory}
                     onChange={handleChange}
                     required

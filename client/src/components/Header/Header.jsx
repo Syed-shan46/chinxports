@@ -24,6 +24,16 @@ export default function Header() {
     setOpenCategoryId(prev => (prev === id ? null : id));
   };
 
+  const closeSidebar = () => {
+    const sidebarEl = document.getElementById("mobileSidebar");
+    if (sidebarEl && window.bootstrap) {
+      const sidebar = window.bootstrap.Offcanvas.getInstance(sidebarEl);
+      if (sidebar) {
+        sidebar.hide();
+      }
+    }
+  };
+
 
   const [categories, setCategories] = useState([]);
   const [theme, setTheme] = useState(() => {
@@ -81,8 +91,14 @@ export default function Header() {
           return;
         }
         const data = await res.json();
-        setCategories(data.categories || []);
-        console.log("Categories from API:", data.categories); // <-- debug
+        const cats = data.categories || [];
+        setCategories(cats);
+        console.log("Categories from API:", cats); // <-- debug
+        
+        // Set first category as expanded by default
+        if (cats.length > 0) {
+          setOpenCategoryId(cats[0]._id);
+        }
       } catch (err) {
         if (err.name === "AbortError") return;
         console.warn("Could not fetch categories:", err);
@@ -121,10 +137,21 @@ export default function Header() {
           const current = window.scrollY;
 
           if (header) {
-            if (current > 20) header.classList.add("header-scrolled");
-            else header.classList.remove("header-scrolled");
+            // Add scrolled class for styling
+            if (current > 20) {
+              header.classList.add("header-scrolled");
+            } else {
+              header.classList.remove("header-scrolled");
+            }
 
-
+            // Hide/show header based on scroll direction
+            if (current > lastScrollTop && current > 100) {
+              // Scrolling down - hide header
+              header.classList.add("header-hidden");
+            } else if (current < lastScrollTop) {
+              // Scrolling up - show header
+              header.classList.remove("header-hidden");
+            }
           }
 
           lastScrollTop = current <= 0 ? 0 : current;
@@ -241,7 +268,7 @@ export default function Header() {
               </button>
 
               {/* Logo */}
-              <Link to="/cart" className="logo d-flex" style={{ textDecoration: 'none' }}>
+              <Link to="/" className="logo d-flex" style={{ textDecoration: 'none' }}>
                 <h1 className="sitename text-dark">ChinaXports</h1>
               </Link>
 
@@ -274,7 +301,7 @@ export default function Header() {
 
                 {/* Theme Toggle */}
                 <button
-                  className="header-action-btn theme-toggle-btn me-3"
+                  className="header-action-btn theme-toggle-btn "
                   onClick={toggleTheme}
                   title={`Switch to ${theme === "light" ? "dark" : "light"} mode`}
                   aria-label="Toggle theme"
@@ -286,7 +313,7 @@ export default function Header() {
                   )}
                 </button>
 
-                <Link to="/cart" className="header-action-btn bag-indicator position-relative">
+                {/* <Link to="/cart" className="header-action-btn bag-indicator position-relative">
                   <i className="bi bi-bag fs-5"></i>
 
                   {cart.length > 0 && (
@@ -294,7 +321,7 @@ export default function Header() {
                       {cart.length}
                     </span>
                   )}
-                </Link>
+                </Link> */}
 
                 {/* <button
                   className="header-action-btn mobile-search-toggle d-xl-none"
@@ -351,40 +378,26 @@ export default function Header() {
         </div>
         <div className="offcanvas-body px-0">
           <ul className="nav nav-tabs nav-fill trendy-tabs" id="mobileSidebarTabs">
+            
             <li className="nav-item">
-              <button className="nav-link active" data-bs-toggle="tab" data-bs-target="#home-tab-pane">
-                Home
-              </button>
-            </li>
-            <li className="nav-item">
-              <button className="nav-link" data-bs-toggle="tab" data-bs-target="#categories-tab-pane">
+              <button className="nav-link active" data-bs-toggle="tab" data-bs-target="#categories-tab-pane">
                 Categories
               </button>
             </li>
           </ul>
 
           <div className="tab-content trendy-tab-content p-3">
-            <div className="tab-pane fade show active" id="home-tab-pane">
-              <ul className="list-unstyled">
-                <li><NavLink to="/" className={({ isActive }) => "menu-item" + (isActive ? " active" : "")}>Home</NavLink></li>
-                <li><NavLink to="/store" className={({ isActive }) => "menu-item" + (isActive ? " active" : "")}>Store</NavLink></li>
-                <li><NavLink to="/about" className={({ isActive }) => "menu-item" + (isActive ? " active" : "")}>About</NavLink></li>
-                <li><NavLink to="/services" className={({ isActive }) => "menu-item" + (isActive ? " active" : "")}>Service</NavLink></li>
-                <li><NavLink to="/contact" className={({ isActive }) => "menu-item" + (isActive ? " active" : "")} >Contact</NavLink></li>
-
-              </ul>
-            </div>
+            
 
             {/* Categories Tab */}
-            <div className="tab-pane fade" id="categories-tab-pane" role="tabpanel">
+            <div className="tab-pane fade show active" id="categories-tab-pane" role="tabpanel">
               <ul className="list-unstyled">
-                {categories.map((cat) => {
+                {categories.map((cat, index) => {
                   const isOpen = openCategoryId === cat._id;
 
-                  // Debug: log subcategories when this category is open
-                  if (isOpen) {
-                    console.log(`Subcategories for ${cat.name}:`, cat.subcategories);
-                  }
+                  // Debug logs
+                  console.log(`Category ${cat.name}, isOpen: ${isOpen}, openCategoryId: ${openCategoryId}, cat._id: ${cat._id}`);
+                  console.log(`SubCategories for ${cat.name}:`, cat.subCategories);
 
                   return (
                     <li key={cat._id} className="mb-1">
@@ -405,6 +418,7 @@ export default function Header() {
                             <li key={sub._id}>
                               <Link
                                 to={`/store?category=${cat._id}&sub=${sub._id}`}
+                                onClick={closeSidebar}
                                 className="menu-item text-decoration-none d-flex justify-content-between align-items-center w-100"
                               >
                                 <span>

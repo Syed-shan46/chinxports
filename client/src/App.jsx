@@ -21,6 +21,8 @@ import OffersWidget from "./components/common/OffersWidget";
 import WeChat from "./components/WeChat/WeChat";
 import CreateSubCategory from "./routes/CreateSubCategory";
 import Services from "./components/Services/Services";
+import Account from "./routes/Account";
+import MobileBottomNav from "./components/common/MobileBottomNav";
 
 function App() {
   const [showPopup, setShowPopup] = useState(false);
@@ -53,6 +55,7 @@ function App() {
             <Route path="/admin-login" element={<AdminLogin />} />
             <Route path="/upload-product" element={<ProductUpload />} />
             <Route path="/cart" element={<Cart />} />
+            <Route path="/account" element={<Account />} />
             <Route path="/wechat" element={<WeChat />} />
             <Route path="/create-subcategory" element={<CreateSubCategory />} />
             <Route path="/services" element={<Services />} />
@@ -68,6 +71,7 @@ function App() {
 
           </Routes>
           <ScrollToTopButton />
+          <MobileBottomNav />
           {/* <OffersWidget /> */}
         </MainLayout>
       </BrowserRouter>
