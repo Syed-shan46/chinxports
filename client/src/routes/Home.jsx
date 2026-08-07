@@ -3,6 +3,7 @@ import { createPortal } from 'react-dom';
 import LuxuryHero from '../components/Hero/LuxuryHero';
 import CategoryCarousel from '../components/CategoryCarousel/CategoryCarousel';
 import ShopifyProductSlider from '../components/HorizontalProductSlider/ShopifyProductSlider';
+import HomeCollections from '../components/HomeCollections/HomeCollections';
 import ShopifyCategoryTabs from '../components/CardsSection/ShopifyCategoryTabs';
 import NecklaceShowcase from '../components/Showcase/NecklaceShowcase';
 import GlobalWholesaleExperience from '../components/Sections/GlobalWholesaleExperience';
@@ -30,6 +31,9 @@ export default function Home() {
         title="Handpicked For You"
         endpoint="handpicked"
       />
+
+      {/* 03.5. Subcategory Collections Grids (10 products per category) */}
+      <HomeCollections />
 
       {/* 06. Category Drilldown - Visual Tabs */}
       <ShopifyCategoryTabs />
