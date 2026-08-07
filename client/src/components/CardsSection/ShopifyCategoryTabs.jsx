@@ -46,15 +46,7 @@ export default function ShopifyCategoryTabs() {
         )
             .then((res) => res.json())
             .then((data) => {
-                const cats = (
-                    data.subcategories || []
-                ).filter(
-                    (sub) => {
-                        const mainCat = sub.mainCategory;
-                        const mainId = typeof mainCat === 'object' ? mainCat?._id : mainCat;
-                        return mainCat && mainId === "69c36d19eab4f288c1d04248";
-                    }
-                );
+                const cats = data.subcategories || [];
 
                 cachedCategories = cats;
 
