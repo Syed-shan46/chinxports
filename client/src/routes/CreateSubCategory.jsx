@@ -16,7 +16,7 @@ export default function CreateSubCategory() {
     // Load main categories
     useEffect(() => {
         axios
-            .get(`${BASE_URL}/api/categories/get-maincategories`)
+            .get(`${BASE_URL}/api/categories/get-maincategories?admin=true`)
             .then((res) => {
                 setMainCategories(res.data.categories || []);
             })

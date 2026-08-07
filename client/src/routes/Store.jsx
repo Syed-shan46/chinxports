@@ -63,8 +63,8 @@ export default function Store() {
     axios.get(`${API_BASE_URL}/categories/get-maincategories`)
       .then((res) => {
         const cats = (res.data?.categories ?? [])
-          .filter(c => !c.name || c.name.toLowerCase() !== 'xuping')
-          .map(c => c._id === '69c36d19eab4f288c1d04248' ? { ...c, name: "Premium 18k Gold" } : c);
+          .filter(c => c._id === '69c36d19eab4f288c1d04248')
+          .map(c => ({ ...c, name: "Premium 18k Gold" }));
         setMainCats(cats);
       })
       .catch(() => console.log("Failed to fetch main categories"));

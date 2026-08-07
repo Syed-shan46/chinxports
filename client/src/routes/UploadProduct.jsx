@@ -74,7 +74,7 @@ export default function ProductUpload() {
     }
 
     useEffect(() => {
-        axios.get(`${BASE_URL}/api/categories/get-maincategories`)
+        axios.get(`${BASE_URL}/api/categories/get-maincategories?admin=true`)
             .then(res => {
                 if (res.data.success) {
                     const categories = (res.data.categories || []).filter(cat => {

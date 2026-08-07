@@ -12,29 +12,10 @@ module.exports.getAllProducts = async (req, res) => {
     const { mainCategory, subCategory } = req.query;
     console.log("getAllProducts query:", { mainCategory, subCategory });
 
-    const xuping = await MainCategory.findOne({ name: { $regex: /^xuping$/i } });
-    const xupingId = xuping ? xuping._id : null;
-
-    if (xupingId && mainCategory && mainCategory.toString() === xupingId.toString()) {
-      return res.json({
-        products: [],
-        handpickedProducts: [],
-        specialProducts: [],
-        trendingProducts: []
-      });
-    }
-
-    const productsQuery = {};
-    if (mainCategory) {
-      productsQuery.mainCategory = new mongoose.Types.ObjectId(mainCategory);
-    } else if (!subCategory) {
-      // Only default to Gold if NO filters are provided
-      productsQuery.mainCategory = new mongoose.Types.ObjectId(GOLD_CAT_ID);
-    } else {
-      if (xupingId) {
-        productsQuery.mainCategory = { $ne: xupingId };
-      }
-    }
+    // Enforce that only GOLD_CAT_ID products are queried for client-facing store pages
+    const productsQuery = {
+      mainCategory: new mongoose.Types.ObjectId(GOLD_CAT_ID)
+    };
 
     if (subCategory) {
       productsQuery.subCategory = new mongoose.Types.ObjectId(subCategory);
@@ -103,13 +84,7 @@ module.exports.getAllProducts = async (req, res) => {
 
 module.exports.getHandpickedProducts = async (req, res) => {
   try {
-    const { mainCategory } = req.query;
-    const filterMainCat = mainCategory || GOLD_CAT_ID;
-
-    const xuping = await MainCategory.findOne({ name: { $regex: /^xuping$/i } });
-    if (xuping && filterMainCat.toString() === xuping._id.toString()) {
-      return res.json([]);
-    }
+    const filterMainCat = GOLD_CAT_ID;
 
     // 1. Get all subcategories for this main category
     const subCategories = await SubCategory.find({ mainCategory: new mongoose.Types.ObjectId(filterMainCat) });
@@ -160,13 +135,7 @@ module.exports.getHandpickedProducts = async (req, res) => {
 // Trending = ceramics
 module.exports.getCeramicsProducts = async (req, res) => {
   try {
-    const { mainCategory } = req.query;
-    const filterMainCat = mainCategory || GOLD_CAT_ID;
-
-    const xuping = await MainCategory.findOne({ name: { $regex: /^xuping$/i } });
-    if (xuping && filterMainCat.toString() === xuping._id.toString()) {
-      return res.json([]);
-    }
+    const filterMainCat = GOLD_CAT_ID;
 
     // Use a similar diverse strategy for "Trending"
     const subCategories = await SubCategory.find({ mainCategory: new mongoose.Types.ObjectId(filterMainCat) });
@@ -209,13 +178,7 @@ module.exports.getCeramicsProducts = async (req, res) => {
 
 module.exports.getSpecialProducts = async (req, res) => {
   try {
-    const { mainCategory } = req.query;
-    const filterMainCat = mainCategory || GOLD_CAT_ID;
-
-    const xuping = await MainCategory.findOne({ name: { $regex: /^xuping$/i } });
-    if (xuping && filterMainCat.toString() === xuping._id.toString()) {
-      return res.json([]);
-    }
+    const filterMainCat = GOLD_CAT_ID;
 
     const specialProducts = await Product.aggregate([
       { $match: { mainCategory: new mongoose.Types.ObjectId(filterMainCat), special: true } },
@@ -261,7 +224,7 @@ module.exports.getProductDetail = async (req, res) => {
       .populate('subCategory', 'name');
 
     if (!product) return res.status(404).json({ error: 'Product not found' });
-    if (product.mainCategory?.name?.toLowerCase() === 'xuping') {
+    if (product.mainCategory?._id?.toString() !== GOLD_CAT_ID && product.mainCategory?.toString() !== GOLD_CAT_ID) {
       return res.status(404).json({ error: 'Product not found' });
     }
 

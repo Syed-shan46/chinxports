@@ -51,11 +51,8 @@ export default function ShopifyCategoryTabs() {
                 ).filter(
                     (sub) => {
                         const mainCat = sub.mainCategory;
-                        const mainName = typeof mainCat === 'object' ? mainCat?.name : '';
                         const mainId = typeof mainCat === 'object' ? mainCat?._id : mainCat;
-                        return mainCat && 
-                            mainId !== "69c3a9a610f636c152943709" && 
-                            mainName.toLowerCase() !== "xuping";
+                        return mainCat && mainId === "69c36d19eab4f288c1d04248";
                     }
                 );
 

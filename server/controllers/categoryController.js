@@ -108,8 +108,18 @@ exports.createMainCategory = async (req, res) => {
 
 module.exports.getAllSubCats = async (req, res) => {
   try {
-    const xuping = await MainCategory.findOne({ name: { $regex: /^xuping$/i } });
-    const query = xuping ? { mainCategory: { $ne: xuping._id } } : {};
+    const isAdmin = req.query.admin === 'true';
+    const GOLD_CAT_ID = '69c36d19eab4f288c1d04248';
+
+    let query = {};
+    if (!isAdmin) {
+      query = { mainCategory: GOLD_CAT_ID };
+    } else {
+      const xuping = await MainCategory.findOne({ name: { $regex: /^xuping$/i } });
+      if (xuping) {
+        query = { mainCategory: { $ne: xuping._id } };
+      }
+    }
 
     const subcategories = await SubCategory.find(query)
       .populate("mainCategory", "name imageUrl") // optional: shows main category name
@@ -132,8 +142,18 @@ module.exports.getAllSubCats = async (req, res) => {
 // Get all subcategories with main category populated
 module.exports.getAllSubCategories = async (req, res) => {
   try {
-    const xuping = await MainCategory.findOne({ name: { $regex: /^xuping$/i } });
-    const query = xuping ? { mainCategory: { $ne: xuping._id } } : {};
+    const isAdmin = req.query.admin === 'true';
+    const GOLD_CAT_ID = '69c36d19eab4f288c1d04248';
+
+    let query = {};
+    if (!isAdmin) {
+      query = { mainCategory: GOLD_CAT_ID };
+    } else {
+      const xuping = await MainCategory.findOne({ name: { $regex: /^xuping$/i } });
+      if (xuping) {
+        query = { mainCategory: { $ne: xuping._id } };
+      }
+    }
 
     const subcategories = await SubCategory.find(query)
       .populate("mainCategory", "name") // only return mainCategory name
@@ -170,7 +190,11 @@ module.exports.getProductsBySubCategory = async (req, res) => {
 // Get MainCategories with SubCategories included
 exports.getAllMainCategories = async (req, res) => {
   try {
-    const mainCategories = await MainCategory.find({ name: { $not: /^xuping$/i } }).sort({ name: 1 }).lean();
+    const isAdmin = req.query.admin === 'true';
+    const GOLD_CAT_ID = '69c36d19eab4f288c1d04248';
+
+    const query = isAdmin ? { name: { $not: /^xuping$/i } } : { _id: GOLD_CAT_ID };
+    const mainCategories = await MainCategory.find(query).sort({ name: 1 }).lean();
 
     const categoriesWithSubs = await Promise.all(
       mainCategories.map(async (main) => {
@@ -205,19 +229,16 @@ exports.searchCategories = async (req, res) => {
 
     if (!q) return res.json({ products: [], subCategories: [] });
 
-    const xuping = await MainCategory.findOne({ name: { $regex: /^xuping$/i } });
-    const xupingId = xuping ? xuping._id : null;
+    const GOLD_CAT_ID = '69c36d19eab4f288c1d04248';
 
     const productFilter = {
+      mainCategory: GOLD_CAT_ID,
       $or: [
         { productName: { $regex: q, $options: "i" } },
         { description: { $regex: q, $options: "i" } },
         { tags: { $in: [new RegExp(q, "i")] } }
       ]
     };
-    if (xupingId) {
-      productFilter.mainCategory = { $ne: xupingId };
-    }
 
     // Search Products with expanded reach
     const products = await Product.find(productFilter)
@@ -225,11 +246,9 @@ exports.searchCategories = async (req, res) => {
       .limit(10);
 
     const subCategoryFilter = {
+      mainCategory: GOLD_CAT_ID,
       name: { $regex: q, $options: "i" }
     };
-    if (xupingId) {
-      subCategoryFilter.mainCategory = { $ne: xupingId };
-    }
 
     // Search Subcategories
     const subCategories = await SubCategory.find(subCategoryFilter)

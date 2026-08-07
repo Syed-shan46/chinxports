@@ -38,8 +38,8 @@ export default function Header() {
         if (!res.ok) return;
         const data = await res.json();
         const cats = (data.categories || [])
-          .filter(c => !c.name || c.name.toLowerCase() !== 'xuping')
-          .map(c => c._id === '69c36d19eab4f288c1d04248' ? { ...c, name: "Premium 18k Gold" } : c);
+          .filter(c => c._id === '69c36d19eab4f288c1d04248')
+          .map(c => ({ ...c, name: "Premium 18k Gold" }));
         setCategories(cats);
         if (cats.length > 0) setOpenCategoryId(cats[0]._id);
       } catch (err) {

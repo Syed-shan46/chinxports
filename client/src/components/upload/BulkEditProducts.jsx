@@ -24,7 +24,7 @@ const BulkEditProducts = () => {
     const [sortAsc, setSortAsc] = useState(false);
 
     useEffect(() => {
-        axios.get(`${BASE_URL}/api/categories/get-maincategories`)
+        axios.get(`${BASE_URL}/api/categories/get-maincategories?admin=true`)
             .then(res => {
                 // Show all categories logically without hardcoded exclusions
                 setMainCats(res.data.categories || []);

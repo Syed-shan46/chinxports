@@ -14,7 +14,7 @@ const BulkUpload = () => {
 
     useEffect(() => {
         // Fetch categories for selection
-        axios.get(`${BASE_URL}/api/categories/get-maincategories`)
+        axios.get(`${BASE_URL}/api/categories/get-maincategories?admin=true`)
             .then(res => {
                 const filtered = (res.data.categories || []).filter(cat => {
                     const name = cat.name.toLowerCase();

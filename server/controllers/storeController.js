@@ -32,35 +32,11 @@ module.exports.storePage = async (req, res) => {
       ];
     }
 
-    // Only fallback to default GOLD_CAT_ID if neither subCategory nor search is actively specified
     const GOLD_CAT_ID = '69c36d19eab4f288c1d04248';
-    let mainCategory = req.query.mainCategory;
-    if (!mainCategory && !req.query.subCategory && !req.query.search) {
-      mainCategory = GOLD_CAT_ID;
-    }
-
-    if (mainCategory) {
-      filter.mainCategory = mainCategory;
-    }
+    filter.mainCategory = GOLD_CAT_ID;
 
     if (req.query.subCategory) {
       filter.subCategory = req.query.subCategory;
-    }
-
-    const xuping = await MainCategory.findOne({ name: { $regex: /^xuping$/i } });
-    if (xuping) {
-      if (filter.mainCategory) {
-        if (filter.mainCategory.toString() === xuping._id.toString()) {
-          return res.json({
-            products: [],
-            totalPages: 0,
-            totalCount: 0,
-            currentPage: page
-          });
-        }
-      } else {
-        filter.mainCategory = { $ne: xuping._id };
-      }
     }
 
     const totalCount = await Product.countDocuments(filter);
