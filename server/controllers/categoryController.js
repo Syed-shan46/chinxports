@@ -1,0 +1,246 @@
+
+const Product = require("../models/productModel");
+const MainCategory = require("../models/mainCategoryModel");
+const SubCategory = require("../models/subCategoryModel");
+
+module.exports.getCategoriesAndCount = async (req, res) => {
+  try {
+    const categories = await Category.find().lean();
+    const categoriesWithCount = await Promise.all(
+      categories.map(async (cat) => {
+        const count = await Product.countDocuments({ category: cat._id });
+        return { ...cat, productCount: count };
+      })
+    );
+    res.json(categoriesWithCount);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Failed to fetch categories' });
+  }
+}
+
+
+module.exports.createSubCategory = async (req, res) => {
+  try {
+    const { name, mainCategoryId, imageUrl } = req.body;
+
+    // ----------------------------
+    // VALIDATE MAIN CATEGORY
+    // ----------------------------
+    const mainCategoryExists = await MainCategory.findById(mainCategoryId);
+    if (!mainCategoryExists) {
+      return res.status(400).json({ error: "Invalid mainCategoryId" });
+    }
+
+    // ----------------------------
+    // HANDLE IMAGE (Multer + JSON)
+    // ----------------------------
+    let finalImage = "";
+
+    // 1️⃣ If multer file uploaded → use that
+    if (req.file) {
+      finalImage = req.file.path;
+    }
+
+    // 2️⃣ If frontend sends JSON imageUrl → override
+    if (typeof imageUrl === "string" && imageUrl.trim() !== "") {
+      finalImage = imageUrl.trim();
+    }
+
+    // 3️⃣ If no image provided → optional placeholder
+    if (!finalImage) {
+      finalImage = "";
+      // You can also add:
+      // finalImage = "/placeholder/subcategory.png";
+    }
+
+    // ----------------------------
+    // CREATE SUBCATEGORY
+    // ----------------------------
+    const subCategory = await SubCategory.create({
+      name,
+      mainCategory: mainCategoryId,
+      imageUrl: finalImage
+    });
+
+    // ----------------------------
+    // PUSH TO MAIN CATEGORY
+    // ----------------------------
+    await MainCategory.findByIdAndUpdate(mainCategoryId, {
+      $push: { subCategories: subCategory._id }
+    });
+
+    return res.status(201).json({
+      message: "SubCategory created successfully",
+      subCategory
+    });
+
+  } catch (error) {
+    console.error("Error creating subcategory:", error);
+    return res.status(500).json({ error: "Server error" });
+  }
+};
+
+
+
+
+exports.createMainCategory = async (req, res) => {
+  try {
+    const { name } = req.body;
+
+    if (!name) {
+      return res.status(400).json({ error: "Name is required" });
+    }
+
+    const exists = await MainCategory.findOne({ name });
+    if (exists) {
+      return res.status(400).json({ error: "Category already exists" });
+    }
+
+    const category = await MainCategory.create({ name });
+
+    res.json({ success: true, category });
+  } catch (error) {
+    console.error("Create Main Category Error:", error);
+    res.status(500).json({ error: "Server error" });
+  }
+};
+
+module.exports.getAllSubCats = async (req, res) => {
+  try {
+    const xuping = await MainCategory.findOne({ name: { $regex: /^xuping$/i } });
+    const query = xuping ? { mainCategory: { $ne: xuping._id } } : {};
+
+    const subcategories = await SubCategory.find(query)
+      .populate("mainCategory", "name imageUrl") // optional: shows main category name
+      .lean();
+
+    res.json({
+      success: true,
+      subcategories
+    });
+
+  } catch (error) {
+    console.error("Error fetching subcategories:", error);
+    res.status(500).json({
+      success: false,
+      message: "Failed to fetch subcategories"
+    });
+  }
+};
+
+// Get all subcategories with main category populated
+module.exports.getAllSubCategories = async (req, res) => {
+  try {
+    const xuping = await MainCategory.findOne({ name: { $regex: /^xuping$/i } });
+    const query = xuping ? { mainCategory: { $ne: xuping._id } } : {};
+
+    const subcategories = await SubCategory.find(query)
+      .populate("mainCategory", "name") // only return mainCategory name
+      .lean();
+
+    res.json({ success: true, subcategories });
+  } catch (error) {
+    console.error("Error fetching subcategories:", error);
+    res.status(500).json({ error: "Failed to fetch subcategories" });
+  }
+};
+
+module.exports.getProductsBySubCategory = async (req, res) => {
+  try {
+    const { subCatId } = req.params;
+
+    
+
+    const products = await Product.find({
+      subCategory: subCatId
+    });
+
+    console.log("Matched Products:", products.length);
+
+    res.json({ success: true, products });
+  } catch (error) {
+    console.error("Error fetching products by subcategory:", error);
+    res.status(500).json({ error: "Failed to fetch products" });
+  }
+};
+
+
+
+// Get MainCategories with SubCategories included
+exports.getAllMainCategories = async (req, res) => {
+  try {
+    const mainCategories = await MainCategory.find({ name: { $not: /^xuping$/i } }).sort({ name: 1 }).lean();
+
+    const categoriesWithSubs = await Promise.all(
+      mainCategories.map(async (main) => {
+
+        const subCategories = await SubCategory.find({ _id: { $in: main.subCategories || [] } })
+          .sort({ name: 1 })
+          .lean();
+
+        const subCategoriesWithCount = await Promise.all(
+          subCategories.map(async (sub) => {
+            const count = await Product.countDocuments({ subCategory: sub._id });
+            return { ...sub, productCount: count };
+          })
+        );
+
+        return { ...main, subCategories: subCategoriesWithCount };
+      })
+    );
+
+    res.json({ success: true, categories: categoriesWithSubs });
+
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ success: false, message: "Server error" });
+  }
+};
+
+
+exports.searchCategories = async (req, res) => {
+  try {
+    const q = req.query.q?.trim() || "";
+
+    if (!q) return res.json({ products: [], subCategories: [] });
+
+    const xuping = await MainCategory.findOne({ name: { $regex: /^xuping$/i } });
+    const xupingId = xuping ? xuping._id : null;
+
+    const productFilter = {
+      $or: [
+        { productName: { $regex: q, $options: "i" } },
+        { description: { $regex: q, $options: "i" } },
+        { tags: { $in: [new RegExp(q, "i")] } }
+      ]
+    };
+    if (xupingId) {
+      productFilter.mainCategory = { $ne: xupingId };
+    }
+
+    // Search Products with expanded reach
+    const products = await Product.find(productFilter)
+      .select("productName imageUrl subCategory")
+      .limit(10);
+
+    const subCategoryFilter = {
+      name: { $regex: q, $options: "i" }
+    };
+    if (xupingId) {
+      subCategoryFilter.mainCategory = { $ne: xupingId };
+    }
+
+    // Search Subcategories
+    const subCategories = await SubCategory.find(subCategoryFilter)
+      .select("name mainCategory")
+      .limit(10);
+
+    res.json({ products, subCategories });
+
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ error: "Server error" });
+  }
+}
+

@@ -1,0 +1,122 @@
+.banner-slider-container {
+  position: relative;
+  width: 100%;
+  height: 250px;
+  margin-top: 10px;
+  overflow: hidden;
+  border-radius: 12px;
+  background: linear-gradient(180deg, #f7f7f7, #fff); /* subtle */
+}
+
+.banner-slider {
+  display: flex;
+  transition: transform 0.6s ease-in-out;
+  height: 100%;
+}
+
+.banner-slide {
+  min-width: 100%;
+  height: 100%;
+}
+
+.banner-slide img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 12px;
+}
+
+/* Arrows */
+.arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(255,255,255,0.7);
+  border: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  cursor: pointer;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(6px);
+  box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+}
+
+.arrow.left { left: 10px; }
+.arrow.right { right: 10px; }
+
+.arrow i { font-size: 18px; color: #333; }
+
+/* Indicator wrapper: centered with subtle background */
+.banner-dots {
+  position: absolute;
+  bottom: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  z-index: 20;
+  padding: 6px 10px;
+  border-radius: 30px;
+  background: rgba(255,255,255,0.45);
+  box-shadow: 0 6px 18px rgba(0,0,0,0.06);
+  backdrop-filter: blur(6px);
+}
+
+/* Each dot button (small circles) */
+.dot-btn {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(0,0,0,0.18);
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  transition: all 220ms ease;
+  position: relative;
+}
+
+/* Active indicator becomes pill with inner white dot — matches your screenshot */
+.dot-btn.active {
+  width: 36px;                 /* pill width */
+  height: 10px;                /* pill height */
+  border-radius: 20px;
+  background: rgba(0,0,0,0.12);
+  box-shadow: inset 0 0 0 1px rgba(0,0,0,0.06);
+}
+
+/* inner white dot inside the pill for stronger visual */
+.dot-btn.active::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.15);
+}
+
+/* Hover states */
+.dot-btn:hover {
+  transform: translateY(-2px);
+  background: rgba(0,0,0,0.25);
+}
+
+/* Responsive sizes */
+@media (max-width: 768px) {
+  .banner-slider-container { height: 180px; }
+  .dot-btn.active { width: 30px; height: 8px; }
+}
+
+@media (max-width: 480px) {
+  .banner-slider-container { height: 150px; }
+  .banner-dots { gap: 8px; padding: 5px 8px; }
+  .dot-btn.active { width: 26px; height: 8px; }
+}

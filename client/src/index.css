@@ -1,0 +1,177 @@
+@import "tailwindcss";
+
+@theme {
+    /* Premium Font Registry */
+    --font-display: "Cormorant Garamond", serif;
+    --font-body: "Outfit", sans-serif;
+    --font-heading: "Inter", sans-serif;
+
+    /* Exclusive Master Palette */
+    --color-primary-gold: #C6A769;
+    --color-champagne-gold: #D6BE8A;
+    --color-matte-black: #0B0B0B;
+    --color-deep-black: #0B0B0B;
+    --color-dark-graphite: #1A1A1A;
+    --color-soft-white: #F5F3EE;
+    --color-charcoal: #2A2A2A;
+    --color-off-white: #F9F9F7;
+
+    /* Semantic Extensions */
+    --animate-float: float 6s ease-in-out infinite;
+    --animate-scale-up: scaleUp 0.6s cubic-bezier(0.2, 0, 0, 1) forwards;
+    --animate-fade-in: fadeIn 1s ease-out forwards;
+    --animate-subtle-zoom: subtleZoom 20s ease-in-out infinite alternate;
+    --animate-slide-up: slideUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    
+    /* Shadows & Blurs */
+    --shadow-gold: 0 10px 30px -10px rgba(198, 167, 105, 0.3);
+    --blur-luxury: blur(20px);
+}
+
+@keyframes subtleZoom {
+    from {
+        transform: scale(1.05);
+    }
+    to {
+        transform: scale(1.15);
+    }
+}
+
+@layer base {
+    body {
+        @apply font-body bg-off-white text-charcoal antialiased tracking-tight;
+    }
+}
+
+@layer components {
+
+    /* Ultra-Premium Glassmorphism */
+    .glass-premium {
+        @apply bg-white/70 backdrop-blur-xl border-b border-black/5;
+    }
+
+    /* Luxury Gold Glow Buttons */
+    .btn-luxury-primary {
+        @apply relative overflow-hidden bg-primary-gold text-matte-black px-10 py-4 rounded-full font-bold tracking-widest uppercase text-[12px] transition-all duration-500 hover:bg-champagne-gold hover:shadow-[0_0_20px_rgba(198,167,105,0.4)] active:scale-95 flex items-center justify-center gap-3;
+    }
+
+    .btn-luxury-secondary {
+        @apply relative border border-primary-gold/50 text-primary-gold px-10 py-4 rounded-full font-bold tracking-widest uppercase text-[12px] transition-all duration-500 hover:bg-primary-gold/10 hover:border-primary-gold active:scale-95 flex items-center justify-center gap-3 backdrop-blur-sm;
+    }
+
+    /* Typography Utilities */
+    .section-title {
+        @apply font-display text-4xl lg:text-5xl font-medium text-matte-black text-center mb-4 leading-tight;
+    }
+
+    .section-subtitle {
+        @apply font-body text-[10px] font-bold tracking-[0.3em] text-primary-gold uppercase text-center mb-3 block;
+    }
+
+    /* Vertical Text for UX accents */
+    .vertical-text {
+        writing-mode: vertical-rl;
+        text-orientation: mixed;
+    }
+
+    /* Navigation Hover Effects */
+    .nav-link-premium {
+        @apply relative text-[11px] font-bold tracking-[0.15em] uppercase text-charcoal/60 hover:text-matte-black transition-all duration-500;
+    }
+
+    .nav-link-premium::after {
+        content: "";
+        @apply absolute -bottom-1 left-0 w-0 h-[1px] bg-primary-gold transition-all duration-500;
+    }
+
+    .nav-link-premium:hover::after {
+        @apply w-full;
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes scaleUp {
+    from {
+        transform: scale(0.95);
+        opacity: 0;
+    }
+
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+@keyframes float {
+    0% {
+        transform: translateY(0px);
+    }
+
+    50% {
+        transform: translateY(-10px);
+    }
+
+    100% {
+        transform: translateY(0px);
+    }
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+    width: 4px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    @apply bg-primary-gold/30 hover:bg-primary-gold/60 transition-colors rounded-full;
+}
+
+/* No Scrollbar Utility */
+.no-scrollbar::-webkit-scrollbar {
+    display: none;
+}
+
+.no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+@keyframes marquee {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+}
+
+@keyframes slideUp {
+    from {
+        transform: translateY(30px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.animate-marquee {
+    display: flex;
+    width: max-content;
+    animation: marquee 60s linear infinite;
+}
+
+@keyframes shimmer {
+    to {
+        transform: translateX(150%);
+    }
+}

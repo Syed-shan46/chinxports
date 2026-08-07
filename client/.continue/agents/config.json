@@ -1,0 +1,7 @@
+{
+  "tabAutocompleteModel": {
+    "title": "Qwen 1.5b Autocomplete Model",
+    "provider": "ollama", 
+    "model": "starcoder2:3b"
+  }
+}

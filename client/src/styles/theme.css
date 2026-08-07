@@ -1,0 +1,164 @@
+/* Luxury E-commerce Theme System */
+:root {
+  /* Ultra-Premium Colors */
+  --theme-primary: #b28e44;
+  --theme-primary-hover: #8e7136;
+  --theme-bg: #ffffff;
+  --theme-surface: #fafaf9;
+  --theme-text: #111111;
+  --theme-text-muted: #666666;
+  --theme-border: #e8e8e1;
+  --theme-accent: #f4e9cf;
+
+  /* System Spacing */
+  --space-unit: 8px;
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 16px;
+
+  /* Shadows */
+  --shadow-soft: 0 4px 12px rgba(0, 0, 0, 0.05);
+  --shadow-float: 0 20px 40px rgba(0, 0, 0, 0.08);
+}
+
+/* Base resets for luxury feel */
+body {
+  background-color: var(--theme-bg);
+  color: var(--theme-text);
+  font-family: 'Inter', sans-serif;
+  letter-spacing: -0.01em;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Glassmorphism Classes */
+.glass-effect {
+  background: rgba(255, 255, 255, 0.85) !important;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+/* Professional Header Styling */
+.header {
+  transition: all 0.4s cubic-bezier(0.2, 0, 0, 1);
+  padding: 12px 0;
+}
+
+.header-scrolled {
+  padding: 8px 0;
+  box-shadow: var(--shadow-soft);
+  background: rgba(255, 255, 255, 0.9);
+}
+
+.sitename {
+  font-family: 'Outfit', sans-serif;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  text-transform: uppercase;
+  font-size: 1.5rem !important;
+  background: linear-gradient(135deg, #111, #444);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+
+}
+
+/* Premium Buttons */
+.btn-luxury {
+  background: var(--theme-text);
+  color: #fff;
+  border-radius: var(--radius-sm);
+  padding: 10px 24px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  font-size: 0.8rem;
+  transition: all 0.3s ease;
+  border: 1px solid var(--theme-text);
+}
+
+.btn-luxury:hover {
+  background: transparent;
+  color: var(--theme-text);
+  transform: translateY(-2px);
+}
+
+.btn-gold {
+  background: var(--theme-primary);
+  color: #fff;
+  border: none;
+  font-weight: 600;
+}
+
+.btn-gold:hover {
+  background: var(--theme-primary-hover);
+  color: #fff;
+}
+
+/* Navigation Links */
+.navmenu-link {
+  font-weight: 500;
+  font-size: 0.9rem;
+  color: var(--theme-text);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  position: relative;
+  padding: 8px 0;
+  transition: color 0.3s ease;
+}
+
+.navmenu-link::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: var(--theme-primary);
+  transition: width 0.3s ease;
+}
+
+.navmenu-link:hover::after,
+.navmenu-link.active::after {
+  width: 100%;
+}
+
+.navmenu-link:hover {
+  color: var(--theme-primary);
+}
+
+/* Product Card Polish */
+.shopify-product-card {
+  border: none !important;
+  background: #fff;
+  transition: all 0.5s cubic-bezier(0.2, 0, 0, 1);
+}
+
+.shopify-product-card:hover {
+  box-shadow: var(--shadow-float) !important;
+}
+
+.cart-count-badge {
+  background: var(--theme-primary) !important;
+  color: #fff;
+  font-size: 0.65rem;
+  padding: 2px 6px;
+  border-radius: 10px;
+  font-weight: 700;
+}
+
+/* Section Headers */
+.section-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 500;
+  font-size: 2.5rem !important;
+  margin-bottom: 1rem;
+}
+
+.section-subtitle {
+  color: var(--theme-primary);
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  font-weight: 600;
+  font-size: 0.75rem;
+}

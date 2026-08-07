@@ -1,0 +1,31 @@
+# Dependencies
+node_modules/
+
+# Environment variables
+.env
+*.env
+server/.env
+client/.env
+
+# Logs and debug
+*.log
+logs/
+
+# System files
+.DS_Store
+Thumbs.db
+
+# Build artifacts
+dist/
+build/
+dist-ssr/
+
+# Editor files
+.vscode/
+.idea/
+
+# Temporary / test scripts
+client/test_*.cjs
+client/test_*.js
+client/build-check.js
+client/check-icons.js

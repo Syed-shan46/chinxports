@@ -1,0 +1,271 @@
+.hero-wrapper {
+    width: 100%;
+}
+
+/* SLIDER */
+.hero-slider {
+    position: relative;
+    width: 100%;
+    height: 60vh;
+    overflow: hidden;
+}
+
+/* =========================================
+   DESKTOP GRID STYLES (>= 768px) 
+   ========================================= */
+@media (min-width: 768px) {
+    .desktop-hero-card {
+        position: relative;
+        width: 100%;
+        height: 500px;
+        /* Fixed Height */
+        border-radius: 16px;
+        overflow: hidden;
+        cursor: pointer;
+    }
+
+    .desktop-hero-card .img-wrapper {
+        width: 100%;
+        height: 100%;
+    }
+
+    .desktop-hero-card img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        /* Ensures image fills height */
+        transition: transform 0.6s ease;
+    }
+
+    .desktop-hero-card:hover img {
+        transform: scale(1.05);
+    }
+
+    /* Gradient Overlay - Always visible but subtle */
+    .desktop-hero-card .overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.25);
+        transition: background 0.3s ease;
+        z-index: 1;
+    }
+
+    .desktop-hero-card:hover .overlay {
+        background: rgba(0, 0, 0, 0.4);
+    }
+
+    /* Card Content - Centered & Static */
+    .desktop-hero-card .card-content {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 2;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+
+    /* Static Button - No popup animation */
+    .hero-card-btn {
+        background: rgba(255, 255, 255, 0.2);
+        backdrop-filter: blur(5px);
+        border: 2px solid #fff;
+        color: #fff;
+        font-weight: 600;
+        padding: 12px 30px;
+        font-size: 1.1rem;
+        transform: none !important;
+        /* Remove popup movement */
+        transition: all 0.3s ease;
+    }
+
+    .hero-card-btn:hover {
+        background: #fff;
+        color: #000;
+    }
+}
+
+.hero-slide {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    transition: opacity .6s ease-in-out;
+}
+
+.hero-slide.active {
+    opacity: 1;
+    z-index: 2;
+}
+
+.hero-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* TEXT OVERLAY */
+.hero-text {
+    position: absolute;
+    bottom: 15%;
+    left: 7%;
+    color: #fff;
+    max-width: 60%;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+}
+
+.hero-text h1 {
+    font-size: 2.2rem;
+    font-weight: 700;
+}
+
+.hero-text p {
+    font-size: 1.2rem;
+    margin-top: 8px;
+}
+
+/* ---------------------------------------- */
+/*   NEW IMPROVED DOT INDICATORS            */
+/* ---------------------------------------- */
+
+.hero-dots {
+    position: absolute;
+    bottom: 8px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+
+    z-index: 50 !important;
+    /* always stay on top */
+    opacity: 1 !important;
+    /* never fade */
+    visibility: visible !important;
+    /* always visible */
+    pointer-events: auto;
+    /* keep clickable */
+}
+
+
+.dot {
+    width: 8px;
+    height: 6px;
+    border-radius: 50px;
+    background: rgba(255, 255, 255, 0.4);
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    transition: all .6s ease;
+}
+
+/* ACTIVE DOT — expands + glow */
+.dot.active {
+    width: 26px;
+    border-radius: 8px;
+    /* ⭐ fixes left clipping */
+}
+
+.dot.active::after {
+    content: "";
+    position: absolute;
+    left: -2px;
+    /* ⭐ ensures perfect left start */
+    top: 0;
+    height: 100%;
+    width: 0%;
+    background: var(--theme-primary);
+    border-radius: 8px;
+    animation: fillBar 6s linear forwards;
+}
+
+
+/* Animation fills based on slide duration */
+@keyframes fillBar {
+    from {
+        width: 0%;
+    }
+
+    to {
+        width: 100%;
+    }
+}
+
+/* PROMO CARDS (if you use later) */
+.promo-wrapper {
+    display: flex;
+    gap: 20px;
+    margin-top: 30px;
+}
+
+.promo-card {
+    flex: 1;
+    position: relative;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    transition: transform .6s ease;
+}
+
+.promo-card:hover {
+    transform: translateY(-5px);
+}
+
+.promo-img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+}
+
+.promo-text {
+    position: absolute;
+    bottom: 10px;
+    left: 15px;
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: #fff;
+    text-shadow: 0 3px 8px rgba(0, 0, 0, 0.4);
+}
+
+/* MOBILE */
+@media (max-width: 768px) {
+    .hero-slider {
+        height: 25vh;
+    }
+
+    .hero-text h1 {
+        font-size: 1.2rem;
+    }
+
+    .hero-text p {
+        font-size: 1rem;
+    }
+
+    .promo-wrapper {
+        flex-direction: column;
+    }
+
+    .promo-img {
+        height: 150px;
+    }
+}
+
+.hero-slide {
+    opacity: 0;
+    transition: opacity 0.6s ease, transform 0.6s ease;
+    position: absolute;
+    width: 100%;
+}
+
+.hero-slide.active {
+    opacity: 1;
+    transform: translateX(0);
+}
