@@ -86,8 +86,10 @@ module.exports.getHandpickedProducts = async (req, res) => {
   try {
     const filterMainCat = GOLD_CAT_ID;
 
-    // 1. Get all subcategories for this main category
-    const subCategories = await SubCategory.find({ mainCategory: new mongoose.Types.ObjectId(filterMainCat) });
+    // 1. Get all subcategories for this main category by resolving them from the MainCategory document
+    const mainCat = await MainCategory.findById(filterMainCat).lean();
+    const subIds = mainCat?.subCategories || [];
+    const subCategories = await SubCategory.find({ _id: { $in: subIds } });
 
     // 2. Fetch 4 most recent products from each subcategory in parallel
     const productPromises = subCategories.map(sub => 
@@ -138,7 +140,9 @@ module.exports.getCeramicsProducts = async (req, res) => {
     const filterMainCat = GOLD_CAT_ID;
 
     // Use a similar diverse strategy for "Trending"
-    const subCategories = await SubCategory.find({ mainCategory: new mongoose.Types.ObjectId(filterMainCat) });
+    const mainCat = await MainCategory.findById(filterMainCat).lean();
+    const subIds = mainCat?.subCategories || [];
+    const subCategories = await SubCategory.find({ _id: { $in: subIds } });
     
     // For trending, we could pick different logic, but variety is still key
     const productPromises = subCategories.map(sub => 

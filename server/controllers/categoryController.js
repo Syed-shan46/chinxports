@@ -113,7 +113,9 @@ module.exports.getAllSubCats = async (req, res) => {
 
     let query = {};
     if (!isAdmin) {
-      query = { mainCategory: GOLD_CAT_ID };
+      const mainCat = await MainCategory.findById(GOLD_CAT_ID).lean();
+      const subIds = mainCat?.subCategories || [];
+      query = { _id: { $in: subIds } };
     } else {
       const xuping = await MainCategory.findOne({ name: { $regex: /^xuping$/i } });
       if (xuping) {
@@ -147,7 +149,9 @@ module.exports.getAllSubCategories = async (req, res) => {
 
     let query = {};
     if (!isAdmin) {
-      query = { mainCategory: GOLD_CAT_ID };
+      const mainCat = await MainCategory.findById(GOLD_CAT_ID).lean();
+      const subIds = mainCat?.subCategories || [];
+      query = { _id: { $in: subIds } };
     } else {
       const xuping = await MainCategory.findOne({ name: { $regex: /^xuping$/i } });
       if (xuping) {
