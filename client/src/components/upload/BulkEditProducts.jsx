@@ -188,7 +188,14 @@ const BulkEditProducts = () => {
     };
 
     const getSubCats = (mainId) => {
-        const cat = mainCats.find(c => c._id === (typeof mainId === 'object' ? mainId._id : mainId));
+        if (!mainId) {
+            return mainCats.flatMap(c => c.subCategories || []);
+        }
+        const targetId = typeof mainId === 'object' ? mainId?._id : mainId;
+        if (!targetId) {
+            return mainCats.flatMap(c => c.subCategories || []);
+        }
+        const cat = mainCats.find(c => c._id === targetId);
         return cat?.subCategories || [];
     };
 
