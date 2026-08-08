@@ -9,6 +9,8 @@ const SimplifiedPartnerModal = () => {
   const [curr, setCurr] = React.useState(1);
   const [sub, setSub] = React.useState(false);
   const [done, setDone] = React.useState(false);
+  const [countryCode, setCountryCode] = React.useState('+971'); // Default to UAE
+  const [phoneNumber, setPhoneNumber] = React.useState('');
   const [fd, setFd] = React.useState({ 
     name: '', 
     biz: '', 
@@ -30,6 +32,8 @@ const SimplifiedPartnerModal = () => {
   const resetForm = () => { 
     setCurr(1); 
     setDone(false); 
+    setCountryCode('+971');
+    setPhoneNumber('');
     setFd({ 
       name: '', 
       biz: '', 
@@ -65,10 +69,14 @@ const SimplifiedPartnerModal = () => {
     if (!fd.name || !fd.email) return;
     setSub(true);
     try {
+      const payload = {
+        ...fd,
+        wa: `${countryCode} ${phoneNumber}`
+      };
       const response = await fetch(`${BASE_URL}/api/partner-request`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(fd)
+        body: JSON.stringify(payload)
       });
       if (response.ok) {
         setDone(true);
@@ -314,7 +322,35 @@ const SimplifiedPartnerModal = () => {
                         </div>
                         <div>
                            <label style={{ fontSize: '9px', color: '#666', fontWeight: 'bold', display: 'block', marginBottom: '5px' }}>WHATSAPP PHONE</label>
-                           <input placeholder="+ Country Code & Number" style={inputStyle} value={fd.wa} onChange={e=>setFd({...fd, wa:e.target.value})} />
+                           <div style={{ display: 'flex', gap: '8px' }}>
+                             <select 
+                               style={{ ...selectStyle, width: '110px', marginBottom: '15px' }} 
+                               value={countryCode} 
+                               onChange={e => setCountryCode(e.target.value)}
+                             >
+                               <option value="+971">🇦🇪 +971</option>
+                               <option value="+1">🇺🇸 +1</option>
+                               <option value="+91">🇮🇳 +91</option>
+                               <option value="+44">🇬🇧 +44</option>
+                               <option value="+966">🇸🇦 +966</option>
+                               <option value="+974">🇶🇦 +974</option>
+                               <option value="+965">🇰🇼 +965</option>
+                               <option value="+61">🇦🇺 +61</option>
+                               <option value="+1">🇨🇦 +1</option>
+                               <option value="+973">🇧🇭 +973</option>
+                               <option value="+968">🇴🇲 +968</option>
+                               <option value="+65">🇸🇬 +65</option>
+                               <option value="+33">🇫🇷 +33</option>
+                               <option value="+49">🇩🇪 +49</option>
+                               <option value="+39">🇮🇹 +39</option>
+                             </select>
+                             <input 
+                               placeholder="Phone Number" 
+                               style={{ ...inputStyle, flex: 1 }} 
+                               value={phoneNumber} 
+                               onChange={e => setPhoneNumber(e.target.value)} 
+                             />
+                           </div>
                         </div>
                       </div>
                       <div>
