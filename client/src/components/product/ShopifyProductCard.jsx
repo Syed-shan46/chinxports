@@ -122,10 +122,10 @@ export default function ShopifyProductCard({ product, darkTheme = false }) {
             {/* Content Area */}
             <div className="pt-4 flex flex-col flex-grow">
                 <div className="flex items-center justify-between gap-2 mb-1.5">
-                    <span className={`text-[8px] font-bold uppercase tracking-[0.2em] ${darkTheme ? 'text-white/30' : 'text-charcoal/30'}`}>
+                    <span className={`text-[8px] font-bold uppercase tracking-[0.2em] truncate ${darkTheme ? 'text-white/30' : 'text-charcoal/30'}`}>
                         {product.subCategory?.name || "Premium Collection"}
                     </span>
-                    <span className="text-[7px] font-bold text-primary-gold px-2 py-0.5 border border-primary-gold/20 rounded-full uppercase tracking-widest">
+                    <span className="text-[7px] font-bold text-primary-gold px-2 py-0.5 border border-primary-gold/20 rounded-full uppercase tracking-widest shrink-0 whitespace-nowrap">
                         MOQ {product.minQty || 12}
                     </span>
                 </div>
