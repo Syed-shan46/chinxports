@@ -107,30 +107,60 @@ router.post("/email", upload.single("screenshot"), async (req, res) => {
 // --- PARTNER APPLICATION NOTIFICATION ---
 router.post("/partner-request", async (req, res) => {
     try {
-        const { name, biz, email, wa, purpose } = req.body;
+        const { 
+            name, biz, email, wa, purpose,
+            website, country, yearsInBusiness, 
+            requestType, investment, distribution, retailing 
+        } = req.body;
 
         if (!name || !email) {
             return res.status(400).json({ error: "Name and Email are required." });
         }
 
+        const isImmediateOrder = requestType?.toLowerCase().includes("order");
+        const subjectPrefix = isImmediateOrder ? "🛍️ [IMMEDIATE ORDER REQUEST]" : "ℹ️ [GENERAL CATALOG INQUIRY]";
+        const subject = `${subjectPrefix} New Partnership Request: ${biz || name}`;
+
         const html = `
             <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #eaeaea; border-radius: 10px;">
-                <h2 style="color: #C6A769; border-bottom: 2px solid #C6A769; padding-bottom: 10px;">🤝 New Partner Application Received</h2>
-                <p>A new prospective wholesaler has requested partnership privileges on ChinaXports.</p>
+                <h2 style="color: #C6A769; border-bottom: 2px solid #C6A769; padding-bottom: 10px; margin-top: 0;">🤝 New Partner Application Received</h2>
                 
-                <div style="background: #f9f9f9; padding: 20px; border-radius: 8px; margin: 20px 0;">
-                    <p style="margin: 8px 0;"><strong>👤 Name:</strong> ${name}</p>
-                    <p style="margin: 8px 0;"><strong>🏢 Business Name:</strong> ${biz || "Not Provided"}</p>
-                    <p style="margin: 8px 0;"><strong>📧 Email Address:</strong> ${email}</p>
-                    <p style="margin: 8px 0;"><strong>💬 WhatsApp / Contact:</strong> ${wa || "Not Provided"}</p>
-                    <p style="margin: 8px 0; background: #fff; padding: 10px; border: 1px solid #ddd; border-radius: 4px;"><strong>📝 Purpose / Detailed Understanding:</strong><br/>${purpose || "Not Provided"}</p>
+                <div style="background: ${isImmediateOrder ? '#e8f5e9' : '#f5f5f5'}; padding: 15px; border-left: 5px solid ${isImmediateOrder ? '#4caf50' : '#9e9e9e'}; border-radius: 4px; margin: 15px 0 20px 0;">
+                    <p style="margin: 0; font-size: 14px; font-weight: bold; color: ${isImmediateOrder ? '#2e7d32' : '#333'};">
+                        APPLICATION INTENT: ${isImmediateOrder ? 'IMMEDIATE WHOLESALE ORDER REQUEST' : 'GENERAL CATALOG & PRICE INQUIRY'}
+                    </p>
                 </div>
 
-                <p style="font-size: 12px; color: #777;">Sent from ChinaXports Administrative System.</p>
+                <p>A new prospective wholesaler has submitted an advanced partnership intake application on ChinaXports.</p>
+                
+                <div style="background: #f9f9f9; padding: 20px; border-radius: 8px; margin: 20px 0; border: 1px solid #f0f0f0;">
+                    <h3 style="color: #333; margin-top: 0; border-bottom: 1px solid #eee; padding-bottom: 5px;">👤 Contact Information</h3>
+                    <p style="margin: 8px 0;"><strong>Representative Name:</strong> ${name}</p>
+                    <p style="margin: 8px 0;"><strong>Company Name:</strong> ${biz || "Not Provided"}</p>
+                    <p style="margin: 8px 0;"><strong>Email Address:</strong> ${email}</p>
+                    <p style="margin: 8px 0;"><strong>WhatsApp / Contact:</strong> ${wa || "Not Provided"}</p>
+                    <p style="margin: 8px 0;"><strong>Region / Country:</strong> ${country || "Not Provided"}</p>
+                    <p style="margin: 8px 0;"><strong>Website / Socials:</strong> ${website ? `<a href="${website}" target="_blank">${website}</a>` : "Not Provided"}</p>
+
+                    <h3 style="color: #333; margin-top: 25px; border-bottom: 1px solid #eee; padding-bottom: 5px;">💼 Business Profile & Advanced Verification</h3>
+                    <p style="margin: 8px 0;"><strong>Years in Business:</strong> ${yearsInBusiness || "New Startup"}</p>
+                    <p style="margin: 8px 0;"><strong>Planned Investment Range:</strong> ${investment || "Under $2,000"}</p>
+                    <p style="margin: 8px 0;"><strong>Distribution Channel:</strong> ${distribution || "Not Provided"}</p>
+                    <p style="margin: 8px 0;"><strong>Retailing Channels:</strong> ${retailing || "Not Provided"}</p>
+                    
+                    <h3 style="color: #333; margin-top: 25px; border-bottom: 1px solid #eee; padding-bottom: 5px;">📝 Partnership Details</h3>
+                    <p style="margin: 8px 0; background: #fff; padding: 12px; border: 1px solid #e0e0e0; border-radius: 4px; line-height: 1.5; color: #555;">
+                        ${purpose || "No additional message provided."}
+                    </p>
+                </div>
+
+                <p style="font-size: 11px; color: #999; text-align: center; margin-top: 30px; border-top: 1px solid #eee; padding-top: 15px;">
+                    Sent from ChinaXports B2B Intake System. Secure application logs archived.
+                </p>
             </div>
         `;
 
-        await sendOrderEmail(`🤝 New Partnership Request: ${biz || name}`, html);
+        await sendOrderEmail(subject, html);
 
         res.json({ success: true, message: "Partner application delivered to admin" });
 

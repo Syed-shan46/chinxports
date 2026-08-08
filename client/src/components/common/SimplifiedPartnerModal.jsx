@@ -9,12 +9,42 @@ const SimplifiedPartnerModal = () => {
   const [curr, setCurr] = React.useState(1);
   const [sub, setSub] = React.useState(false);
   const [done, setDone] = React.useState(false);
-  const [fd, setFd] = React.useState({ name: '', biz: '', email: '', wa: '', purpose: '' });
+  const [fd, setFd] = React.useState({ 
+    name: '', 
+    biz: '', 
+    website: '',
+    country: '',
+    yearsInBusiness: 'New Startup',
+    requestType: 'Catalog inquiry / general question',
+    investment: 'Under $2,000',
+    distribution: 'Retail Boutique',
+    retailing: 'Online Store',
+    email: '', 
+    wa: '', 
+    purpose: '' 
+  });
   const [width, setWidth] = React.useState(typeof window !== 'undefined' ? window.innerWidth : 1200);
 
   const onClose = () => setIsPartnerModalOpen(false);
 
-  const resetForm = () => { setCurr(1); setDone(false); setFd({ name: '', biz: '', email: '', wa: '', purpose: '' }); };
+  const resetForm = () => { 
+    setCurr(1); 
+    setDone(false); 
+    setFd({ 
+      name: '', 
+      biz: '', 
+      website: '',
+      country: '',
+      yearsInBusiness: 'New Startup',
+      requestType: 'Catalog inquiry / general question',
+      investment: 'Under $2,000',
+      distribution: 'Retail Boutique',
+      retailing: 'Online Store',
+      email: '', 
+      wa: '', 
+      purpose: '' 
+    }); 
+  };
 
   React.useEffect(() => {
     const handleResize = () => setWidth(window.innerWidth);
@@ -67,6 +97,15 @@ const SimplifiedPartnerModal = () => {
     marginBottom: '15px'
   };
 
+  const selectStyle = {
+    ...inputStyle,
+    appearance: 'none',
+    backgroundImage: 'url("data:image/svg+xml;charset=UTF-8,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 24 24\' fill=\'none\' stroke=\'%23888888\' stroke-width=\'2\' stroke-linecap=\'round\' stroke-linejoin=\'round\'%3E%3Cpolyline points=\'6 9 12 15 18 9\'%3E%3C/polyline%3E%3C/svg%3E")',
+    backgroundRepeat: 'no-repeat',
+    backgroundPosition: 'right 16px center',
+    backgroundSize: '16px'
+  };
+
   return createPortal(
     <div style={{ 
       position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, 
@@ -88,7 +127,7 @@ const SimplifiedPartnerModal = () => {
         width: isMobile ? '100%' : '95%', 
         height: isMobile ? '100dvh' : 'auto',
         maxWidth: isMobile ? 'none' : '900px', 
-        minHeight: isMobile ? '100dvh' : '500px',
+        minHeight: isMobile ? '100dvh' : '520px',
         backgroundColor: '#0d0d0d',
         border: isMobile ? 'none' : '1px solid rgba(198, 167, 105, 0.2)',
         borderRadius: isMobile ? '0px' : '20px',
@@ -174,13 +213,14 @@ const SimplifiedPartnerModal = () => {
                   <div style={{ flex: 1, height: '2px', backgroundColor: '#C6A769' }} />
                   <div style={{ flex: 1, height: '2px', backgroundColor: curr >= 2 ? '#C6A769' : '#222', transition: 'background-color 0.4s' }} />
                   <div style={{ flex: 1, height: '2px', backgroundColor: curr >= 3 ? '#C6A769' : '#222', transition: 'background-color 0.4s' }} />
+                  <div style={{ flex: 1, height: '2px', backgroundColor: curr >= 4 ? '#C6A769' : '#222', transition: 'background-color 0.4s' }} />
                 </div>
               </div>
 
               <div style={{ flex: 1 }}>
                 {curr === 1 && (
                   <div style={{ animation: 'fadeIn 0.3s ease' }}>
-                    <p style={{ fontSize: '11px', fontWeight: 'bold', color: '#888', marginBottom: '15px', letterSpacing: '1px' }}>BASIC INFORMATION</p>
+                    <p style={{ fontSize: '11px', fontWeight: 'bold', color: '#888', marginBottom: '15px', letterSpacing: '1px' }}>BASIC INFORMATION (STEP 1/3)</p>
                     <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr', gap: '15px' }}>
                       <div>
                          <label style={{ fontSize: '9px', color: '#666', fontWeight: 'bold', display: 'block', marginBottom: '5px' }}>REPRESENTATIVE NAME</label>
@@ -191,30 +231,97 @@ const SimplifiedPartnerModal = () => {
                          <input placeholder="Brand or Store" style={inputStyle} value={fd.biz} onChange={e=>setFd({...fd, biz:e.target.value})} />
                       </div>
                     </div>
+                    
+                    <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr', gap: '15px' }}>
+                      <div>
+                         <label style={{ fontSize: '9px', color: '#666', fontWeight: 'bold', display: 'block', marginBottom: '5px' }}>REGION / COUNTRY</label>
+                         <input placeholder="e.g. United States" style={inputStyle} value={fd.country} onChange={e=>setFd({...fd, country:e.target.value})} />
+                      </div>
+                      <div>
+                         <label style={{ fontSize: '9px', color: '#666', fontWeight: 'bold', display: 'block', marginBottom: '5px' }}>YEARS IN BUSINESS</label>
+                         <select style={selectStyle} value={fd.yearsInBusiness} onChange={e=>setFd({...fd, yearsInBusiness:e.target.value})}>
+                            <option value="New Startup">New Startup (Under 1 Year)</option>
+                            <option value="1-3 Years">1-3 Years</option>
+                            <option value="3-5 Years">3-5 Years</option>
+                            <option value="5+ Years">5+ Years</option>
+                         </select>
+                      </div>
+                    </div>
+
                     <div>
                        <label style={{ fontSize: '9px', color: '#666', fontWeight: 'bold', display: 'block', marginBottom: '5px' }}>BUSINESS WEBSITE / IG</label>
-                       <input placeholder="Optional" style={inputStyle} />
+                       <input placeholder="e.g. www.mybrand.com or @instagram" style={inputStyle} value={fd.website} onChange={e=>setFd({...fd, website:e.target.value})} />
                     </div>
                   </div>
                 )}
 
                 {curr === 2 && (
                   <div style={{ animation: 'fadeIn 0.3s ease' }}>
-                    <p style={{ fontSize: '11px', fontWeight: 'bold', color: '#888', marginBottom: '15px', letterSpacing: '1px' }}>CONTACT PARAMETERS</p>
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                    <p style={{ fontSize: '11px', fontWeight: 'bold', color: '#888', marginBottom: '15px', letterSpacing: '1px' }}>BUSINESS VERIFICATION PARAMETERS (STEP 2/3)</p>
+                    
+                    <div>
+                       <label style={{ fontSize: '9px', color: '#666', fontWeight: 'bold', display: 'block', marginBottom: '5px' }}>APPLICATION INTENT (ARE YOU PLACING AN ORDER?)</label>
+                       <select style={selectStyle} value={fd.requestType} onChange={e=>setFd({...fd, requestType:e.target.value})}>
+                          <option value="Immediate order inquiry">Immediate Wholesale Order Request (High Intent)</option>
+                          <option value="Catalog inquiry / general question">Just Inquiring / Catalog Request (General Enquiry)</option>
+                          <option value="Bespoke manufacturing inquiry">Custom Manufacturing / Bespoke Intention</option>
+                       </select>
+                    </div>
+
+                    <div>
+                       <label style={{ fontSize: '9px', color: '#666', fontWeight: 'bold', display: 'block', marginBottom: '5px' }}>PLANNED WHOLESALE INVESTMENT BUDGET</label>
+                       <select style={selectStyle} value={fd.investment} onChange={e=>setFd({...fd, investment:e.target.value})}>
+                          <option value="Under $2,000">Under $2,000 (Testing Phase)</option>
+                          <option value="$2,000 - $10,000">$2,000 - $10,000 (Commercial Intake)</option>
+                          <option value="$10,000 - $50,000">$10,000 - $50,000 (Expansion / Standard Distribution)</option>
+                          <option value="Above $50,000">Above $50,000 (Enterprise Merchant)</option>
+                       </select>
+                    </div>
+
+                    <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr', gap: '15px' }}>
                       <div>
-                         <label style={{ fontSize: '9px', color: '#666', fontWeight: 'bold', display: 'block', marginBottom: '5px' }}>OFFICIAL EMAIL</label>
-                         <input placeholder="name@company.com" style={inputStyle} value={fd.email} onChange={e=>setFd({...fd, email:e.target.value})} />
+                         <label style={{ fontSize: '9px', color: '#666', fontWeight: 'bold', display: 'block', marginBottom: '5px' }}>DISTRIBUTION MODEL</label>
+                         <select style={selectStyle} value={fd.distribution} onChange={e=>setFd({...fd, distribution:e.target.value})}>
+                            <option value="Retail Boutique">Retail Boutique / Physical Store</option>
+                            <option value="Online E-commerce">Online E-commerce</option>
+                            <option value="Wholesale Distribution">Wholesale Distribution Agent</option>
+                            <option value="Dropshipping">Dropshipping Partner</option>
+                            <option value="Private Label">Brand / Private Label</option>
+                         </select>
                       </div>
                       <div>
-                         <label style={{ fontSize: '9px', color: '#666', fontWeight: 'bold', display: 'block', marginBottom: '5px' }}>WHATSAPP PHONE</label>
-                         <input placeholder="+ Country Code Number" style={inputStyle} value={fd.wa} onChange={e=>setFd({...fd, wa:e.target.value})} />
+                         <label style={{ fontSize: '9px', color: '#666', fontWeight: 'bold', display: 'block', marginBottom: '5px' }}>RETAILING CHANNEL</label>
+                         <select style={selectStyle} value={fd.retailing} onChange={e=>setFd({...fd, retailing:e.target.value})}>
+                            <option value="Online Store">Own Online Store (Shopify/Woo/etc.)</option>
+                            <option value="Social Media">Social Media Channels (Instagram/FB/TikTok)</option>
+                            <option value="Physical Shop">Boutique / Physical Shopfront</option>
+                            <option value="Marketplace">Marketplaces (Amazon/Etsy/Ebay)</option>
+                            <option value="Wholesale B2B">B2B Channels / Catalog Sheets</option>
+                         </select>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {curr === 3 && (
+                  <div style={{ animation: 'fadeIn 0.3s ease' }}>
+                    <p style={{ fontSize: '11px', fontWeight: 'bold', color: '#888', marginBottom: '15px', letterSpacing: '1px' }}>CONTACT PARAMETERS (STEP 3/3)</p>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                      <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr', gap: '15px' }}>
+                        <div>
+                           <label style={{ fontSize: '9px', color: '#666', fontWeight: 'bold', display: 'block', marginBottom: '5px' }}>OFFICIAL EMAIL</label>
+                           <input placeholder="name@company.com" style={inputStyle} value={fd.email} onChange={e=>setFd({...fd, email:e.target.value})} />
+                        </div>
+                        <div>
+                           <label style={{ fontSize: '9px', color: '#666', fontWeight: 'bold', display: 'block', marginBottom: '5px' }}>WHATSAPP PHONE</label>
+                           <input placeholder="+ Country Code & Number" style={inputStyle} value={fd.wa} onChange={e=>setFd({...fd, wa:e.target.value})} />
+                        </div>
                       </div>
                       <div>
                          <label style={{ fontSize: '9px', color: '#666', fontWeight: 'bold', display: 'block', marginBottom: '5px' }}>PARTNERSHIP PURPOSE / DETAILED UNDERSTANDING</label>
                          <textarea 
-                           placeholder="Tell us about your business goals and how you plan to partner with us..." 
-                           style={{ ...inputStyle, height: '100px', resize: 'none' }} 
+                           placeholder="Tell us about your business goals, target audience, and how you plan to work with us..." 
+                           style={{ ...inputStyle, height: '90px', resize: 'none' }} 
                            value={fd.purpose} 
                            onChange={e=>setFd({...fd, purpose:e.target.value})} 
                          />
@@ -223,16 +330,18 @@ const SimplifiedPartnerModal = () => {
                   </div>
                 )}
 
-                {curr === 3 && (
+                {curr === 4 && (
                   <div style={{ animation: 'fadeIn 0.3s ease' }}>
                     <p style={{ fontSize: '11px', fontWeight: 'bold', color: '#888', marginBottom: '15px', letterSpacing: '1px' }}>DISPATCH VALIDATION</p>
-                    <div style={{ padding: '25px', backgroundColor: '#141414', border: '1px solid #222', borderRadius: '12px' }}>
-                       <p style={{ fontSize: '13px', color: '#aaa', margin: '0 0 8px 0' }}>Corporate Entity: <strong style={{ color: '#fff' }}>{fd.biz || 'Pending'}</strong></p>
-                       <p style={{ fontSize: '13px', color: '#aaa', margin: '0' }}>Rep: <strong style={{ color: '#fff' }}>{fd.name || 'Pending'}</strong></p>
+                    <div style={{ padding: '20px', backgroundColor: '#141414', border: '1px solid #222', borderRadius: '12px' }}>
+                       <p style={{ fontSize: '12px', color: '#aaa', margin: '0 0 6px 0' }}>Corporate Entity: <strong style={{ color: '#fff' }}>{fd.biz || 'Pending'}</strong></p>
+                       <p style={{ fontSize: '12px', color: '#aaa', margin: '0 0 6px 0' }}>Rep Name: <strong style={{ color: '#fff' }}>{fd.name || 'Pending'}</strong></p>
+                       <p style={{ fontSize: '12px', color: '#aaa', margin: '0 0 6px 0' }}>Intent: <strong style={{ color: '#C6A769' }}>{fd.requestType}</strong></p>
+                       <p style={{ fontSize: '12px', color: '#aaa', margin: '0' }}>Planned Investment: <strong style={{ color: '#fff' }}>{fd.investment}</strong></p>
                        
-                       <div style={{ marginTop: '20px', padding: '15px', background: 'rgba(198,167,105,0.08)', borderRadius: '8px', border: '1px solid rgba(198,167,105,0.15)', display: 'flex', gap: '12px', alignItems: 'center' }}>
+                       <div style={{ marginTop: '15px', padding: '12px', background: 'rgba(198,167,105,0.08)', borderRadius: '8px', border: '1px solid rgba(198,167,105,0.15)', display: 'flex', gap: '10px', alignItems: 'center' }}>
                          <ShieldCheck size={20} color="#C6A769" />
-                         <div style={{ fontSize: '11px', color: '#C6A769', fontWeight: '500', lineHeight: '1.4' }}>Secure channel established. Encryption standards active for this submittal.</div>
+                         <div style={{ fontSize: '11px', color: '#C6A769', fontWeight: '500', lineHeight: '1.4' }}>Intake channel established. Submission will route directly to senior accounts desk.</div>
                        </div>
                     </div>
                   </div>
@@ -246,7 +355,7 @@ const SimplifiedPartnerModal = () => {
                   </button>
                 ) : <div />}
 
-                {curr < 3 ? (
+                {curr < 4 ? (
                   <button onClick={() => setCurr(c => c + 1)} style={{ backgroundColor: '#ffffff', color: '#000000', border: 'none', borderRadius: '30px', padding: isMobile ? '12px 25px' : '14px 35px', fontSize: '11px', fontWeight: 'bold', letterSpacing: '1px', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '8px', boxShadow: '0 10px 30px rgba(255,255,255,0.1)' }}>
                      CONTINUE <ArrowRight size={14} />
                   </button>
