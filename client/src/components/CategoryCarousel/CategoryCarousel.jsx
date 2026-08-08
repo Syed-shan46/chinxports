@@ -95,9 +95,6 @@ const CategoryCarousel = () => {
                         <h2 className="font-display text-4xl lg:text-7xl text-matte-black italic leading-none tracking-tighter">
                             Signature <span className="not-italic font-normal text-charcoal/90">Series</span>
                         </h2>
-                        <p className="text-[13px] text-charcoal/50 font-medium max-w-xl leading-relaxed mt-1">
-                            Explore our premium handcrafted collections engineered for timeless elegance.
-                        </p>
                     </div>
                 </div>
 

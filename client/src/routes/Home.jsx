@@ -23,7 +23,8 @@ export default function Home() {
       {/* 01. Hero Banner - The High-Impact Entrance */}
       <LuxuryHero onWholesaleClick={openPartnerModal} />
 
-
+      {/* 02. Category Navigation - The Discovery Rail */}
+      <CategoryCarousel />
 
       {/* 03. Curated Products - Handpicked Slider */}
       <ShopifyProductSlider
