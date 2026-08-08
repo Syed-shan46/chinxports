@@ -146,9 +146,6 @@ export default function ShopifyProductCard({ product, darkTheme = false }) {
                         <span className={`text-[12px] font-bold ${darkTheme ? 'text-white' : 'text-matte-black'}`}>
                             {!product.price ? "Inquiry" : `₹${priceINR.toLocaleString()}`}
                         </span>
-                        <span className={`text-[6px] md:text-[7px] font-bold uppercase tracking-tight truncate max-w-[100px] ${darkTheme ? 'text-[#C6A769]/60' : 'text-[#C6A769]'}`}>
-                            {activeMsg}
-                        </span>
                     </div>
 
                     <button
