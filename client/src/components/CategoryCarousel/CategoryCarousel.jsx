@@ -34,10 +34,16 @@ const CategoryCarousel = () => {
                     const targetName = def.name.toLowerCase();
 
                     // 1. Check for exact or partial subcategory match first
-                    const subMatch = subCats.find(sub =>
-                        sub.name.toLowerCase().includes(targetName) ||
-                        targetName.includes(sub.name.toLowerCase())
-                    );
+                    const subMatch = subCats.find(sub => {
+                        const subName = sub.name.toLowerCase().trim();
+                        if (targetName === "rings") {
+                            return subName === "rings" || subName === "ring" || subName === "finger rings" || subName === "finger ring";
+                        }
+                        if (targetName === "earrings") {
+                            return subName === "earrings" || subName === "earring";
+                        }
+                        return subName.includes(targetName) || targetName.includes(subName);
+                    });
 
                     if (subMatch) {
                         let mainId = subMatch.mainCategory?._id || subMatch.mainCategory;
