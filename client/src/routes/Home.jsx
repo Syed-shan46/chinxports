@@ -26,14 +26,14 @@ export default function Home() {
       {/* 02. Category Navigation - The Discovery Rail */}
       <CategoryCarousel />
 
+      {/* 03.5. Subcategory Collections Grids (10 products per category) */}
+      <HomeCollections />
+
       {/* 03. Curated Products - Handpicked Slider */}
       <ShopifyProductSlider
         title="Handpicked For You"
         endpoint="handpicked"
       />
-
-      {/* 03.5. Subcategory Collections Grids (10 products per category) */}
-      <HomeCollections />
 
       {/* 06. Category Drilldown - Visual Tabs */}
       <ShopifyCategoryTabs />
