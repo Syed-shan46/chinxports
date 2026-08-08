@@ -84,10 +84,10 @@ const CategoryCarousel = () => {
     }, []);
 
     return (
-        <section className="pt-12 pb-4 lg:pt-24 lg:pb-12 bg-white overflow-hidden relative">
+        <section className="pt-6 pb-2 lg:pt-12 lg:pb-6 bg-white overflow-hidden relative">
             <div className="relative z-10">
                 {/* Standardized Header */}
-                <div className="pl-6 lg:pl-16 pr-6 mb-8">
+                <div className="pl-6 lg:pl-16 pr-6 mb-4">
                     <div className="flex flex-col gap-3">
                         <span className="text-[10px] font-bold tracking-[0.4em] text-primary-gold uppercase py-1.5 px-4 border border-primary-gold/20 bg-primary-gold/5 rounded-full inline-block w-fit">
                             Exclusives
@@ -113,10 +113,10 @@ const CategoryCarousel = () => {
                         <motion.div
                             key={idx}
                             whileTap={{ scale: 0.96 }}
-                            className="flex-none group cursor-pointer flex flex-col items-center snap-start w-24 lg:w-52"
+                            className="flex-none group cursor-pointer flex flex-col items-center snap-start w-24 lg:w-36"
                         >
                             <Link to={cat.link} className="flex flex-col items-center w-full">
-                                <div className="relative w-16 h-16 lg:w-44 lg:h-44 overflow-hidden rounded-full bg-[#fafaf9] border-[0.5px] border-black/5 mb-5 transition-all duration-700 group-hover:border-primary-gold group-hover:shadow-[0_20px_40px_rgba(0,0,0,0.1)] group-hover:shadow-primary-gold/10">
+                                <div className="relative w-16 h-16 lg:w-32 lg:h-32 overflow-hidden rounded-full bg-[#fafaf9] border-[0.5px] border-black/5 mb-3 transition-all duration-700 group-hover:border-primary-gold group-hover:shadow-[0_20px_40px_rgba(0,0,0,0.1)] group-hover:shadow-primary-gold/10">
                                     <img
                                         src={cat.image}
                                         alt={cat.name}
@@ -137,7 +137,7 @@ const CategoryCarousel = () => {
                 </div>
 
                 {/* Signature Gold Divider */}
-                <div className="mt-8 lg:mt-12 flex items-center justify-center">
+                <div className="mt-4 lg:mt-6 flex items-center justify-center">
                     <div className="w-24 lg:w-40 h-[1px] bg-gradient-to-r from-transparent via-primary-gold/40 to-transparent relative">
                         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-1.5 h-1.5 bg-primary-gold rounded-full shadow-[0_0_10px_rgba(198,167,105,0.8)]"></div>
                     </div>
