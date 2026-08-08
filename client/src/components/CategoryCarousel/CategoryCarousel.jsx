@@ -84,7 +84,7 @@ const CategoryCarousel = () => {
     }, []);
 
     return (
-        <section className="pt-12 pb-4 lg:pt-24 lg:pb-12 bg-white overflow-hidden relative">
+        <section className="pt-4 pb-4 md:pt-8 lg:pt-12 lg:pb-12 bg-white overflow-hidden relative">
             <div className="relative z-10">
                 {/* Standardized Header */}
                 <div className="pl-6 lg:pl-16 pr-6 mb-6 md:mb-8">
