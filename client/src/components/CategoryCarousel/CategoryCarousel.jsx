@@ -86,12 +86,8 @@ const CategoryCarousel = () => {
     return (
         <section className="pt-12 pb-4 lg:pt-24 lg:pb-12 bg-white overflow-hidden relative">
             <div className="relative z-10">
-                {/* Standardized Header */}
                 <div className="pl-6 lg:pl-16 pr-6 mb-8">
                     <div className="flex flex-col gap-3">
-                        <span className="text-[10px] font-bold tracking-[0.4em] text-primary-gold uppercase py-1.5 px-4 border border-primary-gold/20 bg-primary-gold/5 rounded-full inline-block w-fit">
-                            Exclusives
-                        </span>
                         <h2 className="font-display text-4xl lg:text-7xl text-matte-black italic leading-none tracking-tighter">
                             Signature <span className="not-italic font-normal text-charcoal/90">Series</span>
                         </h2>
