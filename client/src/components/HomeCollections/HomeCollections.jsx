@@ -66,7 +66,7 @@ export default function HomeCollections() {
     if (collections.length === 0) return null;
 
     return (
-        <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-12 py-12 space-y-20 bg-white">
+        <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-12 pt-0 pb-12 sm:pt-6 sm:pb-20 lg:pt-8 lg:pb-24 space-y-16 sm:space-y-24 bg-white">
             {collections.map((col) => (
                 <section key={col._id} className="space-y-8">
                     {/* Header */}
