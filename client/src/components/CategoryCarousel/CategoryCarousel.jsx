@@ -87,10 +87,21 @@ const CategoryCarousel = () => {
         <section className="pt-12 pb-4 lg:pt-24 lg:pb-12 bg-white overflow-hidden relative">
             <div className="relative z-10">
                 {/* Standardized Header */}
-                <div className="pl-6 lg:pl-16 pr-6 mb-8 mt-4 md:mt-8">
-                    <p className="text-[13px] sm:text-[15px] text-charcoal/60 font-medium max-w-xl leading-relaxed">
-                        Explore our premium handcrafted collections engineered for timeless elegance.
-                    </p>
+                <div className="pl-6 lg:pl-16 pr-6 mb-6 md:mb-8">
+                    <div className="flex flex-col gap-2 md:gap-3">
+                        <span className="hidden md:inline-block text-[10px] font-bold tracking-[0.4em] text-primary-gold uppercase py-1.5 px-4 border border-primary-gold/20 bg-primary-gold/5 rounded-full w-fit">
+                            Exclusives
+                        </span>
+                        <h2 className="block md:hidden font-display text-2xl text-matte-black tracking-tight leading-none">
+                            Categories
+                        </h2>
+                        <h2 className="hidden md:block font-display text-4xl lg:text-7xl text-matte-black italic leading-none tracking-tighter">
+                            Signature <span className="not-italic font-normal text-charcoal/90">Series</span>
+                        </h2>
+                        <p className="hidden md:block text-[13px] text-charcoal/50 font-medium max-w-xl leading-relaxed mt-1">
+                            Explore our premium handcrafted collections engineered for timeless elegance.
+                        </p>
+                    </div>
                 </div>
 
                 {/* Premium Grid / Rail */}
