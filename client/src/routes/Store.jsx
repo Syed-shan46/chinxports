@@ -64,7 +64,14 @@ export default function Store() {
       .then((res) => {
         const cats = (res.data?.categories ?? [])
           .filter(c => c._id === '69c36d19eab4f288c1d04248')
-          .map(c => ({ ...c, name: "Premium 18k Gold" }));
+          .map(c => ({ 
+            ...c, 
+            name: "Premium 18k Gold / PVD Coated",
+            subCategories: (c.subCategories || []).map(s => ({
+              ...s,
+              name: `18k PVD Coated ${s.name.charAt(0).toUpperCase() + s.name.slice(1)}`
+            }))
+          }));
         setMainCats(cats);
       })
       .catch(() => console.log("Failed to fetch main categories"));

@@ -11,6 +11,8 @@ const SimplifiedPartnerModal = () => {
   const [done, setDone] = React.useState(false);
   const [countryCode, setCountryCode] = React.useState('+971'); // Default to UAE
   const [phoneNumber, setPhoneNumber] = React.useState('');
+  const [minInvestment, setMinInvestment] = React.useState('');
+  const [maxInvestment, setMaxInvestment] = React.useState('');
   const [fd, setFd] = React.useState({ 
     name: '', 
     biz: '', 
@@ -18,7 +20,7 @@ const SimplifiedPartnerModal = () => {
     country: '',
     yearsInBusiness: 'New Startup',
     requestType: 'Catalog inquiry / general question',
-    investment: 'Under $2,000',
+    investment: '',
     distribution: 'Retail Boutique',
     retailing: 'Online Store',
     email: '', 
@@ -34,6 +36,8 @@ const SimplifiedPartnerModal = () => {
     setDone(false); 
     setCountryCode('+971');
     setPhoneNumber('');
+    setMinInvestment('');
+    setMaxInvestment('');
     setFd({ 
       name: '', 
       biz: '', 
@@ -41,13 +45,46 @@ const SimplifiedPartnerModal = () => {
       country: '',
       yearsInBusiness: 'New Startup',
       requestType: 'Catalog inquiry / general question',
-      investment: 'Under $2,000',
+      investment: '',
       distribution: 'Retail Boutique',
       retailing: 'Online Store',
       email: '', 
       wa: '', 
       purpose: '' 
     }); 
+  };
+
+  const formatNumber = (value) => {
+    if (!value) return '';
+    const cleanValue = value.replace(/\D/g, '');
+    if (!cleanValue) return '';
+    return parseInt(cleanValue, 10).toLocaleString('en-US');
+  };
+
+  const handleMinChange = (e) => {
+    const formatted = formatNumber(e.target.value);
+    setMinInvestment(formatted);
+    updateInvestmentString(formatted, maxInvestment);
+  };
+
+  const handleMaxChange = (e) => {
+    const formatted = formatNumber(e.target.value);
+    setMaxInvestment(formatted);
+    updateInvestmentString(minInvestment, formatted);
+  };
+
+  const updateInvestmentString = (min, max) => {
+    let rangeStr = '';
+    if (min && max) {
+      rangeStr = `$${min} - $${max} USD`;
+    } else if (min) {
+      rangeStr = `$${min}+ USD`;
+    } else if (max) {
+      rangeStr = `Up to $${max} USD`;
+    } else {
+      rangeStr = '';
+    }
+    setFd(prev => ({ ...prev, investment: rangeStr }));
   };
 
   React.useEffect(() => {
@@ -277,13 +314,34 @@ const SimplifiedPartnerModal = () => {
                     </div>
 
                     <div>
-                       <label style={{ fontSize: '9px', color: '#666', fontWeight: 'bold', display: 'block', marginBottom: '5px' }}>PLANNED WHOLESALE INVESTMENT BUDGET</label>
-                       <select style={selectStyle} value={fd.investment} onChange={e=>setFd({...fd, investment:e.target.value})}>
-                          <option value="Under $2,000">Under $2,000 (Testing Phase)</option>
-                          <option value="$2,000 - $10,000">$2,000 - $10,000 (Commercial Intake)</option>
-                          <option value="$10,000 - $50,000">$10,000 - $50,000 (Expansion / Standard Distribution)</option>
-                          <option value="Above $50,000">Above $50,000 (Enterprise Merchant)</option>
-                       </select>
+                       <label style={{ fontSize: '9px', color: '#666', fontWeight: 'bold', display: 'block', marginBottom: '8px', letterSpacing: '1px' }}>PLANNED WHOLESALE INVESTMENT BUDGET (USD)</label>
+                       <div style={{ display: 'flex', flexDirection: isMobile ? 'column' : 'row', gap: '12px', alignItems: isMobile ? 'stretch' : 'center', marginBottom: '15px' }}>
+                          <div style={{ flex: 1, position: 'relative' }}>
+                             <span style={{ position: 'absolute', left: '16px', top: '14px', fontSize: '13px', color: '#C6A769', fontWeight: 'bold' }}>$</span>
+                             <input 
+                               type="text"
+                               placeholder="Min Budget (e.g. 5,000)" 
+                               style={{ ...inputStyle, paddingLeft: '30px', marginBottom: 0 }} 
+                               value={minInvestment} 
+                               onChange={handleMinChange} 
+                             />
+                          </div>
+                          {!isMobile && <span style={{ color: '#666', fontSize: '11px', fontWeight: 'bold' }}>TO</span>}
+                          {isMobile && <div style={{ textAlign: 'center', fontSize: '10px', color: '#666', margin: '-4px 0' }}>TO</div>}
+                          <div style={{ flex: 1, position: 'relative' }}>
+                             <span style={{ position: 'absolute', left: '16px', top: '14px', fontSize: '13px', color: '#C6A769', fontWeight: 'bold' }}>$</span>
+                             <input 
+                               type="text"
+                               placeholder="Max Budget (e.g. 20,000)" 
+                               style={{ ...inputStyle, paddingLeft: '30px', marginBottom: 0 }} 
+                               value={maxInvestment} 
+                               onChange={handleMaxChange} 
+                             />
+                          </div>
+                       </div>
+                       <p style={{ fontSize: '10px', color: '#666', marginTop: '-8px', marginBottom: '15px' }}>
+                          Specify your planned range in US Dollars.
+                       </p>
                     </div>
 
                     <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr', gap: '15px' }}>
@@ -373,7 +431,7 @@ const SimplifiedPartnerModal = () => {
                        <p style={{ fontSize: '12px', color: '#aaa', margin: '0 0 6px 0' }}>Corporate Entity: <strong style={{ color: '#fff' }}>{fd.biz || 'Pending'}</strong></p>
                        <p style={{ fontSize: '12px', color: '#aaa', margin: '0 0 6px 0' }}>Rep Name: <strong style={{ color: '#fff' }}>{fd.name || 'Pending'}</strong></p>
                        <p style={{ fontSize: '12px', color: '#aaa', margin: '0 0 6px 0' }}>Intent: <strong style={{ color: '#C6A769' }}>{fd.requestType}</strong></p>
-                       <p style={{ fontSize: '12px', color: '#aaa', margin: '0' }}>Planned Investment: <strong style={{ color: '#fff' }}>{fd.investment}</strong></p>
+                       <p style={{ fontSize: '12px', color: '#aaa', margin: '0' }}>Planned Investment: <strong style={{ color: '#fff' }}>{fd.investment || 'Not Specified'}</strong></p>
                        
                        <div style={{ marginTop: '15px', padding: '12px', background: 'rgba(198,167,105,0.08)', borderRadius: '8px', border: '1px solid rgba(198,167,105,0.15)', display: 'flex', gap: '10px', alignItems: 'center' }}>
                          <ShieldCheck size={20} color="#C6A769" />

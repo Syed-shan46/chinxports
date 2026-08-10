@@ -39,7 +39,14 @@ export default function Header() {
         const data = await res.json();
         const cats = (data.categories || [])
           .filter(c => c._id === '69c36d19eab4f288c1d04248')
-          .map(c => ({ ...c, name: "Premium 18k Gold" }));
+          .map(c => ({ 
+            ...c, 
+            name: "Premium 18k Gold / PVD Coated",
+            subCategories: (c.subCategories || []).map(s => ({
+              ...s,
+              name: `18k PVD Coated ${s.name.charAt(0).toUpperCase() + s.name.slice(1)}`
+            }))
+          }));
         setCategories(cats);
         if (cats.length > 0) setOpenCategoryId(cats[0]._id);
       } catch (err) {
@@ -107,7 +114,7 @@ export default function Header() {
                   to="/store?category=69c36d19eab4f288c1d04248" 
                   className={({ isActive }) => `flex items-center gap-1 font-body text-[12px] font-bold uppercase tracking-[0.2em] transition-all hover:text-primary-gold ${location.search.includes('69c36d19eab4f288c1d04248') ? "text-primary-gold" : "text-charcoal"}`}
                 >
-                  Premium 18k Gold
+                  Premium 18k Gold / PVD Coated
                   <i className="bi bi-chevron-down text-[8px] opacity-40 group-hover:rotate-180 transition-transform"></i>
                 </NavLink>
                 <div className="absolute top-full left-0 mt-2 w-56 bg-white border border-black/[0.03] shadow-2xl rounded-sm py-4 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50">
@@ -290,7 +297,7 @@ export default function Header() {
                   onClick={() => toggleCategory('69c36d19eab4f288c1d04248')}
                   className={`w-full text-lg font-display transition-all duration-300 flex items-center justify-between ${location.search.includes('69c36d19eab4f288c1d04248') ? "text-primary-gold italic pl-2 border-l-2 border-primary-gold" : "text-charcoal"}`}
                 >
-                  Premium 18k Gold
+                  Premium 18k Gold / PVD Coated
                   <i className={`bi bi-chevron-right text-xs transition-transform duration-300 ${openCategoryId === '69c36d19eab4f288c1d04248' ? "rotate-90 text-primary-gold" : "opacity-30"}`}></i>
                 </button>
                 {openCategoryId === '69c36d19eab4f288c1d04248' && (

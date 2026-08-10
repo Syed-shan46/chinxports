@@ -132,7 +132,7 @@ const CategoryCarousel = () => {
                                 </div>
                                 <div className="text-center w-full">
                                     <span className="text-[8px] sm:text-[10px] md:text-[13px] font-bold uppercase tracking-[0.05em] sm:tracking-[0.2em] text-charcoal/40 group-hover:text-matte-black transition-colors block truncate">
-                                        {cat.name}
+                                        {cat.name.toLowerCase().startsWith("18k pvd coated") ? cat.name : "18k PVD Coated " + cat.name}
                                     </span>
                                 </div>
                             </Link>
