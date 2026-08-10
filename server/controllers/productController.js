@@ -12,10 +12,13 @@ module.exports.getAllProducts = async (req, res) => {
     const { mainCategory, subCategory } = req.query;
     console.log("getAllProducts query:", { mainCategory, subCategory });
 
-    // Enforce that only GOLD_CAT_ID products are queried for client-facing store pages
-    const productsQuery = {
-      mainCategory: new mongoose.Types.ObjectId(GOLD_CAT_ID)
-    };
+    const xuping = await MainCategory.findOne({ name: { $regex: /^xuping$/i } });
+    const productsQuery = {};
+    if (mainCategory) {
+      productsQuery.mainCategory = new mongoose.Types.ObjectId(mainCategory);
+    } else if (xuping) {
+      productsQuery.mainCategory = { $ne: xuping._id };
+    }
 
     if (subCategory) {
       productsQuery.subCategory = new mongoose.Types.ObjectId(subCategory);
@@ -84,29 +87,31 @@ module.exports.getAllProducts = async (req, res) => {
 
 module.exports.getHandpickedProducts = async (req, res) => {
   try {
-    const filterMainCat = GOLD_CAT_ID;
+    const xuping = await MainCategory.findOne({ name: { $regex: /^xuping$/i } });
+    const targetMainCat = req.query.mainCategory || null;
+    let query = targetMainCat ? { _id: targetMainCat } : (xuping ? { _id: { $ne: xuping._id } } : {});
 
-    // 1. Get all subcategories for this main category by resolving them from the MainCategory document
-    const mainCat = await MainCategory.findById(filterMainCat).lean();
-    const subIds = mainCat?.subCategories || [];
-    const subCategories = await SubCategory.find({ _id: { $in: subIds } });
+    const mainCats = await MainCategory.find(query).lean();
+    let allProducts = [];
 
-    // 2. Fetch 4 most recent products from each subcategory in parallel
-    const productPromises = subCategories.map(sub => 
-      Product.find({ 
-        mainCategory: new mongoose.Types.ObjectId(filterMainCat), 
-        subCategory: sub._id 
-      })
-      .sort({ createdAt: -1 })
-      .limit(4)
-      .populate('mainCategory', 'name')
-      .populate('subCategory', 'name')
-    );
+    for (const mainCat of mainCats) {
+      const subIds = mainCat?.subCategories || [];
+      const subCategories = await SubCategory.find({ _id: { $in: subIds } });
 
-    const productsNested = await Promise.all(productPromises);
-    
-    // 3. Flatten and Shuffle to ensure variety in the slider
-    let allProducts = productsNested.flat();
+      const productPromises = subCategories.map(sub => 
+        Product.find({ 
+          mainCategory: mainCat._id, 
+          subCategory: sub._id 
+        })
+        .sort({ createdAt: -1 })
+        .limit(4)
+        .populate('mainCategory', 'name')
+        .populate('subCategory', 'name')
+      );
+
+      const productsNested = await Promise.all(productPromises);
+      allProducts.push(...productsNested.flat());
+    }
     
     // Simple Fisher-Yates shuffle
     for (let i = allProducts.length - 1; i > 0; i--) {
@@ -137,38 +142,15 @@ module.exports.getHandpickedProducts = async (req, res) => {
 // Trending = ceramics
 module.exports.getCeramicsProducts = async (req, res) => {
   try {
-    const filterMainCat = GOLD_CAT_ID;
+    const xuping = await MainCategory.findOne({ name: { $regex: /^xuping$/i } });
+    const targetMainCat = req.query.mainCategory || null;
+    const filter = targetMainCat ? { mainCategory: targetMainCat } : (xuping ? { mainCategory: { $ne: xuping._id } } : {});
 
-    // Use a similar diverse strategy for "Trending"
-    const mainCat = await MainCategory.findById(filterMainCat).lean();
-    const subIds = mainCat?.subCategories || [];
-    const subCategories = await SubCategory.find({ _id: { $in: subIds } });
-    
-    // For trending, we could pick different logic, but variety is still key
-    const productPromises = subCategories.map(sub => 
-      Product.find({ 
-        mainCategory: new mongoose.Types.ObjectId(filterMainCat), 
-        subCategory: sub._id,
-        trending: true // If specifically trending, otherwise just latest
-      })
+    let allProducts = await Product.find(filter)
       .sort({ updatedAt: -1 })
-      .limit(3)
+      .limit(24)
       .populate('mainCategory', 'name')
-      .populate('subCategory', 'name')
-    );
-
-    const productsNested = await Promise.all(productPromises);
-    let allProducts = productsNested.flat();
-
-    // If we didn't get enough "trending:true" items, fill with regular latest
-    if (allProducts.length < 10) {
-      const latest = await Product.find({ mainCategory: new mongoose.Types.ObjectId(filterMainCat) })
-        .sort({ createdAt: -1 })
-        .limit(12)
-        .populate('mainCategory', 'name')
-        .populate('subCategory', 'name');
-      allProducts = [...allProducts, ...latest];
-    }
+      .populate('subCategory', 'name');
 
     // Shuffle for visual interest
     allProducts = allProducts.sort(() => Math.random() - 0.5);
@@ -228,7 +210,8 @@ module.exports.getProductDetail = async (req, res) => {
       .populate('subCategory', 'name');
 
     if (!product) return res.status(404).json({ error: 'Product not found' });
-    if (product.mainCategory?._id?.toString() !== GOLD_CAT_ID && product.mainCategory?.toString() !== GOLD_CAT_ID) {
+    const xuping = await MainCategory.findOne({ name: { $regex: /^xuping$/i } });
+    if (xuping && (product.mainCategory?._id?.toString() === xuping._id.toString() || product.mainCategory?.toString() === xuping._id.toString())) {
       return res.status(404).json({ error: 'Product not found' });
     }
 

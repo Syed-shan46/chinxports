@@ -14,7 +14,7 @@ export default function Store() {
   const [subCats, setSubCats] = useState([]);
   const [products, setProducts] = useState([]);
   const [searchParams, setSearchParams] = useSearchParams();
-  const [selectedMainCat, setSelectedMainCat] = useState(searchParams.get("category") || "69c36d19eab4f288c1d04248");
+  const [selectedMainCat, setSelectedMainCat] = useState(searchParams.get("category") || "");
   const [selectedSubCat, setSelectedSubCat] = useState(searchParams.get("sub") || "");
   const [currentPage, setCurrentPage] = useState(1);
   const [total, setTotal] = useState(0);
@@ -62,16 +62,23 @@ export default function Store() {
   useEffect(() => {
     axios.get(`${API_BASE_URL}/categories/get-maincategories`)
       .then((res) => {
+        const allowedIds = ['69c3a9a610f636c152943709', '6926fcfd1d552abbe3a6c307', '69c36d19eab4f288c1d04248'];
         const cats = (res.data?.categories ?? [])
-          .filter(c => c._id === '69c36d19eab4f288c1d04248')
-          .map(c => ({ 
-            ...c, 
-            name: "18k Gold Plated & 316L Stainless Steel",
-            subCategories: (c.subCategories || []).map(s => ({
-              ...s,
-              name: s.name.charAt(0).toUpperCase() + s.name.slice(1)
-            }))
-          }));
+          .filter(c => allowedIds.includes(c._id))
+          .map(c => {
+             let formattedName = c.name;
+             if (c._id === '69c3a9a610f636c152943709') formattedName = "18k Gold Plated";
+             else if (c._id === '6926fcfd1d552abbe3a6c307') formattedName = "316L Stainless Steel";
+             else if (c._id === '69c36d19eab4f288c1d04248') formattedName = "Premium 18k Gold";
+             return {
+               ...c,
+               name: formattedName,
+               subCategories: (c.subCategories || []).map(s => ({
+                 ...s,
+                 name: s.name.charAt(0).toUpperCase() + s.name.slice(1)
+               }))
+             };
+          });
         setMainCats(cats);
       })
       .catch(() => console.log("Failed to fetch main categories"));
@@ -79,12 +86,12 @@ export default function Store() {
 
   // update state when URL changes
   useEffect(() => {
-    setSelectedMainCat(searchParams.get("category") || "69c36d19eab4f288c1d04248");
+    setSelectedMainCat(searchParams.get("category") || "");
     setSelectedSubCat(searchParams.get("sub") || "");
     setSortValue(searchParams.get("sort") || "");
     setSearchQuery(searchParams.get("search") || "");
     setFilterValues({
-      category: searchParams.get("category") || "69c36d19eab4f288c1d04248",
+      category: searchParams.get("category") || "",
       sub: searchParams.get("sub") || "",
       priceMin: searchParams.get("priceMin") || "",
       priceMax: searchParams.get("priceMax") || "",

@@ -37,16 +37,23 @@ export default function Header() {
         const res = await fetch(`${BASE_URL}/api/categories/get-maincategories`, { signal: controller.signal });
         if (!res.ok) return;
         const data = await res.json();
+        const allowedIds = ['69c3a9a610f636c152943709', '6926fcfd1d552abbe3a6c307', '69c36d19eab4f288c1d04248'];
         const cats = (data.categories || [])
-          .filter(c => c._id === '69c36d19eab4f288c1d04248')
-          .map(c => ({ 
-            ...c, 
-            name: "18k Gold Plated & 316L Stainless Steel",
-            subCategories: (c.subCategories || []).map(s => ({
-              ...s,
-              name: s.name.charAt(0).toUpperCase() + s.name.slice(1)
-            }))
-          }));
+          .filter(c => allowedIds.includes(c._id))
+          .map(c => {
+             let formattedName = c.name;
+             if (c._id === '69c3a9a610f636c152943709') formattedName = "18k Gold Plated";
+             else if (c._id === '6926fcfd1d552abbe3a6c307') formattedName = "316L Stainless Steel";
+             else if (c._id === '69c36d19eab4f288c1d04248') formattedName = "Premium 18k Gold";
+             return {
+               ...c,
+               name: formattedName,
+               subCategories: (c.subCategories || []).map(s => ({
+                 ...s,
+                 name: s.name.charAt(0).toUpperCase() + s.name.slice(1)
+               }))
+             };
+          });
         setCategories(cats);
         if (cats.length > 0) setOpenCategoryId(cats[0]._id);
       } catch (err) {
@@ -108,27 +115,28 @@ export default function Header() {
             <nav className="hidden lg:flex items-center gap-10">
               <NavLink to="/" className={({ isActive }) => `relative font-body text-[12px] font-bold uppercase tracking-[0.2em] transition-all hover:text-primary-gold ${isActive ? "text-primary-gold" : "text-charcoal"}`}>Home</NavLink>
 
-              {/* Premium 18k Gold Dropdown (formerly 316L) */}
-              <div className="relative group">
-                <NavLink 
-                  to="/store?category=69c36d19eab4f288c1d04248" 
-                  className={({ isActive }) => `flex items-center gap-1 font-body text-[12px] font-bold uppercase tracking-[0.2em] transition-all hover:text-primary-gold ${location.search.includes('69c36d19eab4f288c1d04248') ? "text-primary-gold" : "text-charcoal"}`}
-                >
-                  18k Gold Plated & 316L Stainless Steel
-                  <i className="bi bi-chevron-down text-[8px] opacity-40 group-hover:rotate-180 transition-transform"></i>
-                </NavLink>
-                <div className="absolute top-full left-0 mt-2 w-56 bg-white border border-black/[0.03] shadow-2xl rounded-sm py-4 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50">
-                  {categories.find(c => c._id === '69c36d19eab4f288c1d04248')?.subCategories?.map(sub => (
-                    <Link 
-                      key={sub._id} 
-                      to={`/store?category=69c36d19eab4f288c1d04248&sub=${sub._id}`}
-                      className="block px-6 py-2 text-[11px] font-bold uppercase tracking-widest text-charcoal hover:text-primary-gold hover:bg-off-white transition-all"
-                    >
-                      {sub.name}
-                    </Link>
-                  ))}
+              {categories.map((cat) => (
+                <div key={cat._id} className="relative group">
+                  <NavLink 
+                    to={`/store?category=${cat._id}`} 
+                    className={({ isActive }) => `flex items-center gap-1 font-body text-[12px] font-bold uppercase tracking-[0.2em] transition-all hover:text-primary-gold ${location.search.includes(cat._id) ? "text-primary-gold" : "text-charcoal"}`}
+                  >
+                    {cat.name}
+                    <i className="bi bi-chevron-down text-[8px] opacity-40 group-hover:rotate-180 transition-transform"></i>
+                  </NavLink>
+                  <div className="absolute top-full left-0 mt-2 w-56 bg-white border border-black/[0.03] shadow-2xl rounded-sm py-4 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50">
+                    {cat.subCategories?.map(sub => (
+                      <Link 
+                        key={sub._id} 
+                        to={`/store?category=${cat._id}&sub=${sub._id}`}
+                        className="block px-6 py-2 text-[11px] font-bold uppercase tracking-widest text-charcoal hover:text-primary-gold hover:bg-off-white transition-all"
+                      >
+                        {sub.name}
+                      </Link>
+                    ))}
+                  </div>
                 </div>
-              </div>
+              ))}
 
               <NavLink to="/store?category=69c36d19eab4f288c1d04248" end className={({ isActive }) => `relative font-body text-[12px] font-bold uppercase tracking-[0.2em] transition-all hover:text-primary-gold ${location.pathname === '/store' ? "text-primary-gold" : "text-charcoal"}`}>Store</NavLink>
               <NavLink to="/about" className={({ isActive }) => `relative font-body text-[12px] font-bold uppercase tracking-[0.2em] transition-all hover:text-primary-gold ${isActive ? "text-primary-gold" : "text-charcoal"}`}>About</NavLink>
@@ -291,30 +299,31 @@ export default function Header() {
                 <i className="bi bi-arrow-right text-xs opacity-30"></i>
               </NavLink>
 
-              {/* Premium 18k Gold Mobile Dropdown (formerly 316L) */}
-              <div className="space-y-4">
-                <button
-                  onClick={() => toggleCategory('69c36d19eab4f288c1d04248')}
-                  className={`w-full text-lg font-display transition-all duration-300 flex items-center justify-between ${location.search.includes('69c36d19eab4f288c1d04248') ? "text-primary-gold italic pl-2 border-l-2 border-primary-gold" : "text-charcoal"}`}
-                >
-                  18k Gold Plated & 316L Stainless Steel
-                  <i className={`bi bi-chevron-right text-xs transition-transform duration-300 ${openCategoryId === '69c36d19eab4f288c1d04248' ? "rotate-90 text-primary-gold" : "opacity-30"}`}></i>
-                </button>
-                {openCategoryId === '69c36d19eab4f288c1d04248' && (
-                  <div className="pl-4 space-y-3 animate-fade-in">
-                    {categories.find(c => c._id === '69c36d19eab4f288c1d04248')?.subCategories?.map(sub => (
-                      <Link
-                        key={sub._id}
-                        to={`/store?category=69c36d19eab4f288c1d04248&sub=${sub._id}`}
-                        onClick={() => setIsMenuOpen(false)}
-                        className="block text-[13px] text-warm-gray hover:text-primary-gold transition-colors font-body uppercase tracking-[0.1em]"
-                      >
-                        {sub.name}
-                      </Link>
-                    ))}
-                  </div>
-                )}
-              </div>
+              {categories.map((cat) => (
+                <div key={cat._id} className="space-y-4">
+                  <button
+                    onClick={() => toggleCategory(cat._id)}
+                    className={`w-full text-lg font-display transition-all duration-300 flex items-center justify-between ${location.search.includes(cat._id) ? "text-primary-gold italic pl-2 border-l-2 border-primary-gold" : "text-charcoal"}`}
+                  >
+                    {cat.name}
+                    <i className={`bi bi-chevron-right text-xs transition-transform duration-300 ${openCategoryId === cat._id ? "rotate-90 text-primary-gold" : "opacity-30"}`}></i>
+                  </button>
+                  {openCategoryId === cat._id && (
+                    <div className="pl-4 space-y-3 animate-fade-in">
+                      {cat.subCategories?.map(sub => (
+                        <Link
+                          key={sub._id}
+                          to={`/store?category=${cat._id}&sub=${sub._id}`}
+                          onClick={() => setIsMenuOpen(false)}
+                          className="block text-[13px] text-warm-gray hover:text-primary-gold transition-colors font-body uppercase tracking-[0.1em]"
+                        >
+                          {sub.name}
+                        </Link>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              ))}
 
               {["Store", "About", "Contact", "Account"].map((item) => (
                 <NavLink

@@ -32,8 +32,12 @@ module.exports.storePage = async (req, res) => {
       ];
     }
 
-    const GOLD_CAT_ID = '69c36d19eab4f288c1d04248';
-    filter.mainCategory = GOLD_CAT_ID;
+    const xuping = await MainCategory.findOne({ name: { $regex: /^xuping$/i } });
+    if (req.query.category) {
+      filter.mainCategory = req.query.category;
+    } else if (xuping) {
+      filter.mainCategory = { $ne: xuping._id };
+    }
 
     if (req.query.subCategory) {
       filter.subCategory = req.query.subCategory;

@@ -87,6 +87,7 @@ export default function FilterBottomSheet({
                   onChange={(e) => setLocal(prev => ({ ...prev, mainCategory: e.target.value, subCategory: "" }))}
                 >
 
+                  <option value="">All Main Categories</option>
                   {mainCats.map(cat => <option key={cat._id} value={cat._id}>{cat.name}</option>)}
                 </select>
                 <i className="bi bi-chevron-down absolute right-6 top-1/2 -translate-y-1/2 text-[10px] text-charcoal/40 group-hover:text-primary-gold transition-colors"></i>

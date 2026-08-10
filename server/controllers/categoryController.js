@@ -113,9 +113,10 @@ module.exports.getAllSubCats = async (req, res) => {
 
     let query = {};
     if (!isAdmin) {
-      const mainCat = await MainCategory.findById(GOLD_CAT_ID).lean();
-      const subIds = mainCat?.subCategories || [];
-      query = { _id: { $in: subIds } };
+      const xuping = await MainCategory.findOne({ name: { $regex: /^xuping$/i } });
+      if (xuping) {
+        query = { mainCategory: { $ne: xuping._id } };
+      }
     } else {
       const xuping = await MainCategory.findOne({ name: { $regex: /^xuping$/i } });
       if (xuping) {
@@ -149,9 +150,10 @@ module.exports.getAllSubCategories = async (req, res) => {
 
     let query = {};
     if (!isAdmin) {
-      const mainCat = await MainCategory.findById(GOLD_CAT_ID).lean();
-      const subIds = mainCat?.subCategories || [];
-      query = { _id: { $in: subIds } };
+      const xuping = await MainCategory.findOne({ name: { $regex: /^xuping$/i } });
+      if (xuping) {
+        query = { mainCategory: { $ne: xuping._id } };
+      }
     } else {
       const xuping = await MainCategory.findOne({ name: { $regex: /^xuping$/i } });
       if (xuping) {
@@ -195,9 +197,7 @@ module.exports.getProductsBySubCategory = async (req, res) => {
 exports.getAllMainCategories = async (req, res) => {
   try {
     const isAdmin = req.query.admin === 'true';
-    const GOLD_CAT_ID = '69c36d19eab4f288c1d04248';
-
-    const query = isAdmin ? { name: { $not: /^xuping$/i } } : { _id: GOLD_CAT_ID };
+    const query = { name: { $not: /^xuping$/i } };
     const mainCategories = await MainCategory.find(query).sort({ name: 1 }).lean();
 
     const categoriesWithSubs = await Promise.all(
@@ -233,10 +233,9 @@ exports.searchCategories = async (req, res) => {
 
     if (!q) return res.json({ products: [], subCategories: [] });
 
-    const GOLD_CAT_ID = '69c36d19eab4f288c1d04248';
-
+    const xuping = await MainCategory.findOne({ name: { $regex: /^xuping$/i } });
     const productFilter = {
-      mainCategory: GOLD_CAT_ID,
+      ...(xuping ? { mainCategory: { $ne: xuping._id } } : {}),
       $or: [
         { productName: { $regex: q, $options: "i" } },
         { description: { $regex: q, $options: "i" } },
@@ -250,7 +249,7 @@ exports.searchCategories = async (req, res) => {
       .limit(10);
 
     const subCategoryFilter = {
-      mainCategory: GOLD_CAT_ID,
+      ...(xuping ? { mainCategory: { $ne: xuping._id } } : {}),
       name: { $regex: q, $options: "i" }
     };
 
