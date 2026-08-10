@@ -28,7 +28,7 @@ const ReplaceCartModal = () => {
                         {/* Summary side */}
                         <div className="md:col-span-12 space-y-6">
                             <p className="text-[14px] text-charcoal/70 leading-relaxed font-body">
-                                Your current bag contains items from a different collection. To maintain wholesale efficiency, you must select either <span className="text-deep-black font-semibold">18k PVD Coated Gold</span> or <span className="text-deep-black font-semibold">316L Steel</span> separately per order.
+                                Your current bag contains items from a different collection. To maintain wholesale efficiency, you must select either <span className="text-deep-black font-semibold">18k Gold Plated & 316L Stainless Steel</span> or other main categories separately per order.
                             </p>
 
                             <div className="p-5 bg-off-white/80 border border-black/5 rounded-sm flex items-center gap-6 relative group/incoming shadow-sm">

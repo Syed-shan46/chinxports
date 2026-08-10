@@ -66,10 +66,10 @@ export default function Store() {
           .filter(c => c._id === '69c36d19eab4f288c1d04248')
           .map(c => ({ 
             ...c, 
-            name: "Premium 18k Gold / PVD Coated",
+            name: "18k Gold Plated & 316L Stainless Steel",
             subCategories: (c.subCategories || []).map(s => ({
               ...s,
-              name: `18k PVD Coated ${s.name.charAt(0).toUpperCase() + s.name.slice(1)}`
+              name: s.name.charAt(0).toUpperCase() + s.name.slice(1)
             }))
           }));
         setMainCats(cats);

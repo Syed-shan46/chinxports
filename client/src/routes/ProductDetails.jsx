@@ -273,9 +273,7 @@ const ProductDetails = () => {
               <div className="flex flex-wrap items-center gap-3 pt-1">
                 <span className="px-3 py-1 bg-black/[0.03] text-charcoal/70 text-[9px] font-bold uppercase tracking-wider border border-black/[0.03] rounded-full">
                   {product.subCategory?.name 
-                    ? (product.subCategory.name.toLowerCase().startsWith("18k pvd coated")
-                      ? product.subCategory.name
-                      : `18k PVD Coated ${product.subCategory.name.charAt(0).toUpperCase() + product.subCategory.name.slice(1)}`)
+                    ? product.subCategory.name.charAt(0).toUpperCase() + product.subCategory.name.slice(1)
                     : "Jewelry"}
                 </span>
                 <span className="text-charcoal/40 text-[9px] font-bold uppercase tracking-widest flex items-center gap-1.5">

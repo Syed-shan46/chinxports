@@ -37,9 +37,7 @@ export default function HomeCollections() {
                 const results = await Promise.all(dataPromises);
                 const mappedResults = results.map(col => ({
                     ...col,
-                    name: col.name.toLowerCase().startsWith("18k pvd coated") 
-                      ? col.name 
-                      : `18k PVD Coated ${col.name.charAt(0).toUpperCase() + col.name.slice(1)}`
+                    name: col.name.charAt(0).toUpperCase() + col.name.slice(1)
                 }));
                 setCollections(mappedResults.filter(c => c.products.length > 0));
             } catch (error) {
