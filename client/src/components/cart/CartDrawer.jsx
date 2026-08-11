@@ -28,7 +28,7 @@ const CartDrawer = () => {
         };
     }, [isDrawerOpen]);
 
-    const MIN_PURCHASE = 25000;
+    const MIN_PURCHASE = 20000;
     const subtotal = cart.reduce((acc, item) => acc + (item.price * (item.quantity || 0)), 0);
     const progress = Math.min(100, (subtotal / MIN_PURCHASE) * 100);
     const remaining = Math.max(0, MIN_PURCHASE - subtotal);

@@ -49,7 +49,7 @@ const LuxuryWholesaleCheckout = () => {
   const fileInputRef = useRef(null);
 
   // Constraints
-  const MIN_PURCHASE = 25000;
+  const MIN_PURCHASE = 20000;
   const subtotal = cart.reduce((acc, item) => acc + ((item.price || 0) * (item.quantity || 1)), 0);
   const totalPriceINR = subtotal;
 
