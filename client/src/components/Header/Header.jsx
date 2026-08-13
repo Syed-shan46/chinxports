@@ -39,12 +39,13 @@ export default function Header() {
         const data = await res.json();
         const allowedIds = ['69c3a9a610f636c152943709', '6926fcfd1d552abbe3a6c307', '69c36d19eab4f288c1d04248'];
         const cats = (data.categories || [])
-          .filter(c => allowedIds.includes(c._id))
+          .filter(c => allowedIds.includes(c._id) || (c.name && c.name.toLowerCase().includes('xuping')))
           .map(c => {
              let formattedName = c.name;
              if (c._id === '69c3a9a610f636c152943709') formattedName = "18k Gold Plated";
              else if (c._id === '6926fcfd1d552abbe3a6c307') formattedName = "316L Stainless Steel";
              else if (c._id === '69c36d19eab4f288c1d04248') formattedName = "Premium 18k Gold";
+             else if (c.name && c.name.toLowerCase().includes('xuping')) formattedName = "Xuping";
              return {
                ...c,
                name: formattedName,

@@ -32,11 +32,8 @@ module.exports.storePage = async (req, res) => {
       ];
     }
 
-    const xuping = await MainCategory.findOne({ name: { $regex: /^xuping$/i } });
     if (req.query.category) {
       filter.mainCategory = req.query.category;
-    } else if (xuping) {
-      filter.mainCategory = { $ne: xuping._id };
     }
 
     if (req.query.subCategory) {
