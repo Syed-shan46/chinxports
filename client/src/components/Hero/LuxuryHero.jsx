@@ -1,5 +1,7 @@
 import React from "react";
 import { motion } from "framer-motion";
+import { Link } from "react-router-dom";
+import { ArrowRight, Sparkles, Building2 } from "lucide-react";
 
 const LuxuryHero = ({ onWholesaleClick }) => {
     const trustCards = [
@@ -69,12 +71,39 @@ const LuxuryHero = ({ onWholesaleClick }) => {
                             elegant craftsmanship with scalable manufacturing.
                         </motion.p>
 
+                        {/* Action Buttons */}
+                        <motion.div
+                            initial={{ opacity: 0, y: 26 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.8, delay: 0.25 }}
+                            className="mt-8 flex flex-col sm:flex-row items-stretch sm:items-center justify-center lg:justify-start gap-4"
+                        >
+                            <Link
+                                to="/become-a-distributor"
+                                className="group relative inline-flex items-center justify-center gap-3 px-8 py-4 rounded-full bg-matte-black text-white font-semibold text-xs tracking-[0.2em] uppercase shadow-2xl overflow-hidden hover:bg-[#C6A769] hover:text-black transition-all duration-500 transform hover:-translate-y-0.5 border border-matte-black"
+                            >
+                                <Sparkles size={16} className="text-[#C6A769] group-hover:text-black transition-colors" />
+                                <span>Become a Distributor</span>
+                                <span className="text-[9px] bg-[#C6A769]/20 text-[#C6A769] group-hover:bg-black/20 group-hover:text-black px-2.5 py-0.5 rounded-full font-bold transition-colors">
+                                    Min ₹5L
+                                </span>
+                                <ArrowRight size={14} className="transition-transform group-hover:translate-x-1" />
+                            </Link>
+
+                            <Link
+                                to="/store"
+                                className="inline-flex items-center justify-center gap-2 px-7 py-4 rounded-full border border-black/10 hover:border-black/30 text-matte-black font-semibold text-xs tracking-[0.2em] uppercase transition-all duration-300 hover:bg-black/5"
+                            >
+                                <span>Explore Store</span>
+                            </Link>
+                        </motion.div>
+
                         {/* Trust Points */}
                         <motion.div
                             initial={{ opacity: 0, y: 26 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.8, delay: 0.3 }}
-                            className="hidden sm:flex flex-wrap gap-3 sm:gap-4 mt-10"
+                            className="hidden sm:flex flex-wrap justify-center lg:justify-start gap-3 sm:gap-4 mt-10"
                         >
                             {trustCards.map((item, idx) => (
                                 <div
