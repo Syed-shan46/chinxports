@@ -20,27 +20,52 @@ module.exports.storePage = async (req, res) => {
     const limit = 30;
     const skip = (page - 1) * limit;
 
-    let filter = {};
+    const conditions = [];
 
     // 🔍 Logical Global Search Handling
     if (req.query.search) {
       const searchRegex = new RegExp(req.query.search, 'i');
-      filter.$or = [
-        { productName: { $regex: searchRegex } },
-        { description: { $regex: searchRegex } },
-        { tags: { $elemMatch: { $regex: searchRegex } } } // Since tags is array of strings
-      ];
+      conditions.push({
+        $or: [
+          { productName: { $regex: searchRegex } },
+          { description: { $regex: searchRegex } },
+          { tags: { $elemMatch: { $regex: searchRegex } } }
+        ]
+      });
     }
 
     const categoryId = req.query.category || req.query.mainCategory;
     if (categoryId) {
-      filter.mainCategory = categoryId;
+      const mainCatDoc = await MainCategory.findById(categoryId).lean();
+      const subIds = mainCatDoc?.subCategories || [];
+      if (subIds.length > 0) {
+        conditions.push({
+          $or: [
+            { mainCategory: categoryId },
+            { subCategory: { $in: subIds } }
+          ]
+        });
+      } else {
+        conditions.push({ mainCategory: categoryId });
+      }
     }
 
     const subCategoryId = req.query.subCategory || req.query.sub;
     if (subCategoryId) {
-      filter.subCategory = subCategoryId;
+      conditions.push({ subCategory: subCategoryId });
     }
+
+    if (req.query.priceMin) {
+      const min = Number(req.query.priceMin);
+      if (!isNaN(min)) conditions.push({ price: { $gte: min } });
+    }
+
+    if (req.query.priceMax) {
+      const max = Number(req.query.priceMax);
+      if (!isNaN(max)) conditions.push({ price: { $lte: max } });
+    }
+
+    const filter = conditions.length > 0 ? (conditions.length === 1 ? conditions[0] : { $and: conditions }) : {};
 
     const totalCount = await Product.countDocuments(filter);
 

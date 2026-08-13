@@ -139,7 +139,7 @@ export default function Header() {
                 </div>
               ))}
 
-              <NavLink to="/store?category=69c36d19eab4f288c1d04248" end className={({ isActive }) => `relative font-body text-[12px] font-bold uppercase tracking-[0.2em] transition-all hover:text-primary-gold ${location.pathname === '/store' ? "text-primary-gold" : "text-charcoal"}`}>Store</NavLink>
+              <NavLink to="/store" end className={({ isActive }) => `relative font-body text-[12px] font-bold uppercase tracking-[0.2em] transition-all hover:text-primary-gold ${location.pathname === '/store' ? "text-primary-gold" : "text-charcoal"}`}>Store</NavLink>
               <NavLink to="/about" className={({ isActive }) => `relative font-body text-[12px] font-bold uppercase tracking-[0.2em] transition-all hover:text-primary-gold ${isActive ? "text-primary-gold" : "text-charcoal"}`}>About</NavLink>
               <NavLink to="/contact" className={({ isActive }) => `relative font-body text-[12px] font-bold uppercase tracking-[0.2em] transition-all hover:text-primary-gold ${isActive ? "text-primary-gold" : "text-charcoal"}`}>Contact</NavLink>
             </nav>

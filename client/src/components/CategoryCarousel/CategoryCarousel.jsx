@@ -73,14 +73,14 @@ const CategoryCarousel = () => {
                     // 3. Fallback to general store
                     return {
                         ...def,
-                        link: '/store?category=69c36d19eab4f288c1d04248'
+                        link: '/store'
                     };
                 });
 
                 setDynamicCategories(merged);
             } catch (err) {
                 console.error("Failed to fetch categories for carousel:", err);
-                setDynamicCategories(categoryDefinitions.map(d => ({ ...d, link: '/store?category=69c36d19eab4f288c1d04248' })));
+                setDynamicCategories(categoryDefinitions.map(d => ({ ...d, link: '/store' })));
             } finally {
                 setLoading(false);
             }

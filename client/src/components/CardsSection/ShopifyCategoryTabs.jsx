@@ -262,7 +262,7 @@ export default function ShopifyCategoryTabs() {
                 {/* Bottom CTA */}
                 <div className="mt-14 flex justify-center sm:mt-16 lg:mt-20">
                     <Link
-                        to="/store?category=69c36d19eab4f288c1d04248"
+                        to="/store"
                         className="group relative inline-flex h-13 items-center justify-center overflow-hidden rounded-full bg-matte-black px-7 text-[10px] font-semibold uppercase tracking-[0.22em] text-white transition-all duration-300 hover:bg-primary-gold hover:text-matte-black sm:h-14 sm:px-10 sm:text-[11px] shadow-[0_20px_45px_rgba(0,0,0,0.08)]"
                     >
                         {/* Light Sweep */}

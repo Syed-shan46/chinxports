@@ -46,7 +46,7 @@ const LuxuryHeader = () => {
     const logoColorClass = (isScrolled) ? 'text-matte-black' : (isLightPage ? 'text-matte-black' : 'text-soft-white');
 
     const navLinks = [
-        { name: 'Collections', path: '/store?category=69c36d19eab4f288c1d04248' },
+        { name: 'Collections', path: '/store' },
         { name: 'Wholesale', path: '/wholesale' },
         { name: 'Manufacturing', path: '/services' },
         { name: 'Shipping', path: '/shipping' },
