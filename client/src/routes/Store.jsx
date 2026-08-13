@@ -132,8 +132,14 @@ export default function Store() {
     const params = new URLSearchParams();
     params.set("page", page);
     params.set("limit", 24);
-    if (selectedMainCat) params.set("mainCategory", selectedMainCat);
-    if (selectedSubCat) params.set("subCategory", selectedSubCat);
+    if (selectedMainCat) {
+      params.set("category", selectedMainCat);
+      params.set("mainCategory", selectedMainCat);
+    }
+    if (selectedSubCat) {
+      params.set("subCategory", selectedSubCat);
+      params.set("sub", selectedSubCat);
+    }
     if (sortValue) params.set("sort", sortValue);
     if (searchQuery) params.set("search", searchQuery);
     if (filterValues.priceMin) params.set("priceMin", filterValues.priceMin);
@@ -154,7 +160,7 @@ export default function Store() {
         setProducts(prev => [...prev, ...newProducts]);
       }
 
-      setHasMore(allProducts.length >= 24);
+      setHasMore(newProducts.length >= 24);
       setCurrentPage(page);
     } catch (error) {
       console.error("Error fetching products:", error);

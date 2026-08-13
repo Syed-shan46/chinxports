@@ -32,12 +32,14 @@ module.exports.storePage = async (req, res) => {
       ];
     }
 
-    if (req.query.category) {
-      filter.mainCategory = req.query.category;
+    const categoryId = req.query.category || req.query.mainCategory;
+    if (categoryId) {
+      filter.mainCategory = categoryId;
     }
 
-    if (req.query.subCategory) {
-      filter.subCategory = req.query.subCategory;
+    const subCategoryId = req.query.subCategory || req.query.sub;
+    if (subCategoryId) {
+      filter.subCategory = subCategoryId;
     }
 
     const totalCount = await Product.countDocuments(filter);
