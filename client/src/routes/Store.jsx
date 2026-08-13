@@ -107,13 +107,22 @@ export default function Store() {
 
   // Fetch Subcategories
   useEffect(() => {
-    if (!selectedMainCat) {
-      setSubCats([]);
-      return;
+    if (!mainCats.length) return;
+    if (selectedSubCat) {
+      const parentCat = mainCats.find(cat => (cat.subCategories || []).some(s => s._id === selectedSubCat));
+      if (parentCat && parentCat._id !== selectedMainCat) {
+        setSelectedMainCat(parentCat._id);
+        setSubCats(parentCat.subCategories || []);
+        return;
+      }
     }
-    const selectedCat = mainCats.find(cat => cat._id === selectedMainCat);
-    setSubCats(selectedCat?.subCategories || []);
-  }, [selectedMainCat, mainCats]);
+    if (selectedMainCat) {
+      const selectedCat = mainCats.find(cat => cat._id === selectedMainCat);
+      setSubCats(selectedCat?.subCategories || []);
+    } else {
+      setSubCats([]);
+    }
+  }, [selectedMainCat, selectedSubCat, mainCats]);
 
   const handleSortApply = (value) => {
     const params = Object.fromEntries([...searchParams]);
@@ -330,7 +339,7 @@ export default function Store() {
                 )}
                 {selectedSubCat && (
                   <span className="flex items-center justify-center h-6 px-4 bg-deep-black text-white text-[9px] font-bold uppercase rounded-full shadow-sm">
-                    {subCats.find(c => c._id === selectedSubCat)?.name || "Subcategory"}
+                    {subCats.find(c => c._id === selectedSubCat)?.name || mainCats.flatMap(c => c.subCategories || []).find(s => s._id === selectedSubCat)?.name || "Subcategory"}
                   </span>
                 )}
                 {searchQuery && (

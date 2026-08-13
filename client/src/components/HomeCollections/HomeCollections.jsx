@@ -21,9 +21,7 @@ export default function HomeCollections() {
                     try {
                         const prodRes = await axios.get(`${BASE_URL}/api/categories/subcategory/${sub._id}`);
                         const products = prodRes.data?.products || [];
-                        const filteredProducts = products
-                            .filter(p => p.mainCategory === "69c36d19eab4f288c1d04248" || p.mainCategory?._id === "69c36d19eab4f288c1d04248")
-                            .slice(0, 10);
+                        const filteredProducts = products.slice(0, 10);
                         return {
                             ...sub,
                             products: filteredProducts
@@ -71,7 +69,10 @@ export default function HomeCollections() {
 
     return (
         <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-12 pt-0 pb-12 sm:pt-6 sm:pb-20 lg:pt-8 lg:pb-24 space-y-16 sm:space-y-24 bg-white">
-            {collections.map((col) => (
+            {collections.map((col) => {
+                const mainCatId = col.mainCategory?._id || col.mainCategory;
+                const viewMoreLink = mainCatId ? `/store?category=${mainCatId}&sub=${col._id}` : `/store?sub=${col._id}`;
+                return (
                 <section key={col._id} className="space-y-8">
                     {/* Header */}
                     <div className="flex items-end justify-between border-b border-black/[0.04] pb-4">
@@ -84,7 +85,7 @@ export default function HomeCollections() {
                             </h2>
                         </div>
                         <Link
-                            to={`/store?category=69c36d19eab4f288c1d04248&sub=${col._id}`}
+                            to={viewMoreLink}
                             className="group flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-primary-gold hover:text-matte-black transition-colors"
                         >
                             <span>View More</span>
@@ -99,7 +100,8 @@ export default function HomeCollections() {
                         ))}
                     </div>
                 </section>
-            ))}
+                );
+            })}
         </div>
     );
 }

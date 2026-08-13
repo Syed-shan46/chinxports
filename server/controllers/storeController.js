@@ -35,7 +35,11 @@ module.exports.storePage = async (req, res) => {
     }
 
     const categoryId = req.query.category || req.query.mainCategory;
-    if (categoryId) {
+    const subCategoryId = req.query.subCategory || req.query.sub;
+
+    if (subCategoryId) {
+      conditions.push({ subCategory: subCategoryId });
+    } else if (categoryId) {
       const mainCatDoc = await MainCategory.findById(categoryId).lean();
       const subIds = mainCatDoc?.subCategories || [];
       if (subIds.length > 0) {
@@ -48,11 +52,6 @@ module.exports.storePage = async (req, res) => {
       } else {
         conditions.push({ mainCategory: categoryId });
       }
-    }
-
-    const subCategoryId = req.query.subCategory || req.query.sub;
-    if (subCategoryId) {
-      conditions.push({ subCategory: subCategoryId });
     }
 
     if (req.query.priceMin) {
