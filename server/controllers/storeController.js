@@ -20,51 +20,28 @@ module.exports.storePage = async (req, res) => {
     const limit = 30;
     const skip = (page - 1) * limit;
 
-    const conditions = [];
+    let filter = {};
 
     // 🔍 Logical Global Search Handling
     if (req.query.search) {
       const searchRegex = new RegExp(req.query.search, 'i');
-      conditions.push({
-        $or: [
-          { productName: { $regex: searchRegex } },
-          { description: { $regex: searchRegex } },
-          { tags: { $elemMatch: { $regex: searchRegex } } }
-        ]
-      });
+      filter.$or = [
+        { productName: { $regex: searchRegex } },
+        { description: { $regex: searchRegex } },
+        { tags: { $elemMatch: { $regex: searchRegex } } } // Since tags is array of strings
+      ];
     }
 
-    const categoryId = req.query.category || req.query.mainCategory;
-    const subCategoryId = req.query.subCategory || req.query.sub;
-
-    if (subCategoryId) {
-      conditions.push({ subCategory: subCategoryId });
-    } else if (categoryId) {
-      const mainCatDoc = await MainCategory.findById(categoryId).lean();
-      const subIds = mainCatDoc?.subCategories || [];
-      if (subIds.length > 0) {
-        conditions.push({
-          $or: [
-            { mainCategory: categoryId },
-            { subCategory: { $in: subIds } }
-          ]
-        });
-      } else {
-        conditions.push({ mainCategory: categoryId });
-      }
+    const xuping = await MainCategory.findOne({ name: { $regex: /^xuping$/i } });
+    if (req.query.category) {
+      filter.mainCategory = req.query.category;
+    } else if (xuping) {
+      filter.mainCategory = { $ne: xuping._id };
     }
 
-    if (req.query.priceMin) {
-      const min = Number(req.query.priceMin);
-      if (!isNaN(min)) conditions.push({ price: { $gte: min } });
+    if (req.query.subCategory) {
+      filter.subCategory = req.query.subCategory;
     }
-
-    if (req.query.priceMax) {
-      const max = Number(req.query.priceMax);
-      if (!isNaN(max)) conditions.push({ price: { $lte: max } });
-    }
-
-    const filter = conditions.length > 0 ? (conditions.length === 1 ? conditions[0] : { $and: conditions }) : {};
 
     const totalCount = await Product.countDocuments(filter);
 

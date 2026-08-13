@@ -26,6 +26,7 @@ import CreateSubCategory from "./routes/CreateSubCategory";
 import Services from "./components/Services/Services";
 import Account from "./routes/Account";
 import MobileBottomNav from "./components/common/MobileBottomNav";
+import BecomeDistributor from "./routes/BecomeDistributor";
 
 function App() {
     const [isLoading, setIsLoading] = useState(true);
@@ -60,6 +61,8 @@ function App() {
                     <Routes>
                         <Route path="/" element={<Home />} />
                         <Route path="/wholesale" element={<Wholesale />} />
+                        <Route path="/become-a-distributor" element={<BecomeDistributor />} />
+                        <Route path="/distributor" element={<BecomeDistributor />} />
                         <Route path="/store" element={<Store />} />
                         <Route path="/products/product-details/:id" element={<ProductDetails />} />
                         <Route path="/contact" element={<Contact />} />

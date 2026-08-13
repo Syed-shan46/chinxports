@@ -64,13 +64,12 @@ export default function Store() {
       .then((res) => {
         const allowedIds = ['69c3a9a610f636c152943709', '6926fcfd1d552abbe3a6c307', '69c36d19eab4f288c1d04248'];
         const cats = (res.data?.categories ?? [])
-          .filter(c => allowedIds.includes(c._id) || (c.name && c.name.toLowerCase().includes('xuping')))
+          .filter(c => allowedIds.includes(c._id))
           .map(c => {
              let formattedName = c.name;
              if (c._id === '69c3a9a610f636c152943709') formattedName = "18k Gold Plated";
              else if (c._id === '6926fcfd1d552abbe3a6c307') formattedName = "316L Stainless Steel";
              else if (c._id === '69c36d19eab4f288c1d04248') formattedName = "Premium 18k Gold";
-             else if (c.name && c.name.toLowerCase().includes('xuping')) formattedName = "Xuping";
              return {
                ...c,
                name: formattedName,
@@ -107,22 +106,13 @@ export default function Store() {
 
   // Fetch Subcategories
   useEffect(() => {
-    if (!mainCats.length) return;
-    if (selectedSubCat) {
-      const parentCat = mainCats.find(cat => (cat.subCategories || []).some(s => s._id === selectedSubCat));
-      if (parentCat && parentCat._id !== selectedMainCat) {
-        setSelectedMainCat(parentCat._id);
-        setSubCats(parentCat.subCategories || []);
-        return;
-      }
-    }
-    if (selectedMainCat) {
-      const selectedCat = mainCats.find(cat => cat._id === selectedMainCat);
-      setSubCats(selectedCat?.subCategories || []);
-    } else {
+    if (!selectedMainCat) {
       setSubCats([]);
+      return;
     }
-  }, [selectedMainCat, selectedSubCat, mainCats]);
+    const selectedCat = mainCats.find(cat => cat._id === selectedMainCat);
+    setSubCats(selectedCat?.subCategories || []);
+  }, [selectedMainCat, mainCats]);
 
   const handleSortApply = (value) => {
     const params = Object.fromEntries([...searchParams]);
@@ -141,14 +131,8 @@ export default function Store() {
     const params = new URLSearchParams();
     params.set("page", page);
     params.set("limit", 24);
-    if (selectedMainCat) {
-      params.set("category", selectedMainCat);
-      params.set("mainCategory", selectedMainCat);
-    }
-    if (selectedSubCat) {
-      params.set("subCategory", selectedSubCat);
-      params.set("sub", selectedSubCat);
-    }
+    if (selectedMainCat) params.set("mainCategory", selectedMainCat);
+    if (selectedSubCat) params.set("subCategory", selectedSubCat);
     if (sortValue) params.set("sort", sortValue);
     if (searchQuery) params.set("search", searchQuery);
     if (filterValues.priceMin) params.set("priceMin", filterValues.priceMin);
@@ -159,7 +143,11 @@ export default function Store() {
 
     try {
       const res = await axios.get(`${API_BASE_URL}/store?${params.toString()}`);
-      const newProducts = res.data.products || [];
+      const allProducts = res.data.products || [];
+      const newProducts = allProducts.filter(p => {
+        const catName = p.mainCategory?.name || (typeof p.mainCategory === 'object' ? p.mainCategory?.name : '');
+        return !catName || catName.toLowerCase() !== 'xuping';
+      });
       const totalCount = res.data.totalCount || 0;
 
       if (page === 1) {
@@ -169,7 +157,7 @@ export default function Store() {
         setProducts(prev => [...prev, ...newProducts]);
       }
 
-      setHasMore(newProducts.length >= 24);
+      setHasMore(allProducts.length >= 24);
       setCurrentPage(page);
     } catch (error) {
       console.error("Error fetching products:", error);
@@ -339,7 +327,7 @@ export default function Store() {
                 )}
                 {selectedSubCat && (
                   <span className="flex items-center justify-center h-6 px-4 bg-deep-black text-white text-[9px] font-bold uppercase rounded-full shadow-sm">
-                    {subCats.find(c => c._id === selectedSubCat)?.name || mainCats.flatMap(c => c.subCategories || []).find(s => s._id === selectedSubCat)?.name || "Subcategory"}
+                    {subCats.find(c => c._id === selectedSubCat)?.name || "Subcategory"}
                   </span>
                 )}
                 {searchQuery && (

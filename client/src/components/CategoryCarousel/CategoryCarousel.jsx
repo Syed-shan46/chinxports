@@ -26,8 +26,8 @@ const CategoryCarousel = () => {
                     axios.get(`${BASE_URL}/api/categories/get-subcategories`)
                 ]);
 
-                const apiCats = mainRes.data?.categories ?? [];
-                const subCats = subRes.data?.subcategories ?? [];
+                const apiCats = (mainRes.data?.categories ?? []).filter(c => c._id === '69c36d19eab4f288c1d04248');
+                const subCats = (subRes.data?.subcategories ?? []);
 
                 // Merge API data with our premium images
                 const merged = categoryDefinitions.map(def => {
@@ -48,10 +48,12 @@ const CategoryCarousel = () => {
                     if (subMatch) {
                         let mainId = subMatch.mainCategory?._id || subMatch.mainCategory;
                         let mainIdStr = typeof mainId === 'string' ? mainId : (mainId?._id || "");
-                        const link = mainIdStr ? `/store?category=${mainIdStr}&sub=${subMatch._id}` : `/store?sub=${subMatch._id}`;
+                        if (mainIdStr !== '69c36d19eab4f288c1d04248') {
+                            mainIdStr = '69c36d19eab4f288c1d04248';
+                        }
                         return {
                             ...def,
-                            link
+                            link: `/store?category=${mainIdStr}&sub=${subMatch._id}`
                         };
                     }
 
@@ -71,14 +73,14 @@ const CategoryCarousel = () => {
                     // 3. Fallback to general store
                     return {
                         ...def,
-                        link: '/store'
+                        link: '/store?category=69c36d19eab4f288c1d04248'
                     };
                 });
 
                 setDynamicCategories(merged);
             } catch (err) {
                 console.error("Failed to fetch categories for carousel:", err);
-                setDynamicCategories(categoryDefinitions.map(d => ({ ...d, link: '/store' })));
+                setDynamicCategories(categoryDefinitions.map(d => ({ ...d, link: '/store?category=69c36d19eab4f288c1d04248' })));
             } finally {
                 setLoading(false);
             }

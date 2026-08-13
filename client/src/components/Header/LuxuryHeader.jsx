@@ -46,8 +46,9 @@ const LuxuryHeader = () => {
     const logoColorClass = (isScrolled) ? 'text-matte-black' : (isLightPage ? 'text-matte-black' : 'text-soft-white');
 
     const navLinks = [
-        { name: 'Collections', path: '/store' },
+        { name: 'Collections', path: '/store?category=69c36d19eab4f288c1d04248' },
         { name: 'Wholesale', path: '/wholesale' },
+        { name: 'Distributor', path: '/become-a-distributor' },
         { name: 'Manufacturing', path: '/services' },
         { name: 'Shipping', path: '/shipping' },
         { name: 'About', path: '/about' },
@@ -143,13 +144,13 @@ const LuxuryHeader = () => {
                             </button>
                         </div>
                         
-                        <button 
-                            onClick={() => setIsPartnerModalOpen(true)}
+                        <Link 
+                            to="/become-a-distributor"
                             className="hidden md:flex items-center gap-2 group px-5 py-2 rounded-full border border-black/10 text-matte-black text-[9px] font-bold tracking-widest uppercase hover:bg-matte-black hover:text-white transition-all duration-500"
                         >
                             <span>Distributor</span>
                             <ArrowRight size={12} className="transition-transform group-hover:translate-x-1" />
-                        </button>
+                        </Link>
 
                         <button 
                             className={`lg:hidden transition-colors ${
@@ -276,7 +277,7 @@ const LuxuryHeader = () => {
                                 className="mt-auto pb-12"
                             >
                                 <Link 
-                                    to="/contact"
+                                    to="/become-a-distributor"
                                     onClick={() => setMobileMenuOpen(false)}
                                     className="w-full h-14 bg-matte-black text-white rounded-full flex items-center justify-center gap-3 text-xs font-bold tracking-widest uppercase hover:bg-primary-gold hover:text-matte-black transition-all shadow-2xl"
                                 >

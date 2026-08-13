@@ -12,9 +12,12 @@ module.exports.getAllProducts = async (req, res) => {
     const { mainCategory, subCategory } = req.query;
     console.log("getAllProducts query:", { mainCategory, subCategory });
 
+    const xuping = await MainCategory.findOne({ name: { $regex: /^xuping$/i } });
     const productsQuery = {};
     if (mainCategory) {
       productsQuery.mainCategory = new mongoose.Types.ObjectId(mainCategory);
+    } else if (xuping) {
+      productsQuery.mainCategory = { $ne: xuping._id };
     }
 
     if (subCategory) {
@@ -84,8 +87,9 @@ module.exports.getAllProducts = async (req, res) => {
 
 module.exports.getHandpickedProducts = async (req, res) => {
   try {
+    const xuping = await MainCategory.findOne({ name: { $regex: /^xuping$/i } });
     const targetMainCat = req.query.mainCategory || null;
-    let query = targetMainCat ? { _id: targetMainCat } : {};
+    let query = targetMainCat ? { _id: targetMainCat } : (xuping ? { _id: { $ne: xuping._id } } : {});
 
     const mainCats = await MainCategory.find(query).lean();
     let allProducts = [];
@@ -117,7 +121,7 @@ module.exports.getHandpickedProducts = async (req, res) => {
 
     // Ultra-Resilient Fallback: If still empty, fetch ANY products to avoid blank screens
     if (allProducts.length === 0) {
-      const globalQuery = {};
+      const globalQuery = xuping ? { mainCategory: { $ne: xuping._id } } : {};
       const globalLatest = await Product.find(globalQuery)
         .sort({ createdAt: -1 })
         .limit(24)
@@ -138,8 +142,9 @@ module.exports.getHandpickedProducts = async (req, res) => {
 // Trending = ceramics
 module.exports.getCeramicsProducts = async (req, res) => {
   try {
+    const xuping = await MainCategory.findOne({ name: { $regex: /^xuping$/i } });
     const targetMainCat = req.query.mainCategory || null;
-    const filter = targetMainCat ? { mainCategory: targetMainCat } : {};
+    const filter = targetMainCat ? { mainCategory: targetMainCat } : (xuping ? { mainCategory: { $ne: xuping._id } } : {});
 
     let allProducts = await Product.find(filter)
       .sort({ updatedAt: -1 })
@@ -205,6 +210,10 @@ module.exports.getProductDetail = async (req, res) => {
       .populate('subCategory', 'name');
 
     if (!product) return res.status(404).json({ error: 'Product not found' });
+    const xuping = await MainCategory.findOne({ name: { $regex: /^xuping$/i } });
+    if (xuping && (product.mainCategory?._id?.toString() === xuping._id.toString() || product.mainCategory?.toString() === xuping._id.toString())) {
+      return res.status(404).json({ error: 'Product not found' });
+    }
 
     // Limit images to max 4
     const images = product.imageUrl?.slice(0, 4) || [];

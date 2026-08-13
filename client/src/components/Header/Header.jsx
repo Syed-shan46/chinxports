@@ -39,13 +39,12 @@ export default function Header() {
         const data = await res.json();
         const allowedIds = ['69c3a9a610f636c152943709', '6926fcfd1d552abbe3a6c307', '69c36d19eab4f288c1d04248'];
         const cats = (data.categories || [])
-          .filter(c => allowedIds.includes(c._id) || (c.name && c.name.toLowerCase().includes('xuping')))
+          .filter(c => allowedIds.includes(c._id))
           .map(c => {
              let formattedName = c.name;
              if (c._id === '69c3a9a610f636c152943709') formattedName = "18k Gold Plated";
              else if (c._id === '6926fcfd1d552abbe3a6c307') formattedName = "316L Stainless Steel";
              else if (c._id === '69c36d19eab4f288c1d04248') formattedName = "Premium 18k Gold";
-             else if (c.name && c.name.toLowerCase().includes('xuping')) formattedName = "Xuping";
              return {
                ...c,
                name: formattedName,
@@ -139,7 +138,7 @@ export default function Header() {
                 </div>
               ))}
 
-              <NavLink to="/store" end className={({ isActive }) => `relative font-body text-[12px] font-bold uppercase tracking-[0.2em] transition-all hover:text-primary-gold ${location.pathname === '/store' ? "text-primary-gold" : "text-charcoal"}`}>Store</NavLink>
+              <NavLink to="/store?category=69c36d19eab4f288c1d04248" end className={({ isActive }) => `relative font-body text-[12px] font-bold uppercase tracking-[0.2em] transition-all hover:text-primary-gold ${location.pathname === '/store' ? "text-primary-gold" : "text-charcoal"}`}>Store</NavLink>
               <NavLink to="/about" className={({ isActive }) => `relative font-body text-[12px] font-bold uppercase tracking-[0.2em] transition-all hover:text-primary-gold ${isActive ? "text-primary-gold" : "text-charcoal"}`}>About</NavLink>
               <NavLink to="/contact" className={({ isActive }) => `relative font-body text-[12px] font-bold uppercase tracking-[0.2em] transition-all hover:text-primary-gold ${isActive ? "text-primary-gold" : "text-charcoal"}`}>Contact</NavLink>
             </nav>

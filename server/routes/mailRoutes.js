@@ -204,4 +204,66 @@ router.post("/catalog-request", async (req, res) => {
     }
 });
 
+// --- DISTRIBUTOR APPLICATION NOTIFICATION ---
+router.post("/distributor-request", async (req, res) => {
+    try {
+        const { name, phone, location, investment, experience, interestArea } = req.body;
+
+        if (!name || !phone) {
+            return res.status(400).json({ error: "Name and Phone Number are required fields." });
+        }
+
+        const subject = `🚀 [NEW DISTRIBUTOR APPLICATION] ₹5L+ Lead: ${name} (${location || 'India'})`;
+
+        const html = `
+            <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 650px; margin: 0 auto; padding: 25px; border: 1px solid #1a1a1a; background: #0b0b0b; color: #ffffff; border-radius: 12px;">
+                <div style="text-align: center; padding-bottom: 20px; border-bottom: 1px solid #222;">
+                    <span style="color: #C6A769; font-size: 11px; font-weight: bold; letter-spacing: 3px; uppercase;">CHINAXPORTS ENTERPRISE</span>
+                    <h2 style="color: #ffffff; margin: 10px 0 0 0; font-size: 22px;">💼 Become a Distributor Application</h2>
+                </div>
+                
+                <div style="background: #141414; padding: 18px; border-left: 4px solid #C6A769; border-radius: 6px; margin: 25px 0;">
+                    <p style="margin: 0; font-size: 14px; font-weight: 600; color: #C6A769;">
+                        MINIMUM CAPITAL TIER VERIFIED: ${investment || "₹5,00,000+"}
+                    </p>
+                </div>
+
+                <div style="background: #141414; padding: 20px; border-radius: 8px; margin-bottom: 25px; border: 1px solid #222;">
+                    <h3 style="color: #C6A769; margin-top: 0; font-size: 14px; text-transform: uppercase; letter-spacing: 1px; border-bottom: 1px solid #222; padding-bottom: 8px;">👤 Applicant Profile</h3>
+                    <p style="margin: 10px 0; font-size: 14px;"><strong>Full Name:</strong> ${name}</p>
+                    <p style="margin: 10px 0; font-size: 14px;"><strong>Phone / WhatsApp:</strong> <a href="tel:${phone}" style="color: #C6A769; text-decoration: none;">${phone}</a></p>
+                    <p style="margin: 10px 0; font-size: 14px;"><strong>Location / Region:</strong> ${location || "Not Provided"}</p>
+                    <p style="margin: 10px 0; font-size: 14px;"><strong>Investment Capacity:</strong> <span style="background: #C6A769; color: #000; padding: 3px 8px; border-radius: 4px; font-weight: bold; font-size: 12px;">${investment || "₹5,00,000+"}</span></p>
+                    <p style="margin: 10px 0; font-size: 14px;"><strong>Distribution Interest:</strong> ${interestArea || "Local & Online Distribution"}</p>
+                </div>
+
+                <div style="background: #141414; padding: 20px; border-radius: 8px; margin-bottom: 25px; border: 1px solid #222;">
+                    <h3 style="color: #C6A769; margin-top: 0; font-size: 14px; text-transform: uppercase; letter-spacing: 1px; border-bottom: 1px solid #222; padding-bottom: 8px;">💼 Experience & Notes</h3>
+                    <p style="margin: 10px 0; font-size: 14px; line-height: 1.6; color: #ccc;">
+                        ${experience || "No prior distribution experience detailed. Candidate ready for ₹5L entry onboarding."}
+                    </p>
+                </div>
+
+                <div style="text-align: center; margin-top: 30px; padding-top: 20px; border-top: 1px solid #222;">
+                    <a href="https://wa.me/${phone.replace(/[^0-9]/g, '')}" style="background: #25D366; color: #ffffff; font-weight: bold; text-decoration: none; padding: 12px 24px; border-radius: 30px; display: inline-block; font-size: 13px;">
+                        💬 Connect via WhatsApp Directly
+                    </a>
+                </div>
+
+                <p style="font-size: 11px; color: #666; text-align: center; margin-top: 25px;">
+                    Sent from Chinaxports Become a Distributor Intake System. Lead flagged high priority.
+                </p>
+            </div>
+        `;
+
+        await sendOrderEmail(subject, html);
+
+        res.json({ success: true, message: "Distributor application delivered successfully" });
+
+    } catch (err) {
+        console.error("Distributor Application Error:", err);
+        res.status(500).json({ error: "Internal server failure processing distributor request" });
+    }
+});
+
 module.exports = router;

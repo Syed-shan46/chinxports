@@ -79,11 +79,11 @@ export default function Footer() {
             <h4 className="text-[10px] font-extrabold tracking-[0.25em] uppercase text-[#C6A769] border-b border-white/5 pb-3 inline-block md:block w-auto md:w-full">Wholesale Suite</h4>
             <ul className="space-y-4">
               {[
-                { l: "Enterprise Store", p: "/store" },
+                { l: "Become a Distributor", p: "/become-a-distributor" },
+                { l: "Enterprise Store", p: "/store?category=69c36d19eab4f288c1d04248" },
                 { l: "B2B Solutions", p: "/services" },
-                { l: "Request Partnership", p: "/partner" },
-                { l: "Bulk Catalog", p: "/store" },
-                { l: "Line Sheets", p: "/store" }
+                { l: "Request Partnership", p: "/become-a-distributor" },
+                { l: "Bulk Catalog", p: "/store?category=69c36d19eab4f288c1d04248" },
               ].map((link, idx) => (
                 <li key={idx}>
                   <Link
