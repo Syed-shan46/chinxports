@@ -1,5 +1,5 @@
-export const MULTIPLIER = 1.25; // Reverted to Old Multiplier
-export const FIXED_RMB = 14.7; // Reverted to Old RMB Rate
+export const MULTIPLIER = 1.15; // Reverted to Old Multiplier
+export const FIXED_RMB = 15.2; // Reverted to Old RMB Rate
 
 export const convertToINR = (chinaPrice) => {
   const cp = parseFloat(chinaPrice);
